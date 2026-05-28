@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Logan Brunet · Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+<template id="__bundler_thumbnail" data-bg-color="#0a0b0e">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0a0b0e"/>
+    <!-- Grid dots -->
+    <rect width="1200" height="800" fill="url(#grid)" opacity="0.3"/>
+    <defs>
+      <pattern id="grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="1" fill="rgba(180,200,230,0.15)"/>
+      </pattern>
+    </defs>
+    <!-- Name block -->
+    <rect x="200" y="180" width="360" height="8" rx="4" fill="#e3e6ed" opacity="0.9"/>
+    <rect x="200" y="210" width="220" height="6" rx="3" fill="#7d8597" opacity="0.6"/>
+    <rect x="200" y="240" width="280" height="5" rx="2.5" fill="#4f5466" opacity="0.5"/>
+    <!-- Skill chips -->
+    <rect x="200" y="270" width="70" height="20" rx="10" fill="none" stroke="#7d8597" stroke-width="1" opacity="0.5"/>
+    <rect x="280" y="270" width="90" height="20" rx="10" fill="none" stroke="#7d8597" stroke-width="1" opacity="0.5"/>
+    <rect x="380" y="270" width="75" height="20" rx="10" fill="none" stroke="#7d8597" stroke-width="1" opacity="0.5"/>
+    <!-- Project cards -->
+    <rect x="200" y="330" width="230" height="150" rx="8" fill="#11131a" stroke="rgba(180,200,230,0.08)" stroke-width="1"/>
+    <rect x="200" y="330" width="230" height="40" rx="8" fill="#161922"/>
+    <rect x="200" y="358" width="230" height="12" fill="#161922"/>
+    <rect x="210" y="345" width="80" height="6" rx="3" fill="#b3ec59" opacity="0.7"/>
+    <rect x="450" y="330" width="230" height="150" rx="8" fill="#11131a" stroke="rgba(180,200,230,0.08)" stroke-width="1"/>
+    <rect x="450" y="330" width="230" height="40" rx="8" fill="#161922"/>
+    <rect x="450" y="358" width="230" height="12" fill="#161922"/>
+    <rect x="460" y="345" width="80" height="6" rx="3" fill="#56d8ff" opacity="0.7"/>
+    <rect x="700" y="330" width="230" height="150" rx="8" fill="#11131a" stroke="rgba(180,200,230,0.08)" stroke-width="1"/>
+    <rect x="700" y="330" width="230" height="40" rx="8" fill="#161922"/>
+    <rect x="700" y="358" width="230" height="12" fill="#161922"/>
+    <rect x="710" y="345" width="80" height="6" rx="3" fill="#9d8bff" opacity="0.7"/>
+    <!-- AI section accent bar -->
+    <rect x="200" y="510" width="730" height="2" rx="1" fill="url(#aig)"/>
+    <defs>
+      <linearGradient id="aig" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#ff9d6a"/>
+        <stop offset="50%" stop-color="#9d8bff"/>
+        <stop offset="100%" stop-color="#56d8ff"/>
+      </linearGradient>
+    </defs>
+    <!-- Name text placeholder -->
+    <text x="200" y="175" font-family="system-ui,sans-serif" font-size="13" fill="#4f5466" letter-spacing="3">LOGAN BRUNET · PORTFOLIO</text>
+  </svg>
+</template>
+<style>
+:root {
+  --bg:      #0a0b0e;
+  --panel:   #11131a;
+  --panel-2: #161922;
+  --panel-3: #1c2030;
+  --line:    rgba(180,200,230,.08);
+  --line-2:  rgba(180,200,230,.14);
+  --text:    #e3e6ed;
+  --text-2:  #b3b8c5;
+  --muted:   #7d8597;
+  --faint:   #4f5466;
+  --accent:  #56d8ff;
+  --shipped: #b3ec59;
+  --inprog:  #ffba48;
+  --info:    #9d8bff;
+  --ai:      #ff9d6a;
+  --grid:    rgba(180,200,230,.04);
+  --radius:  8px;
+  --font:    "Geist", system-ui, sans-serif;
+  --mono:    "Geist Mono", ui-monospace, monospace;
+  --shadow:  0 1px 0 rgba(255,255,255,.02), 0 8px 32px rgba(0,0,0,.5);
+}
+*,*::before,*::after { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+html { -webkit-font-smoothing:antialiased; }
+body {
+  background:var(--bg); color:var(--text);
+  font-family:var(--font); font-size:15px; line-height:1.5;
+  min-height:100vh;
+}
+body::before {
+  content:""; position:fixed; inset:0;
+  background-image:radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+  background-size:24px 24px; pointer-events:none; z-index:0;
+}
+a { color:inherit; text-decoration:none; }
+button { font:inherit; cursor:pointer; }
+
+/* ── Layout ── */
+.page { max-width:1160px; margin:0 auto; padding:64px 32px 100px; position:relative; z-index:1; }
+
+/* ── Hero ── */
+.hero { padding:0 0 28px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em;
+  color:var(--shipped); margin-bottom:10px;
+}
+.hero-badge-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--shipped); box-shadow:0 0 8px var(--shipped);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.45;} }
+.hero-name {
+  font-family:var(--font); font-size:clamp(36px,4.5vw,60px);
+  line-height:1.0; font-weight:500; letter-spacing:-.025em;
+  color:var(--text); margin:0 0 6px;
+}
+.hero-role { font-size:16px; color:var(--text-2); margin:0 0 10px; font-weight:400; }
+.hero-bio {
+  font-size:14px; line-height:1.55; color:var(--text-2);
+  max-width:54ch; margin:0 0 16px; text-wrap:pretty;
+}
+.hero-skills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.hero-skill {
+  font-family:var(--mono); font-size:11px;
+  padding:4px 12px; border:1px solid var(--line-2); border-radius:100px;
+  color:var(--text-2); background:var(--panel);
+}
+.hero-links { display:flex; flex-wrap:wrap; gap:18px; align-items:center; }
+.hero-link {
+  font-family:var(--mono); font-size:12px; letter-spacing:.04em;
+  color:var(--muted); border-bottom:1px dashed var(--line-2); padding-bottom:2px;
+  transition:color .15s, border-color .15s;
+}
+.hero-link:hover { color:var(--text); border-color:var(--text); }
+.hero-link.primary { color:var(--accent); border-color:var(--accent); }
+
+/* ── Section head ── */
+.sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:28px; }
+.sec-num  { font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:.1em; }
+.sec-title { font-size:24px; font-weight:500; letter-spacing:-.005em; }
+.sec-rule  { flex:1; height:1px; background:var(--line); margin-bottom:6px; }
+.sec-sub   { font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+
+/* ── Project grid (main, clickable cards) ── */
+.projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:72px; }
+
+a.project-card {
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--radius); overflow:hidden;
+  display:flex; flex-direction:column;
+  box-shadow:var(--shadow); cursor:pointer;
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+a.project-card:hover {
+  border-color:var(--accent);
+  transform:translateY(-3px);
+  box-shadow:0 0 0 1px color-mix(in oklab,var(--accent) 20%,transparent), 0 12px 40px rgba(0,0,0,.5);
+}
+.project-thumb {
+  height:180px; background:var(--panel-2);
+  display:flex; align-items:center; justify-content:center;
+  border-bottom:1px solid var(--line);
+  position:relative; overflow:hidden;
+}
+.project-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.project-thumb-placeholder {
+  display:flex; flex-direction:column; align-items:center; gap:10px; opacity:.35;
+}
+.project-thumb-label {
+  font-family:var(--mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--muted);
+}
+.project-status-bar {
+  position:absolute; top:10px; left:10px;
+  font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.1em;
+  padding:3px 9px; border-radius:100px;
+  background:var(--panel); border:1px solid var(--line);
+}
+.project-status-bar.live   { color:var(--shipped); border-color:color-mix(in oklab,var(--shipped) 30%,var(--line)); }
+.project-status-bar.active { color:var(--inprog);  border-color:color-mix(in oklab,var(--inprog)  30%,var(--line)); }
+
+.project-body { padding:20px 22px; flex:1; display:flex; flex-direction:column; gap:8px; }
+.project-eyebrow { font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); }
+.project-title { font-size:20px; font-weight:500; letter-spacing:-.005em; color:var(--text); line-height:1.2; }
+.project-blurb { font-size:13.5px; color:var(--text-2); line-height:1.6; flex:1; text-wrap:pretty; }
+.project-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+.project-tag {
+  font-family:var(--mono); font-size:9.5px;
+  padding:2px 8px; border-radius:100px;
+  background:var(--panel-2); border:1px solid var(--line); color:var(--muted);
+}
+.project-arrow {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 22px 16px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:10.5px; color:var(--faint);
+}
+.project-arrow .arrow { color:var(--accent); font-size:14px; transition:transform .15s; }
+a.project-card:hover .arrow { transform:translateX(3px); }
+
+/* ── Thumb icon ── */
+.thumb-icon { width:44px; height:44px; opacity:.5; }
+
+/* ── Contributions grid (smaller cards) ── */
+.contribs { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:72px; }
+.contrib-card {
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--radius); padding:18px 20px;
+  display:flex; flex-direction:column; gap:8px;
+  transition:border-color .2s;
+}
+a.contrib-card { cursor:pointer; }
+a.contrib-card:hover { border-color:var(--line-2); }
+.contrib-title { font-size:15px; font-weight:500; color:var(--text); }
+.contrib-repo  { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.04em; }
+.contrib-blurb { font-size:12.5px; color:var(--text-2); line-height:1.55; flex:1; }
+.contrib-tags  { display:flex; flex-wrap:wrap; gap:5px; }
+.contrib-tag   {
+  font-family:var(--mono); font-size:9px;
+  padding:2px 7px; border-radius:100px;
+  background:var(--panel-2); border:1px solid var(--line); color:var(--muted);
+}
+.contrib-status {
+  font-family:var(--mono); font-size:9px; text-transform:uppercase; letter-spacing:.1em;
+  padding:2px 8px; border-radius:100px; align-self:flex-start;
+  color:var(--shipped); background:color-mix(in oklab,var(--shipped) 10%,transparent);
+  border:1px solid color-mix(in oklab,var(--shipped) 25%,transparent);
+}
+
+/* ── AI workflow section ── */
+.ai-section {
+  background:var(--panel); border:1px solid color-mix(in oklab,var(--ai) 20%,var(--line));
+  border-radius:var(--radius); padding:36px 40px; margin-bottom:72px;
+  position:relative; overflow:hidden;
+}
+.ai-section::before {
+  content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--ai), var(--info), var(--accent));
+}
+.ai-section-head {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:24px; margin-bottom:24px;
+}
+.ai-section-title {
+  font-size:22px; font-weight:500; color:var(--text); margin:0 0 6px;
+}
+.ai-section-sub { font-size:14px; color:var(--text-2); max-width:54ch; text-wrap:pretty; }
+.ai-badge {
+  font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.1em;
+  padding:5px 12px; border-radius:100px; flex-shrink:0; align-self:flex-start;
+  color:var(--ai); background:color-mix(in oklab,var(--ai) 10%,transparent);
+  border:1px solid color-mix(in oklab,var(--ai) 25%,transparent);
+}
+.ai-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.ai-card {
+  background:var(--panel-2); border:1px solid var(--line);
+  border-radius:6px; padding:16px 18px;
+}
+.ai-card-title { font-size:13px; font-weight:500; color:var(--text); margin-bottom:6px; }
+.ai-card-body  { font-size:12.5px; color:var(--text-2); line-height:1.55; }
+.ai-highlight  { color:var(--ai); }
+
+/* ── Footer ── */
+footer {
+  padding-top:24px; border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:center;
+  color:var(--muted); font-family:var(--mono); font-size:11px;
+}
+
+/* ── Responsive ── */
+@media (max-width:900px) {
+  .projects, .contribs, .ai-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:600px) {
+  .projects, .contribs, .ai-grid { grid-template-columns:1fr; }
+  .hero-name { font-size:clamp(36px,10vw,56px); }
+  .ai-section-head { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Hero ── -->
+  <header class="hero" style="height: 300px; padding: 0px; margin: 0px">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      open to work · Orlando, FL
+    </div>
+    <h1 class="hero-name">Logan Brunet</h1>
+    <p class="hero-role">Senior C++ Engineer · Game Tools &amp; Immersive Tech</p>
+    <p class="hero-bio">
+      Specializing in game engine tooling, real-time rendering, and immersive experiences.
+      Comfortable owning full technical stacks from engine client through deployment —
+      Unreal Engine, Dear ImGui, C++17, Lua, C#, GLSL/HLSL, and more.
+    </p>
+    <div class="hero-skills">
+      <span class="hero-skill">C++17/20</span>
+      <span class="hero-skill">Unreal Engine 4/5</span>
+      <span class="hero-skill">Dear ImGui</span>
+      <span class="hero-skill">Lua / Sol2</span>
+      <span class="hero-skill">C# / WPF</span>
+      <span class="hero-skill">GLSL / HLSL</span>
+      <span class="hero-skill">SDL3 / CMake</span>
+      <span class="hero-skill">Claude Code</span>
+    </div>
+    <nav class="hero-links">
+      <a href="https://github.com/lobotomy-x" class="hero-link primary" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://linkedin.com/in/logan-brunet" class="hero-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="mailto:loganwbrunet@gmail.com" class="hero-link">loganwbrunet@gmail.com</a>
+    </nav>
+  </header>
+
+  <!-- ── § 01 Selected work ── -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">§ 01</span>
+      <h2 class="sec-title">Selected work</h2>
+      <div class="sec-rule"></div>
+      <span class="sec-sub">click any card</span>
+    </div>
+    <div class="projects">
+
+      <!-- ImGuiColorTextEdit -->
+      <a href="index.html" class="project-card">
+        <div class="project-thumb">
+          <img src="uploads/textEditor.png" alt="ImGuiColorTextEdit editor screenshot"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="project-thumb-placeholder" style="display:none;flex-direction:column;align-items:center;gap:10px;">
+            <svg class="thumb-icon" viewBox="0 0 48 48" fill="none">
+              <path d="M16 12 L8 24 L16 36" stroke="#b3ec59" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M32 12 L40 24 L32 36" stroke="#56d8ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="24" y1="10" x2="24" y2="38" stroke="#56d8ff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+            </svg>
+            <span class="project-thumb-label">ImGuiColorTextEdit</span>
+          </div>
+          <span class="project-status-bar live">Shipped</span>
+        </div>
+        <div class="project-body">
+          <div class="project-eyebrow">C++ · Dear ImGui · Engine Tooling</div>
+          <div class="project-title">ImGuiColorTextEdit</div>
+          <div class="project-blurb">
+            Transformed a capable code editor into a fully featured IDE on par with Sublime Text —
+            code folding, script runner, VS Code shortcuts, doubled language support,
+            drag-and-drop, and professional file dialogs. Cross-platform: Windows, macOS, Linux.
+          </div>
+          <div class="project-tags">
+            <span class="project-tag">C++17</span>
+            <span class="project-tag">Dear ImGui</span>
+            <span class="project-tag">SDL3</span>
+            <span class="project-tag">22 features</span>
+          </div>
+        </div>
+        <div class="project-arrow">
+          <span>May 2026</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <!-- UEVR Frontend -->
+      <a href="UEVR-Frontend-Dashboard.html" class="project-card">
+        <div class="project-thumb">
+          <div class="project-thumb-placeholder" style="display:flex;">
+            <svg class="thumb-icon" viewBox="0 0 48 48" fill="none">
+              <path d="M6 12 L24 6 L42 12 L42 34 L24 42 L6 34 Z" stroke="#56d8ff" stroke-width="2.5" fill="none"/>
+              <path d="M15 17 L24 13 L33 17 L33 30 L24 35 L15 30 Z" stroke="#56d8ff" stroke-width="1.5" fill="none" opacity="0.5"/>
+              <circle cx="24" cy="24" r="3" fill="#56d8ff"/>
+            </svg>
+            <span class="project-thumb-label">UEVR Frontend</span>
+          </div>
+          <span class="project-status-bar live">Shipped</span>
+        </div>
+        <div class="project-body">
+          <div class="project-eyebrow">C# · WPF · WinAPI · VR Tooling</div>
+          <div class="project-title">UEVR Frontend</div>
+          <div class="project-blurb">
+            System-tray VR injector desktop app — runs silently like Steam,
+            auto-detects Unreal Engine game launches via WMI, manages per-game profiles,
+            handles GitHub nightly auto-updates, and fixes anticheat issues with unelevated launchers.
+            Custom WinAPI tray from scratch.
+          </div>
+          <div class="project-tags">
+            <span class="project-tag">C# / .NET 6</span>
+            <span class="project-tag">WPF</span>
+            <span class="project-tag">WinAPI</span>
+            <span class="project-tag">20 features</span>
+          </div>
+        </div>
+        <div class="project-arrow">
+          <span>2025–2026</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <!-- UEVR luavrlib -->
+      <a href="https://claude.ai/design/p/bab2c03b-017e-47c7-a275-ca06aed7c289?file=index.html"
+         class="project-card" target="_blank" rel="noopener">
+        <div class="project-thumb">
+          <div class="project-thumb-placeholder" style="display:flex;">
+            <svg class="thumb-icon" viewBox="0 0 48 48" fill="none">
+              <rect x="8" y="8" width="32" height="32" rx="4" stroke="#9d8bff" stroke-width="2.5" fill="none"/>
+              <path d="M16 18 L22 24 L16 30" stroke="#9d8bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="24" y1="30" x2="32" y2="30" stroke="#9d8bff" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="project-thumb-label">UEVR · luavrlib</span>
+          </div>
+          <span class="project-status-bar active">Active sprint</span>
+        </div>
+        <div class="project-body">
+          <div class="project-eyebrow">C++20 · Lua / Sol2 · Unreal Engine · Dear ImGui</div>
+          <div class="project-title">UEVR · luavrlib</div>
+          <div class="project-blurb">
+            Extended UEVR's Lua scripting surface for VR modders — fast-path actor accessors
+            (3–5× faster), multistate worker threads, fixed TArray read paths, rewrote GLM bindings,
+            and built a live function caller UI with drag-and-drop in UObjectHook.
+          </div>
+          <div class="project-tags">
+            <span class="project-tag">C++20</span>
+            <span class="project-tag">Lua / Sol2</span>
+            <span class="project-tag">Dear ImGui</span>
+            <span class="project-tag">24 features</span>
+          </div>
+        </div>
+        <div class="project-arrow">
+          <span>Apr – May 2026</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── § 02 AI-augmented workflow ── -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">§ 02</span>
+      <h2 class="sec-title">AI-augmented engineering</h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="ai-section">
+      <div class="ai-section-head">
+        <div>
+          <div class="ai-section-title">
+            Using Claude Code as a <span class="ai-highlight">force multiplier</span>
+          </div>
+          <div class="ai-section-sub">
+            Integrating AI into the development workflow isn't just a productivity trick — it's
+            become a core technical skill. The ability to scope, prompt, verify, and iterate with
+            AI agents is measurably changing what one engineer can ship per week. Every project
+            above was built or documented with Claude Code in the loop.
+          </div>
+        </div>
+        <span class="ai-badge">Claude Code</span>
+      </div>
+      <div class="ai-grid">
+        <div class="ai-card">
+          <div class="ai-card-title">Rapid codebase onboarding</div>
+          <div class="ai-card-body">
+            Explored ~100k-line codebases (UEVR, ImGuiColorTextEdit, ObjectTalk) in minutes rather than days.
+            Used Claude to map call graphs, identify integration points, and understand
+            undocumented APIs before writing a single line.
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Boilerplate compression</div>
+          <div class="ai-card-body">
+            WPF/XAML bindings, CMake configuration, NOTIFYICONDATA structs, GitHub API
+            deserialization — the mechanical parts of C# and build systems that slow down
+            feature work are generated, reviewed, and wired in rather than hand-typed.
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Progress dashboards as deliverables</div>
+          <div class="ai-card-body">
+            Turned raw sprint notes and code diffs into interactive portfolio dashboards —
+            kanban boards, dependency graphs, file heatmaps, and public-facing overviews —
+            entirely with AI tooling. These pages are themselves proof of the workflow.
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Verification loop</div>
+          <div class="ai-card-body">
+            Senior developers know AI output needs review. Every generated function is
+            read, tested, and integrated with the same scrutiny as any PR — the speed
+            gain is in the first draft and iteration cycle, not in blind trust.
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Multi-agent tooling</div>
+          <div class="ai-card-body">
+            Built Claude-powered tools directly into the dashboards — AI-assisted status
+            reports, release note drafters, data sync utilities, and a local companion
+            server that bridges browser UIs to the Claude CLI for in-context code review.
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Output: 22 + 20 + 24 features shipped</div>
+          <div class="ai-card-body">
+            Across three projects in a single quarter, AI tooling was in the loop for
+            scoping, documentation, and boilerplate on every feature. The architecture,
+            design decisions, and integration work remained fully human.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── § 03 Merged contributions ── -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">§ 03</span>
+      <h2 class="sec-title">Merged contributions</h2>
+      <div class="sec-rule"></div>
+      <span class="sec-sub">upstream repos</span>
+    </div>
+    <div class="contribs">
+
+      <div class="contrib-card">
+        <span class="contrib-status">Merged to master</span>
+        <div class="contrib-title">Unreal Lua Library</div>
+        <div class="contrib-repo">lobotomy-x/Unreal-Lua-Library</div>
+        <div class="contrib-blurb">
+          Companion Lua library extending UEVR's scripting surface. Actor utilities,
+          component helpers, math wrappers, and game-loop callbacks — maintained in
+          sync with the luavrlib backend. Used by the UEVR modding community.
+        </div>
+        <div class="contrib-tags">
+          <span class="contrib-tag">Lua</span>
+          <span class="contrib-tag">UEVR</span>
+          <span class="contrib-tag">Unreal Engine</span>
+        </div>
+      </div>
+
+      <div class="contrib-card">
+        <span class="contrib-status">Merged to master</span>
+        <div class="contrib-title">ReShade integration</div>
+        <div class="contrib-repo">crosire/reshade</div>
+        <div class="contrib-blurb">
+          Contributed changes to ReShade's post-process injection pipeline.
+          Patches landed in the master branch and are included in the
+          standard ReShade distribution used by millions of players.
+        </div>
+        <div class="contrib-tags">
+          <span class="contrib-tag">C++</span>
+          <span class="contrib-tag">DirectX</span>
+          <span class="contrib-tag">Graphics</span>
+        </div>
+      </div>
+
+      <div class="contrib-card">
+        <span class="contrib-status">Merged to master</span>
+        <div class="contrib-title">VRM Addon for Blender</div>
+        <div class="contrib-repo">saturday06/VRM-Addon-for-Blender</div>
+        <div class="contrib-blurb">
+          Contributed bug fixes and feature work to the most-used VRM import/export
+          Blender addon. Changes merged into the main branch and shipped to users
+          via the Blender Extensions platform.
+        </div>
+        <div class="contrib-tags">
+          <span class="contrib-tag">Python</span>
+          <span class="contrib-tag">Blender</span>
+          <span class="contrib-tag">VRM / glTF</span>
+        </div>
+      </div>
+
+      <div class="contrib-card">
+        <span class="contrib-status">Merged to master</span>
+        <div class="contrib-title">Dumper-7 SDK tooling</div>
+        <div class="contrib-repo">UE4SS-RE/Dumper-7</div>
+        <div class="contrib-blurb">
+          Contributed to Dumper-7, the community-standard Unreal Engine SDK generator
+          used for game reverse engineering. Changes landed in master and are used by
+          modders across dozens of UE4/UE5 titles.
+        </div>
+        <div class="contrib-tags">
+          <span class="contrib-tag">C++</span>
+          <span class="contrib-tag">Unreal Engine</span>
+          <span class="contrib-tag">Reverse engineering</span>
+        </div>
+      </div>
+
+      <a href="https://github.com/lobotomy-x/UEVR/tree/luavrlib/docs"
+         class="contrib-card" target="_blank" rel="noopener">
+        <span class="contrib-status">Published</span>
+        <div class="contrib-title">UEVR luavrlib docs</div>
+        <div class="contrib-repo">lobotomy-x/UEVR · docs/</div>
+        <div class="contrib-blurb">
+          API reference and usage docs for the luavrlib scripting surface.
+          Covers the api_fast namespace, worker threads, GLM bindings,
+          UObjectHook extensions, and function call editor.
+        </div>
+        <div class="contrib-tags">
+          <span class="contrib-tag">Documentation</span>
+          <span class="contrib-tag">Lua</span>
+          <span class="contrib-tag">UEVR</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/lobotomy-x" class="contrib-card" target="_blank" rel="noopener">
+        <span class="contrib-status">Public</span>
+        <div class="contrib-title">More on GitHub</div>
+        <div class="contrib-repo">github.com/lobotomy-x</div>
+        <div class="contrib-blurb">
+          Additional open-source work, experiments, and tooling available
+          on GitHub — including prototypes, utilities, and contributions
+          to the broader game modding and VR community.
+        </div>
+        <div class="contrib-tags">
+          <span class="contrib-tag">Open source</span>
+          <span class="contrib-tag">GitHub</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>Logan Brunet · Portfolio · 2026</span>
+    <span>loganwbrunet@gmail.com</span>
+  </footer>
+
+</div>
+</body>
+</html>

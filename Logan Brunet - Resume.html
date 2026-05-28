@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Logan Brunet — Resume</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --page: 8.5in;
+  --margin: 0.5in;
+  --text: #1a1a1e;
+  --text-2: #3a3a42;
+  --muted: #62626e;
+  --accent: #1a4fd6;
+  --line: #d8d8e0;
+  --font: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { font-size: 10.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: #fff;
+  line-height: 1.45;
+}
+.page {
+  width: var(--page);
+  margin: 0 auto;
+  padding: var(--margin);
+}
+
+/* ── Header ── */
+.header { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; padding-bottom: 10px; border-bottom: 2px solid var(--text); margin-bottom: 10px; }
+.name { font-size: 22pt; font-weight: 600; letter-spacing: -.02em; line-height: 1; }
+.contact { font-family: var(--mono); font-size: 7.5pt; color: var(--muted); text-align: right; display: flex; flex-direction: column; gap: 2px; padding-top: 4px; }
+.contact a { color: var(--accent); text-decoration: none; }
+
+/* ── Section ── */
+.section { margin-bottom: 10px; }
+.section-label {
+  font-family: var(--mono); font-size: 7pt; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .14em; color: var(--accent);
+  border-bottom: 1px solid var(--line); padding-bottom: 2px; margin-bottom: 7px;
+}
+
+/* ── Summary ── */
+.summary { font-size: 9pt; color: var(--text-2); line-height: 1.5; }
+
+/* ── Skills ── */
+.skills-grid { display: grid; grid-template-columns: 88px 1fr; gap: 3px 10px; font-size: 8.5pt; }
+.skill-cat { font-weight: 500; color: var(--text); }
+.skill-val { color: var(--text-2); }
+
+/* ── Experience ── */
+.job { margin-bottom: 9px; }
+.job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 1px; }
+.job-title { font-size: 10pt; font-weight: 600; }
+.job-company { font-size: 9pt; font-weight: 400; color: var(--muted); }
+.job-date { font-family: var(--mono); font-size: 7.5pt; color: var(--muted); white-space: nowrap; }
+.job-location { font-family: var(--mono); font-size: 7.5pt; color: var(--muted); }
+.project-label { font-size: 9pt; font-weight: 500; color: var(--text); margin: 5px 0 2px; }
+ul { list-style: none; padding: 0; }
+li { font-size: 8.5pt; color: var(--text-2); padding-left: 12px; position: relative; line-height: 1.45; margin-bottom: 1.5px; }
+li::before { content: "·"; position: absolute; left: 3px; color: var(--accent); font-weight: 600; }
+
+/* ── Education ── */
+.edu-head { display: flex; justify-content: space-between; align-items: baseline; }
+.edu-school { font-size: 9.5pt; font-weight: 600; }
+.edu-degree { font-size: 8.5pt; color: var(--text-2); }
+.edu-detail { font-size: 8pt; color: var(--muted); margin-top: 2px; }
+
+/* ── Print ── */
+@media print {
+  html { font-size: 10pt; }
+  body { background: #fff; }
+  .page { width: 100%; padding: 0.45in 0.5in; }
+  .no-break { break-inside: avoid; }
+}
+@page { size: letter; margin: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="name">Logan Brunet</div>
+      <div style="font-size:9pt;color:var(--muted);margin-top:3px;">Game Tools &amp; Engine Engineer · Orlando, FL (Hybrid / Remote / Onsite)</div>
+    </div>
+    <div class="contact">
+      <span>loganwbrunet@gmail.com</span>
+      <a href="https://linkedin.com/in/logan-brunet">linkedin.com/in/logan-brunet</a>
+      <a href="https://github.com/lobotomy-x/portfolio">github.com/lobotomy-x/portfolio</a>
+    </div>
+  </header>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <div class="section-label">Summary</div>
+    <p class="summary">
+      Senior C++ engineer specializing in game engine tooling, real-time rendering, and immersive experiences.
+      23 years of C++ experience; deep hands-on work across Unreal Engine, Dear ImGui, C#/WPF, Lua, HLSL/GLSL, and WinAPI.
+      Recent independent work includes IDE-class feature development on a production ImGui editor (22 features shipped),
+      a ground-up WPF injection frontend for the UEVR VR modding platform, and agentic AI-assisted development workflows
+      using Claude Code. Comfortable owning full stacks from engine internals through deployment and developer tooling.
+    </p>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-label">Technical Skills</div>
+    <div class="skills-grid">
+      <span class="skill-cat">Languages</span>
+      <span class="skill-val">C++ (23 yrs), C# (.NET Framework 4.6.2–4.8 / .NET 6+), Python 3, Lua, JavaScript / TypeScript, HLSL, GLSL, Kotlin</span>
+
+      <span class="skill-cat">Engines</span>
+      <span class="skill-val">Unreal Engine 4/5, Unity (URP/HDRP), Dear ImGui, ARKit/ARCore</span>
+
+      <span class="skill-cat">Graphics</span>
+      <span class="skill-val">D3D11/12, Vulkan, DXGI swapchain hooks, ReShade plugin API, shader authoring</span>
+
+      <span class="skill-cat">Platform</span>
+      <span class="skill-val">WPF/XAML, WinAPI P/Invoke, WMI, Sol2, CMake, SDL3, ImGuiFileDialog</span>
+
+      <span class="skill-cat">AI &amp; Tooling</span>
+      <span class="skill-val">Claude Code (agentic workflows), LLM API integration, prompt engineering, AI-assisted code pipelines, Copilot, Gemini</span>
+
+      <span class="skill-cat">3D &amp; Creative</span>
+      <span class="skill-val">Blender (10k+ hrs, 2 yrs paid), VR-ready modeling, animation rigging, real-time asset pipelines</span>
+
+      <span class="skill-cat">Tools</span>
+      <span class="skill-val">Git, Visual Studio, Rider, VS Code, Jira, Confluence, Tortoise SVN, Adobe CC</span>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <div class="section-label">Professional Experience</div>
+
+    <!-- ImGuiColorTextEdit — independent project -->
+    <!-- micro1 -->
+    <div class="job no-break">
+      <div class="job-head">
+        <span class="job-title">Game Tools &amp; Modding Engineer <span class="job-company">· micro1 (Contract)</span></span>
+        <span class="job-date">May 2026 · Remote</span>
+      </div>
+      <ul>
+        <li>Contracted via micro1 to deliver engine tooling and modding work on a proprietary C++ codebase. Details under NDA.</li>
+      </ul>
+    </div>
+
+    <!-- Adacel -->
+    <div class="job no-break">
+      <div class="job-head">
+        <span class="job-title">Unreal Game / Simulation Developer <span class="job-company">· Adacel</span></span>
+        <span class="job-date">Jan 2026 – Apr 2026 · Orlando, FL (Hybrid)</span>
+      </div>
+      <ul>
+        <li>Modernized legacy simulation codebase to modern C++ and Epic internal standards — memory-safe pointer logic, UObject reflection, UPROPERTY/UFUNCTION systems for Blueprint extension.</li>
+        <li>Designed and built suite of ImGui-based diagnostic plugins providing real-time telemetry, performance profiling, and runtime debugging for high-fidelity simulation environments.</li>
+        <li>Advised technical lead on Unreal Engine architecture, internals, and core gameplay framework decisions.</li>
+        <li>Conducted vulnerability audits of proprietary engine assets and serialization protocols; designed IP protection roadmap.</li>
+        <li>Built and evaluated AI-based workflows for project setup, IP protection, debugging, and code refactoring.</li>
+      </ul>
+    </div>
+
+    <!-- Self-employed -->
+    <div class="job no-break">
+      <div class="job-head">
+        <span class="job-title">Consultant — Immersive Tools &amp; Engine Development <span class="job-company">· Self-Employed</span></span>
+        <span class="job-date">May 2023 – Present · Remote</span>
+      </div>
+
+      <div class="project-label">ImGuiColorTextEdit — IDE-class editor (C++ / Dear ImGui)</div>
+      <ul>
+        <li>Shipped 22 features on a production multi-platform Dear ImGui code editor — fold engine, IDE navigation, runtime language loading, and bug fixes across macOS, Linux, and Windows.</li>
+        <li>Fold engine: Python-aware indent folding, per-type collapse previews, anti-aliased fold arrows, fold-all/unfold-all via VS Code–style Ctrl+K chord shortcuts.</li>
+        <li>IDE navigation: header/source toggle (Alt+O), #include go-to-file, tab reopen history, click-drag text move/copy.</li>
+        <li>Runtime language loader — new languages added by dropping a config file, no recompile. 6 starter languages shipped. F5 script runner for Python, Lua, JS, Bash, PowerShell.</li>
+      </ul>
+
+      <div class="project-label">UEVR Frontend (C# / WPF desktop application)</div>
+      <ul>
+        <li>Built a system-tray application from scratch that automatically injects VR support into any Unreal Engine game — detects launches via WMI process-start trace, manages per-game profiles, no user interaction required.</li>
+        <li>Implemented raw Shell_NotifyIcon tray from scratch (not WPF wrappers) — message-only HWND, WndProc, icon state switching, Shell_NotifyIconGetRect context menu positioning.</li>
+        <li>GitHub Releases API auto-updater with local cache, version picker for rollback, and periodic background checks.</li>
+        <li>Unelevated Steam/Epic launcher management to prevent anticheat elevation issues; Windows startup shortcut with self-updating target path; single-instance mutex enforcement.</li>
+      </ul>
+
+      <div class="project-label">UEVR Lua API (C++ / Sol2 / Dear ImGui)</div>
+      <ul>
+        <li>Upgraded Dear ImGui across 5 years of upstream versions with full docking support; nearly doubled Lua binding surface (~1900 to ~3500 lines).</li>
+        <li>Authored Matrix4x4 and Transform Lua bindings from scratch; implemented Unreal Engine core math in pure Lua (vectors, quaternions, transforms, projection matrices).</li>
+        <li>Wrote API documentation and Lua training guide used by modding community; supported and trained 12+ active modders.</li>
+      </ul>
+
+      <div class="project-label">ReShade Open Source Contributor</div>
+      <ul>
+        <li>Implemented text editor features and HLSL shaders for graphics debugging and post-process effects.</li>
+      </ul>
+    </div>
+
+    <!-- Brown CCV -->
+    <div class="job no-break">
+      <div class="job-head">
+        <span class="job-title">3D Artist <span class="job-company">· Brown Center for Computation and Visualization</span></span>
+        <span class="job-date">Providence, RI</span>
+      </div>
+      <ul>
+        <li>Created VR-ready 3D models of campus architecture for real-time delivery.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-label">Education</div>
+    <div class="edu-head">
+      <span class="edu-school">Brown University</span>
+    </div>
+    <div class="edu-degree">B.S. Cognitive Neuroscience — Computational Cognitive Neuroscience, Statistical Inference, Game Development (Unity), Public Speaking</div>
+    <div class="edu-detail">AP: Computer Science 5 · BC Calculus 5 · Chemistry 5 · National Hispanic Scholar · AP Scholar with Distinction</div>
+    <div class="edu-detail" style="margin-top:4px;">Bootcamps: Full Stack Developer, Per Scholas (Java, Spring Boot, SQL, JS, REST APIs) · Data Analytics, General Assembly (Excel, Tableau, SQL)</div>
+  </div>
+
+  <!-- REFERENCES -->
+  <div class="section">
+    <div class="section-label">References</div>
+    <p style="font-size:8.5pt;color:var(--text-2);">
+      Travis Clement, Technical Lead, Adacel — tclements@adacel.com &nbsp;·&nbsp;
+      Sonia Mina, Engineering Manager, Adacel — soniam@adacel.com
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
