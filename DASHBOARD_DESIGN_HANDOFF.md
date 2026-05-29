@@ -99,6 +99,7 @@ meta: {
   // Highlight card IDs — which kanban cards to feature in §02
   // Pick 6 that show breadth: different groups, mix of large and small
   highlights: ["card-id-1", "card-id-2", "card-id-3", "card-id-4", "card-id-5", "card-id-6"],
+  highlightCount: 6,    // optional, default 6 — total highlights shown on overview
 
   // Tech stack — shown as chips in the hero right column, right-aligned
   // Keep to 6–8 items. Real tech only, no buzzwords.
@@ -129,9 +130,39 @@ meta: {
 | `description` | Non-technical. No class names, no API names. What does the project DO. |
 | `featuresAdded[].name` | User-facing feature name, not internal name. "Code folding" not "Folder::rebuildFoldRanges" |
 | `featuresAdded[].desc` | One sentence. What the user experiences. No implementation details. |
+| `card.blurb` | Technical description for the kanban view. OK to mention class names, API names, file paths. |
+| `card.highlightBlurb` | **Optional override.** When this card appears in `meta.highlights`, the overview uses this instead of `blurb`. Plain English, recruiter-friendly. |
 | `impactNumbers` | Real numbers only. No made-up stats. |
 | `credits` | De-emphasize. They go in a collapsed `<details>` element. |
 | Logan's name | Always subordinate to the project name. Small byline. "Contributed by Logan Brunet" |
+
+---
+
+## 3.5 · Selected highlights — manual + auto-fill
+
+The "Selected highlights" section uses a hybrid manual/auto approach:
+
+1. **Explicit list** — `meta.highlights[]` is the ordered list of card ids you want featured.
+2. **Auto-supplement** — if `meta.highlights` has fewer than `meta.highlightCount` (default 6) entries, the recruiter view fills the remaining slots by picking shipped cards from the kanban. It prefers:
+   - Cards that have a curated `highlightBlurb` field set
+   - Cards from groups not already represented in the highlights
+3. **Cap** — total displayed is `meta.highlightCount` (default 6).
+
+**Each card may carry an optional `highlightBlurb`:**
+
+```js
+{
+  id: "auto-inject",
+  status: "shipped",
+  group: "Injection Engine",
+  // Technical — shown in the kanban (dev view)
+  blurb: "Polls UnrealWindow class — every UE game creates one...",
+  // Plain English — shown when card appears in Selected highlights on the overview
+  highlightBlurb: "Detects every Unreal Engine game the moment it launches and turns it into a VR game. Runs entirely in user mode — no admin rights needed.",
+}
+```
+
+If a card is in `meta.highlights` but has no `highlightBlurb`, the recruiter view falls back to its regular `blurb` — so technical cards still render, they just sound less polished. **Recommendation:** any card you put in `meta.highlights` should have a `highlightBlurb` written for it.
 
 ---
 

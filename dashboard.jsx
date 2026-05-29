@@ -222,6 +222,15 @@ function Card({ card, expanded, onToggle, companion }) {
         <div className="card-detail" onClick={(e) => e.stopPropagation()}>
           {card.detail && <p>{card.detail}</p>}
 
+          {card.image && (
+            <div className="card-section">
+              <div className="card-shot">
+                <img src={card.image.src} alt={card.image.caption || card.title} loading="lazy" />
+                {card.image.caption && <div className="card-shot-cap">{card.image.caption}</div>}
+              </div>
+            </div>
+          )}
+
           {card.surface && (
             <div className="card-section">
               <div className="card-section-label">Surface — {card.surface.length} items</div>
@@ -359,36 +368,39 @@ function FilesHeatmap({ files }) {
 // Language support
 // ═══════════════════════════════════════════════
 
-function LanguageSupport({ scripts }) {
+function LanguageSupport({ scripts, labels }) {
+  const head = labels?.head ?? `Language support · ${scripts.summary.builtin} built-in · ${scripts.summary.runtime} runtime`;
+  const headAside = labels?.headAside ?? `${scripts.rows.length} total`;
+  const tableHeader = labels?.tableHeader ?? ["language", "type", "status", "features"];
+  // Summary tiles: prefer scripts.summaryTiles (data-driven). Falls back to legacy { builtin, runtime, custom }.
+  const tiles = scripts.summaryTiles || [
+    { num: scripts.summary.builtin, label: "built-in · compiled rules",   cls: "pass" },
+    { num: scripts.summary.runtime, label: "runtime · .lang files",        cls: "rewritten" },
+    { num: scripts.summary.custom,  label: "custom · Language::FromFile",  cls: "new" },
+  ];
   return (
     <div className="panel">
       <div className="panel-head">
-        <span>Language support · {scripts.summary.builtin} built-in · {scripts.summary.runtime} runtime</span>
-        <span style={{ color: "var(--muted)" }}>{scripts.rows.length} total</span>
+        <span>{head}</span>
+        <span style={{ color: "var(--muted)" }}>{headAside}</span>
       </div>
       <div className="panel-body">
         <div className="scripts-summary">
-          <div className="item pass">
-            <div className="num">{scripts.summary.builtin}</div>
-            <div className="label">built-in · compiled rules</div>
-          </div>
-          <div className="item rewritten">
-            <div className="num">{scripts.summary.runtime}</div>
-            <div className="label">runtime · .lang files</div>
-          </div>
-          <div className="item new">
-            <div className="num">{scripts.summary.custom}</div>
-            <div className="label">custom · Language::FromFile</div>
-          </div>
+          {tiles.map((t, i) => (
+            <div key={i} className={"item " + (t.cls || "")}>
+              <div className="num">{t.num}</div>
+              <div className="label">{t.label}</div>
+            </div>
+          ))}
         </div>
         <table className="scripts-table">
-          <thead><tr><th>language</th><th>type</th><th>status</th><th>features</th></tr></thead>
+          <thead><tr>{tableHeader.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>
           <tbody>
             {scripts.rows.map((r) => (
               <tr key={r.file}>
                 <td className="file">{r.file}</td>
                 <td className="date">{r.date}</td>
-                <td><Pill kind={r.status === "pass" ? "shipped" : "info"}>{r.status === "pass" ? "built-in" : "runtime"}</Pill></td>
+                <td><Pill kind={r.status === "pass" ? "shipped" : r.status === "rewritten" ? "inprog" : "info"}>{r.status}</Pill></td>
                 <td className="notes">{r.notes || "—"}</td>
               </tr>
             ))}
@@ -488,22 +500,25 @@ function SideTaskDetail({ task }) {
 // Gallery
 // ═══════════════════════════════════════════════
 
-function Gallery() {
+function Gallery({ meta }) {
   const R = window.__resources || {};
-  const images = [
-    { src: R.img_editor    || "uploads/textEditor.png",        caption: "Syntax highlighting · fold arrows · tab bar" },
-    { src: R.img_auto      || "uploads/autocomplete.png",       caption: "Autocomplete dropdown" },
-    { src: R.img_ctx       || "uploads/contextMenus.png",       caption: "Context menu with custom breakpoint entries" },
-    { src: R.img_markers   || "uploads/markers.png",            caption: "Line markers + error tooltips" },
-    { src: R.img_deco      || "uploads/lineDecorator.png",      caption: "Line decorator API" },
-    { src: R.img_diff1     || "uploads/textDiffCombined.png",   caption: "TextDiff — integrated unified view" },
-    { src: R.img_diff2     || "uploads/textDiffSideBySide.png", caption: "TextDiff — side-by-side view" },
-    { src: R.img_arch      || "uploads/architecture.png",       caption: "Internal architecture: layered OO design" },
-  ];
+  // Data-driven: meta.gallery[] wins. Otherwise fall back to the ImGuiColorTextEdit default set.
+  const images = (meta && meta.gallery && meta.gallery.length)
+    ? meta.gallery
+    : [
+        { src: R.img_editor    || "uploads/textEditor.png",        caption: "Syntax highlighting · fold arrows · tab bar" },
+        { src: R.img_auto      || "uploads/autocomplete.png",       caption: "Autocomplete dropdown" },
+        { src: R.img_ctx       || "uploads/contextMenus.png",       caption: "Context menu with custom breakpoint entries" },
+        { src: R.img_markers   || "uploads/markers.png",            caption: "Line markers + error tooltips" },
+        { src: R.img_deco      || "uploads/lineDecorator.png",      caption: "Line decorator API" },
+        { src: R.img_diff1     || "uploads/textDiffCombined.png",   caption: "TextDiff — integrated unified view" },
+        { src: R.img_diff2     || "uploads/textDiffSideBySide.png", caption: "TextDiff — side-by-side view" },
+        { src: R.img_arch      || "uploads/architecture.png",       caption: "Internal architecture: layered OO design" },
+      ];
   return (
     <div className="gallery-grid">
       {images.map((img) => (
-        <div key={img.src} className="gallery-item">
+        <div key={img.src} className={"gallery-item" + (img.contain ? " contain" : "")}>
           <img src={img.src} alt={img.caption} loading="lazy" />
           <div className="gallery-caption">{img.caption}</div>
         </div>
@@ -585,8 +600,12 @@ function DevDashboard({ data, t, setTweak, companion }) {
 
       {t.showLanguages && (
         <section className="section">
-          <SectionHead num="06" title="Language support" aside={`${data.scripts.rows.length} languages`} />
-          <LanguageSupport scripts={data.scripts} />
+          <SectionHead
+            num={data.meta.scriptsSection?.num ?? "06"}
+            title={data.meta.scriptsSection?.title ?? "Language support"}
+            aside={data.meta.scriptsSection?.aside ?? `${data.scripts.rows.length} languages`}
+          />
+          <LanguageSupport scripts={data.scripts} labels={data.meta.scriptsSection} />
         </section>
       )}
 
@@ -599,8 +618,8 @@ function DevDashboard({ data, t, setTweak, companion }) {
 
       {t.showGallery && (
         <section className="section">
-          <SectionHead num="08" title="Feature gallery" aside="screenshots" />
-          <Gallery />
+          <SectionHead num={data.meta.gallerySection?.num ?? "08"} title={data.meta.gallerySection?.title ?? "Feature gallery"} aside={data.meta.gallerySection?.aside ?? "screenshots"} />
+          <Gallery meta={data.meta} />
         </section>
       )}
 
@@ -614,10 +633,12 @@ function DevDashboard({ data, t, setTweak, companion }) {
 // ═══════════════════════════════════════════════
 
 function Dashboard() {
-  const [t, setTweak]       = useTweaks(TWEAK_DEFAULTS);
+  const data      = window.PROGRESS_DATA;
+  // Per-project default: show the gallery automatically when the project supplies gallery data.
+  const tweakDefaults = { ...TWEAK_DEFAULTS, showGallery: TWEAK_DEFAULTS.showGallery || !!(data.meta.gallery && data.meta.gallery.length) };
+  const [t, setTweak]       = useTweaks(tweakDefaults);
   const [toolsOpen, setToolsOpen] = useState(false);
   const companion = useCompanion();
-  const data      = window.PROGRESS_DATA;
 
   useEffect(() => {
     document.body.setAttribute("data-theme",   t.theme);

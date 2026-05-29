@@ -27,12 +27,8 @@ window.PROGRESS_DATA = {
     credits: [
       { name: "praydog", handle: "praydog", role: "UEVR backend author", url: "https://github.com/praydog/UEVR" },
     ],
-    highlights:   ["auto-inject", "notify-icon", "nightly-updates", "wmi-trace", "unelevated-launch", "plugin-nullifier"],
-    impactNumbers: [
-      { num: "20",    label: "Features shipped",     sub: "injection · tray · updates · launchers" },
-      { num: "100%",  label: "Built from scratch",   sub: "C# WPF · custom WinAPI tray · injector" },
-      { num: "3",     label: "Injection methods",    sub: "manual · auto-scan · WMI process trace" },
-    ],
+    highlights:   ["auto-inject", "notify-icon", "nightly-updates", "plugin-nullifier", "game-config", "minimize-tray"],
+    impactNumbers: [],
     techStack: [
       "C# / .NET 6", "WPF / XAML", "WinAPI P/Invoke",
       "WMI (System.Management)", "GitHub Releases API",
@@ -56,6 +52,20 @@ window.PROGRESS_DATA = {
       "Used by thousands of VR modders in the UEVR community",
     ],
     videos: [],
+
+    // Lead showcase screenshot on the overview (the "here's the app" hero shot).
+    heroShot: { src: "media/uevr-frontend/main-inject.png", caption: "The UEVR Frontend main window — inject, runtime toggle, plugin nullify, and per-game settings" },
+
+    // Real app screenshots — shown in the gallery section
+    gallerySection: { num: "08", title: "The app", aside: "live screenshots" },
+    gallery: [
+      { src: "media/uevr-frontend/main-inject.png",      caption: "Main window — inject, OpenVR/OpenXR toggle, per-game settings, sidebar shortcuts", contain: true },
+      { src: "media/uevr-frontend/version-selector.png", caption: "Version selector — browse every UEVR nightly release sorted by date", contain: true },
+      { src: "media/uevr-frontend/version-install.png",  caption: "One-click install of any version, or ignore updates entirely", contain: true },
+      { src: "media/uevr-frontend/app-settings.png",     caption: "Application settings — runtime, tray behaviour, startup, automatic injection + updates", contain: true },
+      { src: "media/uevr-frontend/launcher-settings.png",caption: "Launcher settings — force Steam / Epic into user mode for clean injection", contain: true },
+      { src: "media/uevr-frontend/tray-menu.png",        caption: "Custom WinAPI tray menu — Settings, Pause Injection, Open Global Dir, Exit", contain: true },
+    ],
   },
 
   vitals: {
@@ -88,6 +98,7 @@ window.PROGRESS_DATA = {
       group: "Injection Engine",
       tags: ["core", "automation"],
       blurb: "Polls for the UnrealWindow class — every Unreal Engine game creates one. Detects launch, verifies the process is injectable, injects without user interaction.",
+      highlightBlurb: "Detects every Unreal Engine game the moment it launches and turns it into a VR game with no setup. Runs entirely in user mode — no admin rights needed for the vast majority of games.",
       detail: "Profile-aware: automatically injects games with saved profiles, prompts for new games. Maintains an exclusion list for processes that fail injection to avoid retry storms.",
       files: ["UEVR/MainWindow.xaml.cs"],
     },
@@ -98,6 +109,7 @@ window.PROGRESS_DATA = {
       group: "Injection Engine",
       tags: ["advanced", "admin"],
       blurb: "In administrator mode: ManagementEventWatcher on Win32_ProcessStartTrace fires the moment a whitelisted process starts — injects before a window is created.",
+      highlightBlurb: "Optional advanced mode uses Windows process-trace events to set up VR support before the game's window even appears — faster than any other injector.",
       detail: "No hooks, no global CreateProcess intercept. The only dependency is System.Management (WMI) already present in .NET. Includes decoy-process filtering (process must grow to 10MB+ before injection).",
       files: ["UEVR/MainWindow.xaml.cs"],
     },
@@ -108,6 +120,7 @@ window.PROGRESS_DATA = {
       group: "Injection Engine",
       tags: ["compat"],
       blurb: "Detects openvr_api, OculusXR, and OpenXR DLLs loaded by the game engine and injects UEVRPluginNullifier.dll to disable them before UEVR initializes.",
+      highlightBlurb: "Detects and disarms VR plugins already loaded by the game that would block UEVR — fixes a compatibility problem that previously required manual file edits.",
       detail: "Schedules cleanup: conflicting DLLs are renamed .bak when the process exits (so they don't permanently break the game). The nullifier itself is unloaded after the call.",
       files: ["UEVR/MainWindow.xaml.cs"],
     },
@@ -129,7 +142,9 @@ window.PROGRESS_DATA = {
       group: "System Tray",
       tags: ["winapi", "from-scratch"],
       blurb: "Raw Shell_NotifyIcon implementation — not WPF NotifyIcon wrappers. Message-only HWND (HWND_MESSAGE) receives tray callbacks, routes to WndProc.",
+      highlightBlurb: "Built a system tray icon from scratch using raw Windows APIs — not a wrapper library — so the app feels and behaves like Steam or Discord.",
       detail: "NotifyIcon owns its own message pump window, icon dictionary for state switching, and position lookup via Shell_NotifyIconGetRect so the context menu appears exactly at the icon. Copyright lobotomyx 2025–2026, MIT licensed.",
+      image: { src: "media/uevr-frontend/tray-menu.png", caption: "Custom WinAPI tray menu — Settings, Pause Injection, Open Global Dir, Exit" },
       files: ["UEVR/NotifyIcon.cs"],
     },
     {
@@ -148,6 +163,7 @@ window.PROGRESS_DATA = {
       group: "System Tray",
       tags: ["ux"],
       blurb: "Close hides the window entirely (no taskbar entry). Single-click on tray icon restores and focuses. Matches Steam / Epic Games Launcher behaviour.",
+      highlightBlurb: "Lives quietly in the system tray like Steam or Discord — always ready when you launch a game, never in the way the rest of the time.",
       files: ["UEVR/NotifyIcon.cs", "UEVR/MainWindow.xaml.cs"],
     },
     {
@@ -168,7 +184,9 @@ window.PROGRESS_DATA = {
       group: "Auto-Updates",
       tags: ["feature"],
       blurb: "Polls GitHub Releases API for praydog/uevr-nightly. Compares revision.txt against latest tag. Downloads and extracts the new backend DLLs.",
+      highlightBlurb: "Built a complete UEVR update manager — browse every nightly release sorted by date, install any version with one click, or turn on auto-updates and never think about it again. Replaces the entire trip to GitHub.",
       detail: "Update check frequency is user-configurable (default 12 hours). First-run dialog introduces the feature and asks for permission before enabling auto-updates.",
+      image: { src: "media/uevr-frontend/app-settings.png", caption: "Application settings — automatic injection + nightly updates toggles" },
       files: ["UEVR/Updater.cs", "UEVR/MainWindowSettingsMenu.xaml.cs"],
     },
     {
@@ -178,6 +196,7 @@ window.PROGRESS_DATA = {
       group: "Auto-Updates",
       tags: ["feature"],
       blurb: "Full dropdown of every nightly release with publish dates. Pick any version and install it — useful for rollback when a new build breaks a specific game.",
+      image: { src: "media/uevr-frontend/version-selector.png", caption: "Version selector — every UEVR nightly release sorted by date" },
       files: ["UEVR/MainWindowSettingsMenu.xaml.cs"],
     },
     {
@@ -207,7 +226,9 @@ window.PROGRESS_DATA = {
       group: "Launcher Integration",
       tags: ["compat", "winapi"],
       blurb: "Relaunches Steam and Epic Games Launcher without elevation. Detects if they're already running elevated and restarts them — prevents anticheat bypass issues.",
+      highlightBlurb: "Launches Steam and Epic Games at the right privilege level — fixes a class of anticheat false positives that affect every elevated launcher mod.",
       detail: "Many anticheats check whether their process tree is clean (no elevated parent). Launching from an elevated injector contaminates the tree. This breaks that chain.",
+      image: { src: "media/uevr-frontend/launcher-settings.png", caption: "Launcher settings — force Steam / Epic into user mode" },
       files: ["UEVR/MainWindowSettingsMenu.xaml.cs", "UEVR/Utils.cs"],
     },
     {
@@ -255,6 +276,7 @@ window.PROGRESS_DATA = {
       group: "App Management",
       tags: ["feature"],
       blurb: "Each game gets a %AppData%/UnrealVRMod/ subfolder storing its VR settings. Profiles drive auto-injection decisions — a game with a profile is injected automatically.",
+      highlightBlurb: "Remembers every game you've ever played in VR and how you had it configured — launch it again months later and it just works.",
       files: ["UEVR/GameConfig.cs", "UEVR/MainWindowSettings.cs"],
     },
     {
@@ -282,13 +304,6 @@ window.PROGRESS_DATA = {
       id: "localization",
       title: "Localization not yet implemented",
       detail: "The Localize(language) method stub exists in MainWindowSettingsMenu but contains no translations. UI strings are all English-only.",
-      severity: "low",
-      kind: "feature",
-    },
-    {
-      id: "linux-mac",
-      title: "Windows-only (WPF)",
-      detail: "WPF is Windows-exclusive. A cross-platform reimplementation (e.g. Avalonia) would be needed for Linux/Mac UEVR support when praydog adds those platforms.",
       severity: "low",
       kind: "feature",
     },
@@ -321,12 +336,6 @@ window.PROGRESS_DATA = {
         "No scaling artefacts at common Windows DPI settings",
       ],
       state: "backlog",
-    },
-    {
-      step: 3,
-      title: "Cross-platform GUI (research)",
-      detail: "Investigate Avalonia UI as a WPF-compatible replacement. Most WinAPI injection code would need platform guards; the tray and shortcuts are Windows-only by definition.",
-      state: "research",
     },
   ],
 

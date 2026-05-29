@@ -1,15 +1,56 @@
 // recruiter.jsx — portfolio overview for Logan Brunet.
 // Identity block (name huge) + sprint context + credits dropdown.
 
+/// HIGHLIGHTS — auto-fill behavior:
+///   meta.highlights[] is the explicit ordered list of card ids to feature.
+///   meta.highlightCount caps the total (default 6).
+///   If meta.highlights has fewer than highlightCount entries, the recruiter
+///   view automatically supplements from other shipped cards — preferring
+///   cards with a curated highlightBlurb and cards from groups not yet shown.
+///   Each card may carry an optional highlightBlurb that the recruiter view
+///   uses instead of the technical blurb shown in the kanban.
+///
+/// DOCUMENT_HANDOFF — copy these lines to DASHBOARD_DESIGN_HANDOFF.md
+///
 function RecruiterView({ data, onSwitchToDev }) {
   const m = data.meta;
 
-  const highlightCards = (m.highlights || []).
-  map((id) => data.cards.find((c) => c.id === id)).
-  filter(Boolean);
+  // Build the highlight set. Each entry is a card.
+  // 1. Start with the explicit meta.highlights[] (in order).
+  // 2. If fewer than the target count, auto-fill from shipped cards (preferring distinct groups + cards with a highlightBlurb).
+  // 3. Cap at meta.highlightCount (default 6).
+  const HIGHLIGHT_TARGET = m.highlightCount ?? 6;
+  const explicitHighlights = (m.highlights || [])
+    .map((id) => data.cards.find((c) => c.id === id))
+    .filter(Boolean);
+  const usedIds = new Set(explicitHighlights.map((c) => c.id));
+  const usedGroups = new Set(explicitHighlights.map((c) => c.group));
+  const shippedPool = data.cards
+    .filter((c) => c.status === "shipped" && !usedIds.has(c.id))
+    .sort((a, b) => {
+      // Prefer cards that have a curated highlightBlurb.
+      const ah = a.highlightBlurb ? 1 : 0;
+      const bh = b.highlightBlurb ? 1 : 0;
+      if (ah !== bh) return bh - ah;
+      // Then prefer cards from groups not yet represented.
+      const ag = usedGroups.has(a.group) ? 1 : 0;
+      const bg = usedGroups.has(b.group) ? 1 : 0;
+      return ag - bg;
+    });
+  const supplementary = shippedPool.slice(0, Math.max(0, HIGHLIGHT_TARGET - explicitHighlights.length));
+  const highlightCards = [...explicitHighlights, ...supplementary].slice(0, HIGHLIGHT_TARGET);
 
   const shippedMilestones = data.milestones.filter(
     (x) => x.kind === "ship" || x.kind === "in-progress"
+  );
+
+  // Lead showcase image: meta.heroShot wins, else the first gallery entry.
+  const showcase = m.heroShot || (m.gallery && m.gallery.length ? m.gallery[0] : null);
+  // Images already shown inside highlight cards — don't repeat them in the strip.
+  const highlightImgSrcs = new Set(highlightCards.filter((c) => c.image).map((c) => c.image.src));
+  // Remaining gallery images: not the showcase, not already in a highlight card.
+  const galleryRest = (m.gallery || []).filter(
+    (g) => (!showcase || g.src !== showcase.src) && !highlightImgSrcs.has(g.src)
   );
 
   return (
@@ -37,8 +78,14 @@ function RecruiterView({ data, onSwitchToDev }) {
 
         {/* Main: project identity */}
         <div className="rec-identity">
-          <div className="rec-identity-main">
-            <div>
+          <div className={"rec-identity-main" + (showcase ? " has-lead" : "")}>
+            {showcase &&
+              <div className="rec-hero-shot">
+                <img src={showcase.src} alt={showcase.caption || m.project} loading="lazy" />
+                {showcase.caption && <div className="rec-hero-shot-cap">{showcase.caption}</div>}
+              </div>
+            }
+            <div className="rec-identity-text">
               <div className="rec-open-badge">
                 <span className="rec-open-dot"></span>
                 {m.role} · {m.location}
@@ -46,15 +93,15 @@ function RecruiterView({ data, onSwitchToDev }) {
               <h1 className="rec-name">{m.project}</h1>
               <div className="rec-role-line">Contributed by {m.author}</div>
               {m.description && <p className="rec-bio">{m.description}</p>}
-            </div>
-            {m.techStack &&
-              <div className="rec-tech-chips">
-                <div className="rec-tech-chips-label">built with</div>
-                <div className="rec-skill-chips">
-                  {m.techStack.map((s) => <span key={s} className="rec-skill-chip">{s}</span>)}
+              {m.techStack &&
+                <div className="rec-tech-chips">
+                  <div className="rec-tech-chips-label">built with</div>
+                  <div className="rec-skill-chips">
+                    {m.techStack.map((s) => <span key={s} className="rec-skill-chip">{s}</span>)}
+                  </div>
                 </div>
-              </div>
-            }
+              }
+            </div>
           </div>
         </div>
 
@@ -90,15 +137,17 @@ function RecruiterView({ data, onSwitchToDev }) {
       </header>
 
       {/* ══════════════ IMPACT NUMBERS ══════════════ */}
-      <div className="rec-impact">
-        {(m.impactNumbers || []).map((n, i) =>
-        <div key={i} className="rec-impact-tile">
-            <div className="rec-impact-num">{n.num}</div>
-            <div className="rec-impact-label">{n.label}</div>
-            <div className="rec-impact-sub">{n.sub}</div>
-          </div>
-        )}
-      </div>
+      {m.impactNumbers && m.impactNumbers.length > 0 &&
+        <div className="rec-impact">
+          {m.impactNumbers.map((n, i) =>
+            <div key={i} className="rec-impact-tile">
+              <div className="rec-impact-num">{n.num}</div>
+              <div className="rec-impact-label">{n.label}</div>
+              <div className="rec-impact-sub">{n.sub}</div>
+            </div>
+          )}
+        </div>
+      }
 
       {/* ══════════════ ABOUT ══════════════ */}
       <section className="rec-about">
@@ -111,11 +160,56 @@ function RecruiterView({ data, onSwitchToDev }) {
         </div>
       </section>
 
+      {/* ══════════════ HIGHLIGHTS ══════════════ */}
+      <section style={{ marginBottom: 64 }}>
+        <div className="rec-section-head">
+          <span className="rec-section-num">§ 01</span>
+          <h2 className="rec-section-title">Selected highlights</h2>
+          <div className="rec-section-rule"></div>
+          <span className="rec-section-aside">
+            {highlightCards.length} of {data.cards.filter((c) => c.status === "shipped").length} shipped
+          </span>
+        </div>
+        <div className="rec-highlights">
+          {highlightCards.map((c) =>
+          <div key={c.id} className={"rec-highlight" + (c.image ? " has-shot" : "")}>
+              {c.image &&
+                <div className="rec-highlight-shot">
+                  <img src={c.image.src} alt={c.image.caption || c.title} loading="lazy" />
+                </div>
+              }
+              <div className="rec-highlight-body">
+                <div className="rec-highlight-tag">{c.group}</div>
+                <h3 className="rec-highlight-title">{c.title}</h3>
+                <p className="rec-highlight-blurb">{c.highlightBlurb || c.blurb}</p>
+                <div className="rec-highlight-foot">
+                  {(c.tags || []).slice(0, 3).map((t) => <Pill key={t} kind="tag">{t}</Pill>)}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ══════════════ SCREENSHOT STRIP ══════════════ */}
+      {galleryRest.length > 0 &&
+        <section style={{ marginBottom: 64 }}>
+          <div className="rec-shot-strip">
+            {galleryRest.slice(0, 4).map((g, i) =>
+              <div key={i} className="rec-shot-card">
+                <img src={g.src} alt={g.caption || ""} loading="lazy" />
+                {g.caption && <div className="rec-shot-cap">{g.caption}</div>}
+              </div>
+            )}
+          </div>
+        </section>
+      }
+
       {/* ══════════════ FEATURES ADDED ══════════════ */}
       {m.featuresAdded && m.featuresAdded.length > 0 &&
       <section style={{ marginBottom: 64 }}>
           <div className="rec-section-head">
-            <span className="rec-section-num">§ 01</span>
+            <span className="rec-section-num">§ 02</span>
             <h2 className="rec-section-title">What was added</h2>
             <div className="rec-section-rule"></div>
             <span className="rec-section-aside">{m.featuresAdded.length} features</span>
@@ -130,30 +224,6 @@ function RecruiterView({ data, onSwitchToDev }) {
           </div>
         </section>
       }
-
-      {/* ══════════════ HIGHLIGHTS ══════════════ */}
-      <section>
-        <div className="rec-section-head">
-          <span className="rec-section-num">§ 02</span>
-          <h2 className="rec-section-title">Selected highlights</h2>
-          <div className="rec-section-rule"></div>
-          <span className="rec-section-aside">
-            {highlightCards.length} of {data.cards.filter((c) => c.status === "shipped").length} shipped
-          </span>
-        </div>
-        <div className="rec-highlights">
-          {highlightCards.map((c) =>
-          <div key={c.id} className="rec-highlight">
-              <div className="rec-highlight-tag">{c.group}</div>
-              <h3 className="rec-highlight-title">{c.title}</h3>
-              <p className="rec-highlight-blurb">{c.blurb}</p>
-              <div className="rec-highlight-foot">
-                {(c.tags || []).slice(0, 3).map((t) => <Pill key={t} kind="tag">{t}</Pill>)}
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* ══════════════ MEDIA / VIDEO ══════════════ */}
       {m.videos && m.videos.length > 0 &&
