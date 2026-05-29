@@ -61,7 +61,7 @@ function RecruiterView({ data, onSwitchToDev }) {
 
         {/* Top bar: back link + byline */}
         <div className="rec-topbar">
-          <a href="Portfolio.html" className="rec-back-link">← Logan Brunet · Portfolio</a>
+          <a href="index.html" className="rec-back-link">← Logan Brunet · Portfolio</a>
           <nav className="rec-hero-links">
             {m.repoUrl &&
               <a href={m.repoUrl} target="_blank" rel="noopener noreferrer" className="rec-hero-link primary">GitHub ↗</a>
