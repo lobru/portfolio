@@ -32,11 +32,11 @@ window.PROGRESS_DATA = {
     bio:          "Senior C++ engineer specializing in game engine tooling, real-time rendering, and immersive experiences. Comfortable owning full technical stacks from engine client through deployment.",
     location:     "Orlando, FL",
     author:       "Logan Brunet",
-    role:         "Game Tools & Modding Engineer",
+    role:         "Developer Tools & Systems Engineer",
     skills:       ["C++17", "Dear ImGui", "Unreal Engine 4/5", "Lua", "C# / .NET", "GLSL / HLSL", "SDL3", "CMake"],
     linkedIn:     "https://linkedin.com/in/logan-brunet",
     github:       "https://github.com/lobotomy-x",
-    repoUrl:      "https://github.com/lobotomy-x/portfolio",
+    repoUrl:      "https://github.com/lobru/portfolio",
     credits: [
       { name: "Balázs Jákó",       handle: "BalazsJako",  role: "original author · 2018",                           url: "https://github.com/BalazsJako/ImGuiColorTextEdit" },
       { name: "Santiago Cubedo",   handle: "santaclose",  role: "220+ commits · most active fork 2019–2023",        url: "https://github.com/santaclose/ImGuiColorTextEdit" },
