@@ -32,8 +32,8 @@ window.PROGRESS_DATA = {
     branch:      "luavrlib",
     version:     "luavrlib-2026-05",
     baseline:    "praydog/UEVR · master",
-    repoPath:    "lobotomy-x/UEVR",
-    repoUrl:     "https://github.com/praydog/UEVR",
+    repoPath:    "UEVR · luavrlib",
+    repoUrl:     "https://github.com/lobotomy-x/UEVR/tree/luavrlib",
     lastUpdated: "2026-05-28",
     docCount:    3,
     sessionId:   "luavrlib · 2026-05-25",
@@ -49,10 +49,18 @@ window.PROGRESS_DATA = {
     description: "UEVR lets you play any modern Unreal Engine game in VR with full head and controller tracking — no game modifications required. This sprint added new tools for the modding community: faster ways to move and query in-game actors, background scripting threads, and an interactive editor for calling game functions in real time.",
 
     author:   "Logan Brunet",
+    role:     "Engines · Graphics · UI / Tools · Offensive Security",
     location: "Orlando, FL",
+    heroShot: {
+      src: "media/uevr-luavrlib/class-browser-function-caller.png",
+      caption: "Reflection-driven Class Browser, live Function Caller, and luavrlib panels — all docked via multi-viewport inside the injected DLL",
+    },
+    gallery: [
+      { src: "media/uevr-luavrlib/class-browser-function-caller.png", caption: "Class Browser + Function Caller + docked UEVR panels, running in-game" },
+    ],
     linkedIn: "https://linkedin.com/in/logan-brunet",
     github:   "https://github.com/lobotomy-x",
-    portfolioUrl: "https://lobotomy-x.github.io",
+    portfolioUrl: "https://lobru.github.io/portfolio/",
 
     // Fork / contributor history — collapsed <details> dropdown
     credits: [

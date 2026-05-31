@@ -367,11 +367,11 @@ footer {
       open to work · Orlando, FL
     </div>
     <h1 class="hero-name">Logan Brunet</h1>
-    <p class="hero-role">Senior C++ Engineer · Game Tools &amp; Immersive Tech</p>
+    <p class="hero-role">Senior C++ Engineer · Engines · Graphics · UI / Tools · Security</p>
     <p class="hero-bio">
-      Specializing in game engine tooling, real-time rendering, and immersive experiences.
-      Comfortable owning full technical stacks from engine client through deployment —
-      Unreal Engine, Dear ImGui, C++17, Lua, C#, GLSL/HLSL, and more.
+      I write engine internals, real-time graphics, and the interfaces on top of them —
+      and I reverse-engineer games in my niche. Full-stack C++, from rendering and VR
+      injection to polished Dear ImGui tooling.
     </p>
     <div class="hero-skills">
       <span class="hero-skill">C++17/20</span>
@@ -417,17 +417,17 @@ footer {
           <span class="project-status-bar live">Shipped</span>
         </div>
         <div class="project-body">
-          <div class="project-eyebrow">C++ · Dear ImGui · Engine Tooling</div>
-          <div class="project-title">ImGuiColorTextEdit</div>
+          <div class="project-eyebrow">C++ · Dear ImGui · Code Editor</div>
+          <div class="project-title">ImGui IDE</div>
           <div class="project-blurb">
-            Transformed a capable code editor into a fully featured IDE on par with Sublime Text —
-            code folding, script runner, VS Code shortcuts, doubled language support,
-            drag-and-drop, and professional file dialogs. Cross-platform: Windows, macOS, Linux.
+            A fully featured, multiplatform code editor written in C++ with Dear ImGui —
+            standalone app or embeddable library. Code folding, script runner, VS Code
+            shortcuts, and runtime language loading. Windows, macOS, Linux.
           </div>
           <div class="project-tags">
+            <span class="project-tag">ImGuiColorTextEdit</span>
             <span class="project-tag">C++17</span>
             <span class="project-tag">Dear ImGui</span>
-            <span class="project-tag">SDL3</span>
             <span class="project-tag">22 features</span>
           </div>
         </div>
@@ -449,13 +449,13 @@ footer {
           <span class="project-status-bar live">Shipped</span>
         </div>
         <div class="project-body">
-          <div class="project-eyebrow">C# · WPF · WinAPI · VR Tooling</div>
+          <div class="project-eyebrow">C# · WPF · WinAPI · VR / Modding</div>
           <div class="project-title">UEVR Frontend</div>
           <div class="project-blurb">
-            System-tray VR injector desktop app — runs silently like Steam,
-            auto-detects Unreal Engine game launches via WMI, manages per-game profiles,
-            handles GitHub nightly auto-updates, and fixes anticheat issues with unelevated launchers.
-            Custom WinAPI tray from scratch.
+            The best Unreal Engine modding tool — a polished, intuitive GUI with
+            GitHub-API auto-updating and near-100% compatibility across compatible
+            Unreal games. Runs silently in the system tray and injects using
+            offensive-security techniques only an expert could devise.
           </div>
           <div class="project-tags">
             <span class="project-tag">C# / .NET 6</span>
@@ -488,10 +488,9 @@ footer {
           <div class="project-eyebrow">C++20 · Lua / Sol2 · Unreal Engine · Dear ImGui</div>
           <div class="project-title">UEVR · luavrlib</div>
           <div class="project-blurb">
-            Brought UEVR's injected Dear ImGui renderer forward ~5 years of upstream — from the
-            pre-docking branch to v1.92 with full docking and multi-viewport (pop-out windows),
-            plus the DX11/DX12 fixes to make it work. Multi-viewport in an injected DLL is
-            effectively unprecedented. Also extended the Lua scripting surface for VR modders.
+            Pushed UEVR's injected Dear ImGui renderer forward ~5 years of upstream — to v1.92
+            with full docking and multi-viewport (pop-out windows), plus the DX11/DX12 fixes to
+            make it work. Multi-viewport inside an injected DLL is effectively unprecedented.
           </div>
           <div class="project-tags">
             <span class="project-tag">C++20</span>
@@ -536,12 +535,13 @@ footer {
       <a href="https://lobotomy-x.github.io/imgui/" target="_blank" rel="noopener" class="ai-demo featured">
         <div class="ai-demo-text">
           <div class="ai-demo-eyebrow">▶ Live in your browser · WebAssembly · no install</div>
-          <div class="ai-demo-title">Two playable games, built with agentic AI</div>
+          <div class="ai-demo-title">Two playable games, rendered with Dear ImGui</div>
           <div class="ai-demo-body">
-            I compiled the Dear ImGui editor to WebAssembly and shipped two playable demos that run
-            live in the browser. <strong>Pong</strong> is an end-to-end agentic translation —
-            Claude Code ported the original Lua source to native C++. <strong>Tetris</strong> is
-            <span class="ai-demo-hl">generated entirely by AI</span> from a prompt: gameplay, rendering,
+            Both games are built entirely in <strong>Dear ImGui</strong> — the same C++ UI framework
+            behind every project here — and compiled to WebAssembly so they run live in the browser.
+            <strong>Pong</strong> is an end-to-end agentic translation: Claude Code ported the original
+            Lua source to native C++. <strong>Tetris</strong> is
+            <span class="ai-demo-hl">generated entirely by AI</span> from a prompt — gameplay, rendering,
             collision, and scoring, all written and compiled without hand-editing.
           </div>
           <div class="ai-demo-games">
@@ -616,10 +616,10 @@ footer {
     </div>
     <div class="contribs">
 
-      <div class="contrib-card">
+      <a href="https://github.com/lobotomy-x/Unreal-Lua-Library" class="contrib-card" target="_blank" rel="noopener">
         <span class="contrib-status">Merged to master</span>
         <div class="contrib-title">Unreal Lua Library</div>
-        <div class="contrib-repo">lobotomy-x/Unreal-Lua-Library</div>
+        <div class="contrib-repo">Unreal-Lua-Library</div>
         <div class="contrib-blurb">
           Companion Lua library extending UEVR's scripting surface. Actor utilities,
           component helpers, math wrappers, and game-loop callbacks — maintained in
@@ -630,9 +630,9 @@ footer {
           <span class="contrib-tag">UEVR</span>
           <span class="contrib-tag">Unreal Engine</span>
         </div>
-      </div>
+      </a>
 
-      <div class="contrib-card">
+      <a href="https://github.com/crosire/reshade" class="contrib-card" target="_blank" rel="noopener">
         <span class="contrib-status">Merged to master</span>
         <div class="contrib-title">ReShade integration</div>
         <div class="contrib-repo">crosire/reshade</div>
@@ -646,9 +646,9 @@ footer {
           <span class="contrib-tag">DirectX</span>
           <span class="contrib-tag">Graphics</span>
         </div>
-      </div>
+      </a>
 
-      <div class="contrib-card">
+      <a href="https://github.com/saturday06/VRM-Addon-for-Blender" class="contrib-card" target="_blank" rel="noopener">
         <span class="contrib-status">Merged to master</span>
         <div class="contrib-title">VRM Addon for Blender</div>
         <div class="contrib-repo">saturday06/VRM-Addon-for-Blender</div>
@@ -662,9 +662,9 @@ footer {
           <span class="contrib-tag">Blender</span>
           <span class="contrib-tag">VRM / glTF</span>
         </div>
-      </div>
+      </a>
 
-      <div class="contrib-card">
+      <a href="https://github.com/UE4SS-RE/Dumper-7" class="contrib-card" target="_blank" rel="noopener">
         <span class="contrib-status">Merged to master</span>
         <div class="contrib-title">Dumper-7 SDK tooling</div>
         <div class="contrib-repo">UE4SS-RE/Dumper-7</div>
@@ -678,13 +678,13 @@ footer {
           <span class="contrib-tag">Unreal Engine</span>
           <span class="contrib-tag">Reverse engineering</span>
         </div>
-      </div>
+      </a>
 
       <a href="https://github.com/lobotomy-x/UEVR/tree/luavrlib/docs"
          class="contrib-card" target="_blank" rel="noopener">
         <span class="contrib-status">Published</span>
         <div class="contrib-title">UEVR luavrlib docs</div>
-        <div class="contrib-repo">lobotomy-x/UEVR · docs/</div>
+        <div class="contrib-repo">UEVR · docs/</div>
         <div class="contrib-blurb">
           API reference and usage docs for the luavrlib scripting surface.
           Covers the api_fast namespace, worker threads, GLM bindings,
@@ -694,21 +694,6 @@ footer {
           <span class="contrib-tag">Documentation</span>
           <span class="contrib-tag">Lua</span>
           <span class="contrib-tag">UEVR</span>
-        </div>
-      </a>
-
-      <a href="https://github.com/lobotomy-x" class="contrib-card" target="_blank" rel="noopener">
-        <span class="contrib-status">Public</span>
-        <div class="contrib-title">More on GitHub</div>
-        <div class="contrib-repo">github.com/lobotomy-x</div>
-        <div class="contrib-blurb">
-          Additional open-source work, experiments, and tooling available
-          on GitHub — including prototypes, utilities, and contributions
-          to the broader game modding and VR community.
-        </div>
-        <div class="contrib-tags">
-          <span class="contrib-tag">Open source</span>
-          <span class="contrib-tag">GitHub</span>
         </div>
       </a>
 
@@ -769,7 +754,7 @@ footer {
         <div class="exp-card">
           <div class="exp-card-label">References</div>
           <div class="ref-row">
-            <div class="ref-name">Travis Clement</div>
+            <div class="ref-name">Travis Clements</div>
             <div class="ref-meta">Technical Lead · Adacel</div>
             <a href="mailto:tclements@adacel.com" class="ref-mail">tclements@adacel.com</a>
           </div>

@@ -185,7 +185,7 @@ DLL.
 ## TIPS
 
 - Replace every `[LINK]` with your live GitHub Pages URL once deployed
-  (e.g. `https://lobotomy-x.github.io/portfolio/Portfolio.html`).
+  (e.g. `https://lobru.github.io/portfolio/`).
 - LinkedIn truncates posts after ~3 lines — front-load the hook.
 - Post the technical deep-dives (2 & 3) on different days; they perform best
   with engineering audiences.
