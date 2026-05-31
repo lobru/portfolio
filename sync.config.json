@@ -1,0 +1,39 @@
+{
+  "portfolioRepo": "lobru/portfolio",
+  "model": "claude-sonnet-4-5",
+  "projects": [
+    {
+      "name": "imgui-ide",
+      "repo": "lobotomy-x/ImGuiColorTextEdit",
+      "ref": "lobotomy/main",
+      "dataFile": "data.js",
+      "docs": [
+        ".claude/roadmap.md",
+        "README.md",
+        "TESTING.md",
+        "AUTOMATED_TESTING.md",
+        "PORTABILITY_REVIEW.md",
+        "example/README.md"
+      ]
+    },
+    {
+      "name": "uevr-frontend",
+      "repo": "lobotomy-x/uevr-frontend",
+      "ref": "main",
+      "dataFile": "uevr-frontend-data.js",
+      "docs": [
+        "README.md"
+      ]
+    },
+    {
+      "name": "uevr-luavrlib",
+      "repo": "lobotomy-x/Unreal-Lua-Library",
+      "ref": "main",
+      "dataFile": "uevr-luavrlib-data.js",
+      "docs": [
+        "README.md",
+        "Docs/UEVR"
+      ]
+    }
+  ]
+}

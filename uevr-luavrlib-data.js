@@ -60,6 +60,7 @@ window.PROGRESS_DATA = {
     ],
     linkedIn: "https://linkedin.com/in/logan-brunet",
     github:   "https://github.com/lobotomy-x",
+    docsUrl:  "uevr-lua-docs.html",
     portfolioUrl: "https://lobru.github.io/portfolio/",
 
     // Fork / contributor history — collapsed <details> dropdown

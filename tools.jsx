@@ -73,7 +73,20 @@ function useClaudeRun() {
   const run = async (prompt) => {
     setStatus("working"); setOutput(""); setErr("");
     try {
-      if (!window.claude?.complete) throw new Error("window.claude.complete unavailable — open the published artifact.");
+      if (!window.claude?.complete) {
+        // window.claude.complete only exists inside the live Claude artifact runtime —
+        // not in the design preview and not on a static host like GitHub Pages.
+        // Degrade gracefully: hand the user the prompt to run themselves.
+        await navigator.clipboard?.writeText?.(prompt).catch(() => {});
+        setOutput(
+          "The in-page AI runner only works inside the live Claude artifact. " +
+          "On a static host (GitHub Pages) there's no model to call.\n\n" +
+          "→ The generated prompt has been copied to your clipboard — paste it into " +
+          "Claude (or any LLM) to get the result.\n\n———— PROMPT ————\n\n" + prompt
+        );
+        setStatus("info");
+        return;
+      }
       const text = await window.claude.complete(prompt);
       setOutput(text); setStatus("ok");
     } catch (e) { setErr(String(e?.message || e)); setStatus("err"); }
@@ -95,11 +108,12 @@ function downloadText(filename, text, mime = "text/plain") {
 
 function StatusLine({ status, err, okText = "ready" }) {
   if (status === "idle") return null;
-  const cls = status === "working" ? "working" : status === "err" ? "err" : "ok";
+  const cls = status === "working" ? "working" : status === "err" ? "err" : status === "info" ? "info" : "ok";
   return (
     <div className={"tool-status " + cls}>
       {status === "working" && "▮ Claude is thinking…"}
       {status === "ok"      && `✓ ${okText}`}
+      {status === "info"    && "→ prompt copied — paste into Claude to run"}
       {status === "err"     && `✗ ${err}`}
     </div>
   );

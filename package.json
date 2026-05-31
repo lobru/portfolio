@@ -1,0 +1,11 @@
+{
+  "name": "logan-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-dashboard.mjs",
+    "sync:dry": "node scripts/sync-dashboard.mjs --dry-run",
+    "sync:imgui": "node scripts/sync-dashboard.mjs --project imgui-ide",
+    "serve": "npx --yes serve ."
+  }
+}

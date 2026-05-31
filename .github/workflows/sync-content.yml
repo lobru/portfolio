@@ -1,0 +1,62 @@
+# .github/workflows/sync-content.yml
+# Regenerates each project's data.js from the real state of its source repo,
+# then commits the result (which triggers the Pages deploy workflow).
+#
+# Triggers:
+#   • repository_dispatch  → sent by the target repos when you push code
+#   • workflow_dispatch    → "Run workflow" button (manual), optional project input
+#   • schedule             → nightly safety net
+#
+# Required secrets (Settings → Secrets and variables → Actions):
+#   ANTHROPIC_API_KEY  — your Anthropic API key
+#   GH_PAT             — a fine-grained PAT with "Contents: read" on the target
+#                        repos (only needed if any are private; omit for public)
+name: Sync dashboard content
+
+on:
+  repository_dispatch:
+    types: [source-updated]
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Only sync this project (blank = all)"
+        required: false
+        default: ""
+  schedule:
+    - cron: "17 7 * * *"   # 07:17 UTC daily
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-content
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync data files from source repos
+        id: sync
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.project }}" ]; then ARGS="--project ${{ github.event.inputs.project }}"; fi
+          node scripts/sync-dashboard.mjs $ARGS
+
+      - name: Commit & push if changed
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name  "portfolio-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: sync dashboard content from source repos"
+          git push

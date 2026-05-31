@@ -1,0 +1,38 @@
+# .github/workflows/deploy-pages.yml
+# Deploys the static portfolio (plain HTML + in-browser Babel — no build step)
+# to GitHub Pages on every push to main.
+#
+# One-time setup: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# (If you'd rather not use this workflow at all, choose Source: "Deploy from a
+#  branch" → main / root, and delete this file — every push will still deploy.)
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .          # whole repo root is the site
+      - id: deployment
+        uses: actions/deploy-pages@v4

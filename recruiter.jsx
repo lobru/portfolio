@@ -63,8 +63,11 @@ function RecruiterView({ data, onSwitchToDev }) {
         <div className="rec-topbar">
           <a href="index.html" className="rec-back-link">← Logan Brunet · Portfolio</a>
           <nav className="rec-hero-links">
+            {m.docsUrl &&
+              <a href={m.docsUrl} className="rec-hero-link primary">Read the docs ↗</a>
+            }
             {m.repoUrl &&
-              <a href={m.repoUrl} target="_blank" rel="noopener noreferrer" className="rec-hero-link primary">GitHub ↗</a>
+              <a href={m.repoUrl} target="_blank" rel="noopener noreferrer" className={"rec-hero-link" + (m.docsUrl ? "" : " primary")}>GitHub ↗</a>
             }
             {m.linkedIn &&
               <a href={m.linkedIn} target="_blank" rel="noopener noreferrer" className="rec-hero-link">LinkedIn ↗</a>

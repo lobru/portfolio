@@ -313,7 +313,9 @@ a.contrib-card:hover { border-color:var(--line-2); }
 .resume-btn.primary:hover { background:var(--accent); color:var(--bg); }
 .ref-row { padding:12px 0; border-top:1px solid var(--line); }
 .ref-row:first-of-type { border-top:none; }
-.ref-name { font-size:13.5px; font-weight:500; color:var(--text); }
+.ref-name { font-size:13.5px; font-weight:500; color:var(--text); display:block; }
+.ref-name-link { border-bottom:1px dashed var(--line-2); }
+.ref-name-link:hover { color:var(--accent); }
 .ref-meta { font-size:11.5px; color:var(--muted); margin:2px 0 4px; }
 .ref-mail { font-family:var(--mono); font-size:11px; color:var(--accent); }
 .ref-mail:hover { color:var(--text); }
@@ -428,7 +430,7 @@ footer {
             <span class="project-tag">ImGuiColorTextEdit</span>
             <span class="project-tag">C++17</span>
             <span class="project-tag">Dear ImGui</span>
-            <span class="project-tag">22 features</span>
+            <span class="project-tag">40+ features</span>
           </div>
         </div>
         <div class="project-arrow">
@@ -595,7 +597,7 @@ footer {
           </div>
         </div>
         <div class="ai-card">
-          <div class="ai-card-title">Output: 22 + 20 + 24 features shipped</div>
+          <div class="ai-card-title">Output: 40 + 20 + 24 features shipped</div>
           <div class="ai-card-body">
             Across three projects in a single quarter, AI tooling was in the loop for
             scoping, documentation, and boilerplate on every feature. The architecture,
@@ -606,10 +608,78 @@ footer {
     </div>
   </section>
 
-  <!-- ── § 03 Merged contributions ── -->
+  <!-- ── § 03 Experience & references ── -->
   <section>
     <div class="sec-head">
       <span class="sec-num">§ 03</span>
+      <h2 class="sec-title">Experience &amp; references</h2>
+      <div class="sec-rule"></div>
+      <span class="sec-sub">recent roles</span>
+    </div>
+
+    <div class="exp-layout">
+      <div class="exp-list">
+        <div class="exp-row">
+          <div class="exp-date">May 2026</div>
+          <div class="exp-main">
+            <div class="exp-title">Game Tools &amp; Modding Engineer <span class="exp-co">· micro1 (Contract)</span></div>
+            <div class="exp-body">Engine tooling and modding on a proprietary C++ codebase. Details under NDA.</div>
+          </div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-date">Jan – Apr 2026</div>
+          <div class="exp-main">
+            <div class="exp-title">Unreal Game / Simulation Developer <span class="exp-co">· Adacel</span></div>
+            <div class="exp-body">
+              Modernized a legacy simulation codebase to modern C++ and Epic standards; built ImGui-based
+              diagnostic plugins for real-time telemetry and runtime debugging; advised the technical lead on
+              Unreal Engine architecture.
+            </div>
+          </div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-date">2023 – Present</div>
+          <div class="exp-main">
+            <div class="exp-title">Consultant — Immersive Tools &amp; Engine Dev <span class="exp-co">· Self-Employed</span></div>
+            <div class="exp-body">
+              The three projects above — ImGuiColorTextEdit, UEVR Frontend, and the UEVR Lua API — plus
+              merged contributions to ReShade, Dumper-7, and the VRM Blender addon.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="exp-side">
+        <div class="exp-card resume-card">
+          <div class="exp-card-label">Résumé</div>
+          <div class="exp-card-body">Full work history, skills, and education.</div>
+          <div class="resume-links">
+            <a href="Logan_Brunet_Resume.pdf" target="_blank" rel="noopener" class="resume-btn primary">Download PDF ↓</a>
+            <a href="resume.html" target="_blank" rel="noopener" class="resume-btn">View online ↗</a>
+          </div>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-card-label">References</div>
+          <div class="ref-row">
+            <a href="https://www.linkedin.com/in/travis-clements-092806bb" target="_blank" rel="noopener" class="ref-name ref-name-link">Travis Clements ↗</a>
+            <div class="ref-meta">Technical Lead · Adacel</div>
+            <a href="mailto:tclements@adacel.com" class="ref-mail">tclements@adacel.com</a>
+          </div>
+          <div class="ref-row">
+            <div class="ref-name">Sonia Mina</div>
+            <div class="ref-meta">Engineering Manager · Adacel</div>
+            <a href="mailto:soniam@adacel.com" class="ref-mail">soniam@adacel.com</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ── § 04 Merged contributions ── -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">§ 04</span>
       <h2 class="sec-title">Merged contributions</h2>
       <div class="sec-rule"></div>
       <span class="sec-sub">upstream repos</span>
@@ -680,11 +750,10 @@ footer {
         </div>
       </a>
 
-      <a href="https://github.com/lobotomy-x/UEVR/tree/luavrlib/docs"
-         class="contrib-card" target="_blank" rel="noopener">
-        <span class="contrib-status">Published</span>
-        <div class="contrib-title">UEVR luavrlib docs</div>
-        <div class="contrib-repo">UEVR · docs/</div>
+      <a href="uevr-lua-docs.html" class="contrib-card">
+        <span class="contrib-status">8 guides + reference</span>
+        <div class="contrib-title">Lua Library — Docs</div>
+        <div class="contrib-repo">rendered docs ↗</div>
         <div class="contrib-blurb">
           API reference and usage docs for the luavrlib scripting surface.
           Covers the api_fast namespace, worker threads, GLM bindings,
@@ -700,75 +769,7 @@ footer {
     </div>
   </section>
 
-  <!-- ── § 04 Experience & references ── -->
-  <section>
-    <div class="sec-head">
-      <span class="sec-num">§ 04</span>
-      <h2 class="sec-title">Experience &amp; references</h2>
-      <div class="sec-rule"></div>
-      <span class="sec-sub">recent roles</span>
-    </div>
-
-    <div class="exp-layout">
-      <div class="exp-list">
-        <div class="exp-row">
-          <div class="exp-date">May 2026</div>
-          <div class="exp-main">
-            <div class="exp-title">Game Tools &amp; Modding Engineer <span class="exp-co">· micro1 (Contract)</span></div>
-            <div class="exp-body">Engine tooling and modding on a proprietary C++ codebase. Details under NDA.</div>
-          </div>
-        </div>
-        <div class="exp-row">
-          <div class="exp-date">Jan – Apr 2026</div>
-          <div class="exp-main">
-            <div class="exp-title">Unreal Game / Simulation Developer <span class="exp-co">· Adacel</span></div>
-            <div class="exp-body">
-              Modernized a legacy simulation codebase to modern C++ and Epic standards; built ImGui-based
-              diagnostic plugins for real-time telemetry and runtime debugging; advised the technical lead on
-              Unreal Engine architecture.
-            </div>
-          </div>
-        </div>
-        <div class="exp-row">
-          <div class="exp-date">2023 – Present</div>
-          <div class="exp-main">
-            <div class="exp-title">Consultant — Immersive Tools &amp; Engine Dev <span class="exp-co">· Self-Employed</span></div>
-            <div class="exp-body">
-              The three projects above — ImGuiColorTextEdit, UEVR Frontend, and the UEVR Lua API — plus
-              merged contributions to ReShade, Dumper-7, and the VRM Blender addon.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="exp-side">
-        <div class="exp-card resume-card">
-          <div class="exp-card-label">Résumé</div>
-          <div class="exp-card-body">Full work history, skills, and education.</div>
-          <div class="resume-links">
-            <a href="Logan_Brunet_Resume.pdf" target="_blank" rel="noopener" class="resume-btn primary">Download PDF ↓</a>
-            <a href="resume.html" target="_blank" rel="noopener" class="resume-btn">View online ↗</a>
-          </div>
-        </div>
-
-        <div class="exp-card">
-          <div class="exp-card-label">References</div>
-          <div class="ref-row">
-            <div class="ref-name">Travis Clements</div>
-            <div class="ref-meta">Technical Lead · Adacel</div>
-            <a href="mailto:tclements@adacel.com" class="ref-mail">tclements@adacel.com</a>
-          </div>
-          <div class="ref-row">
-            <div class="ref-name">Sonia Mina</div>
-            <div class="ref-meta">Engineering Manager · Adacel</div>
-            <a href="mailto:soniam@adacel.com" class="ref-mail">soniam@adacel.com</a>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <footer>
+    <footer>
     <span>Logan Brunet · Portfolio · 2026</span>
     <span>loganwbrunet@gmail.com</span>
   </footer>

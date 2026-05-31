@@ -501,20 +501,9 @@ function SideTaskDetail({ task }) {
 // ═══════════════════════════════════════════════
 
 function Gallery({ meta }) {
-  const R = window.__resources || {};
-  // Data-driven: meta.gallery[] wins. Otherwise fall back to the ImGuiColorTextEdit default set.
-  const images = (meta && meta.gallery && meta.gallery.length)
-    ? meta.gallery
-    : [
-        { src: R.img_editor    || "uploads/textEditor.png",        caption: "Syntax highlighting · fold arrows · tab bar" },
-        { src: R.img_auto      || "uploads/autocomplete.png",       caption: "Autocomplete dropdown" },
-        { src: R.img_ctx       || "uploads/contextMenus.png",       caption: "Context menu with custom breakpoint entries" },
-        { src: R.img_markers   || "uploads/markers.png",            caption: "Line markers + error tooltips" },
-        { src: R.img_deco      || "uploads/lineDecorator.png",      caption: "Line decorator API" },
-        { src: R.img_diff1     || "uploads/textDiffCombined.png",   caption: "TextDiff — integrated unified view" },
-        { src: R.img_diff2     || "uploads/textDiffSideBySide.png", caption: "TextDiff — side-by-side view" },
-        { src: R.img_arch      || "uploads/architecture.png",       caption: "Internal architecture: layered OO design" },
-      ];
+  // Data-driven only: render the gallery when a project explicitly supplies meta.gallery[].
+  const images = (meta && meta.gallery && meta.gallery.length) ? meta.gallery : [];
+  if (!images.length) return null;
   return (
     <div className="gallery-grid">
       {images.map((img) => (
@@ -616,7 +605,7 @@ function DevDashboard({ data, t, setTweak, companion }) {
         </section>
       )}
 
-      {t.showGallery && (
+      {t.showGallery && data.meta.gallery && data.meta.gallery.length > 0 && (
         <section className="section">
           <SectionHead num={data.meta.gallerySection?.num ?? "08"} title={data.meta.gallerySection?.title ?? "Feature gallery"} aside={data.meta.gallerySection?.aside ?? "screenshots"} />
           <Gallery meta={data.meta} />
@@ -702,7 +691,9 @@ function Dashboard() {
             <TweakToggle label="Files"          value={t.showFiles}      onChange={(v) => setTweak("showFiles",      v)} />
             <TweakToggle label="Languages"      value={t.showLanguages}  onChange={(v) => setTweak("showLanguages",  v)} />
             <TweakToggle label="Side-tasks"     value={t.showSideTasks}  onChange={(v) => setTweak("showSideTasks",  v)} />
-            <TweakToggle label="Gallery"        value={t.showGallery}    onChange={(v) => setTweak("showGallery",    v)} />
+            {data.meta.gallery && data.meta.gallery.length > 0 && (
+              <TweakToggle label="Gallery"        value={t.showGallery}    onChange={(v) => setTweak("showGallery",    v)} />
+            )}
           </>
         )}
       </TweaksPanel>

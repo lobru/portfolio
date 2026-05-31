@@ -1,5 +1,10 @@
 # Portfolio Dashboard — Setup & Automation Plan
 
+> **⚡ The hands-off pipeline now lives in [`AUTOMATION.md`](AUTOMATION.md).**
+> That's the real, wired system: push code → Claude API regenerates the matching
+> `data.js` in CI → GitHub Pages redeploys. This file remains as background on the
+> repo layout, media conventions, and the manual fallback.
+
 > **Context for Logan:** This file captures the full plan for turning this dashboard
 > into a self-maintaining GitHub Pages site. Do these steps in order — each one
 > unlocks the next. Also intended as a handoff note for contributing the template
