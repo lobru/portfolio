@@ -27,12 +27,11 @@
     },
     {
       "name": "uevr-luavrlib",
-      "repo": "lobotomy-x/Unreal-Lua-Library",
-      "ref": "main",
+      "repo": "lobotomy-x/UEVR",
+      "ref": "luavrlib",
       "dataFile": "uevr-luavrlib-data.js",
       "docs": [
-        "README.md",
-        "Docs/UEVR"
+        "README.md"
       ]
     }
   ]

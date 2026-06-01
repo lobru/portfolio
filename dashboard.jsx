@@ -550,6 +550,13 @@ function DevDashboard({ data, t, setTweak, companion }) {
   return (
     <div className="app">
       <HeaderStrip meta={data.meta} />
+      {companion && companion.status !== "connected" && (
+        <a href="setup.html" className="setup-banner">
+          <span className="setup-banner-dot"></span>
+          <span><strong>Run this dashboard against your machine.</strong> Connect the local companion to enable build/run tools and Ask&nbsp;Claude.</span>
+          <span className="setup-banner-cta">Set up →</span>
+        </a>
+      )}
       <Vitals vitals={data.vitals} />
 
       {t.showRoadmap && (

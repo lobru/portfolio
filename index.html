@@ -92,7 +92,7 @@ a { color:inherit; text-decoration:none; }
 button { font:inherit; cursor:pointer; }
 
 /* ── Layout ── */
-.page { max-width:1160px; margin:0 auto; padding:64px 32px 100px; position:relative; z-index:1; }
+.page { max-width:1160px; margin:0 auto; padding:44px 32px 72px; position:relative; z-index:1; }
 
 /* ── Hero ── */
 .hero { padding:0 0 28px; border-bottom:1px solid var(--line); margin-bottom:28px; }
@@ -133,27 +133,31 @@ button { font:inherit; cursor:pointer; }
 .hero-link.primary { color:var(--accent); border-color:var(--accent); }
 
 /* ── Section head ── */
-.sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:28px; }
+.sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:20px; }
 .sec-num  { font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:.1em; }
 .sec-title { font-size:24px; font-weight:500; letter-spacing:-.005em; }
 .sec-rule  { flex:1; height:1px; background:var(--line); margin-bottom:6px; }
 .sec-sub   { font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
 
 /* ── Project grid (main, clickable cards) ── */
-.projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:72px; }
+.projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:44px; }
 
-a.project-card {
+.project-card {
   background:var(--panel); border:1px solid var(--line);
   border-radius:var(--radius); overflow:hidden;
   display:flex; flex-direction:column;
   box-shadow:var(--shadow); cursor:pointer;
   transition:border-color .2s, transform .2s, box-shadow .2s;
+  position:relative;
 }
-a.project-card:hover {
+.project-card:hover {
   border-color:var(--accent);
   transform:translateY(-3px);
   box-shadow:0 0 0 1px color-mix(in oklab,var(--accent) 20%,transparent), 0 12px 40px rgba(0,0,0,.5);
 }
+/* invisible overlay link — makes the whole card open the dashboard */
+.card-stretch { position:absolute; inset:0; z-index:1; }
+.card-stretch span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
 .project-thumb {
   height:180px; background:var(--panel-2);
   display:flex; align-items:center; justify-content:center;
@@ -192,16 +196,24 @@ a.project-card:hover {
 .project-arrow {
   display:flex; align-items:center; justify-content:space-between;
   padding:12px 22px 16px; border-top:1px solid var(--line);
-  font-family:var(--mono); font-size:10.5px; color:var(--faint);
+  position:relative; z-index:2;
 }
+.project-arrow-meta { font-family:var(--mono); font-size:10.5px; color:var(--faint); }
+.project-repo-link {
+  position:relative; z-index:2;
+  font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--text-2); border:1px solid var(--line-2); border-radius:100px; padding:5px 11px;
+  display:inline-flex; align-items:center; gap:6px; transition:border-color .15s, color .15s, background .15s;
+}
+.project-repo-link:hover { border-color:var(--accent); color:var(--accent); text-decoration:none; }
 .project-arrow .arrow { color:var(--accent); font-size:14px; transition:transform .15s; }
-a.project-card:hover .arrow { transform:translateX(3px); }
+.project-card:hover .arrow { transform:translateX(3px); }
 
 /* ── Thumb icon ── */
 .thumb-icon { width:44px; height:44px; opacity:.5; }
 
 /* ── Contributions grid (smaller cards) ── */
-.contribs { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:72px; }
+.contribs { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:44px; }
 .contrib-card {
   background:var(--panel); border:1px solid var(--line);
   border-radius:var(--radius); padding:18px 20px;
@@ -229,7 +241,7 @@ a.contrib-card:hover { border-color:var(--line-2); }
 /* ── AI workflow section ── */
 .ai-section {
   background:var(--panel); border:1px solid color-mix(in oklab,var(--ai) 20%,var(--line));
-  border-radius:var(--radius); padding:36px 40px; margin-bottom:72px;
+  border-radius:var(--radius); padding:32px 40px; margin-bottom:44px;
   position:relative; overflow:hidden;
 }
 .ai-section::before {
@@ -293,7 +305,7 @@ a.contrib-card:hover { border-color:var(--line-2); }
 .ai-demo:hover .ai-demo-cta { background:var(--ai); color:var(--bg); }
 
 /* ── Experience & references ── */
-.exp-layout { display:grid; grid-template-columns:1.6fr 1fr; gap:24px; margin-bottom:72px; align-items:start; }
+.exp-layout { display:grid; grid-template-columns:1.6fr 1fr; gap:24px; margin-bottom:44px; align-items:start; }
 .exp-list { display:flex; flex-direction:column; }
 .exp-row { display:grid; grid-template-columns:120px 1fr; gap:18px; padding:18px 0; border-top:1px solid var(--line); }
 .exp-row:first-child { border-top:none; }
@@ -396,7 +408,6 @@ footer {
   <!-- ── § 01 Selected work ── -->
   <section>
     <div class="sec-head">
-      <span class="sec-num">§ 01</span>
       <h2 class="sec-title">Selected work</h2>
       <div class="sec-rule"></div>
       <span class="sec-sub">click any card</span>
@@ -404,7 +415,8 @@ footer {
     <div class="projects">
 
       <!-- ImGuiColorTextEdit -->
-      <a href="imguicolortextedit.html" class="project-card">
+      <div class="project-card">
+        <a href="imguicolortextedit.html" class="card-stretch"><span>Open ImGui IDE dashboard</span></a>
         <div class="project-thumb">
           <img src="uploads/textEditor.png" alt="ImGuiColorTextEdit editor screenshot"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
@@ -434,13 +446,14 @@ footer {
           </div>
         </div>
         <div class="project-arrow">
-          <span>May 2026</span>
-          <span class="arrow">→</span>
+          <span class="project-arrow-meta">May 2026 &nbsp;·&nbsp; <span class="arrow">→</span> dashboard</span>
+          <a href="https://github.com/lobotomy-x/ImGuiColorTextEdit" class="project-repo-link" target="_blank" rel="noopener">GitHub repo ↗</a>
         </div>
-      </a>
+      </div>
 
       <!-- UEVR Frontend -->
-      <a href="UEVR-Frontend-Dashboard.html" class="project-card">
+      <div class="project-card">
+        <a href="UEVR-Frontend-Dashboard.html" class="card-stretch"><span>Open UEVR Frontend dashboard</span></a>
         <div class="project-thumb">
           <div class="thumb-gallery">
             <img src="media/uevr-frontend/main-inject.png" alt="UEVR Frontend main window" loading="lazy" />
@@ -467,16 +480,18 @@ footer {
           </div>
         </div>
         <div class="project-arrow">
-          <span>2025–2026</span>
-          <span class="arrow">→</span>
+          <span class="project-arrow-meta">2025–2026 &nbsp;·&nbsp; <span class="arrow">→</span> dashboard</span>
+          <a href="https://github.com/lobotomy-x/uevr-frontend" class="project-repo-link" target="_blank" rel="noopener">GitHub repo ↗</a>
         </div>
-      </a>
+      </div>
 
       <!-- UEVR luavrlib -->
-      <a href="UEVR-Luavrlib-Dashboard.html"
-         class="project-card">
+      <div class="project-card">
+        <a href="UEVR-Luavrlib-Dashboard.html" class="card-stretch"><span>Open UEVR luavrlib dashboard</span></a>
         <div class="project-thumb">
-          <div class="project-thumb-placeholder" style="display:flex;">
+          <img src="media/uevr-luavrlib/class-browser-function-caller.png" alt="UEVR luavrlib — Class Browser, Function Caller, and docked panels in-game"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="project-thumb-placeholder" style="display:none;flex-direction:column;align-items:center;gap:10px;">
             <svg class="thumb-icon" viewBox="0 0 48 48" fill="none">
               <rect x="8" y="8" width="32" height="32" rx="4" stroke="#9d8bff" stroke-width="2.5" fill="none"/>
               <path d="M16 18 L22 24 L16 30" stroke="#9d8bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -502,10 +517,10 @@ footer {
           </div>
         </div>
         <div class="project-arrow">
-          <span>Apr – May 2026</span>
-          <span class="arrow">→</span>
+          <span class="project-arrow-meta">Apr – May 2026 &nbsp;·&nbsp; <span class="arrow">→</span> dashboard</span>
+          <a href="https://github.com/lobotomy-x/UEVR/tree/luavrlib" class="project-repo-link" target="_blank" rel="noopener">GitHub repo ↗</a>
         </div>
-      </a>
+      </div>
 
     </div>
   </section>
@@ -513,7 +528,6 @@ footer {
   <!-- ── § 02 AI-augmented workflow ── -->
   <section>
     <div class="sec-head">
-      <span class="sec-num">§ 02</span>
       <h2 class="sec-title">AI-augmented engineering</h2>
       <div class="sec-rule"></div>
     </div>
@@ -539,12 +553,9 @@ footer {
           <div class="ai-demo-eyebrow">▶ Live in your browser · WebAssembly · no install</div>
           <div class="ai-demo-title">Two playable games, rendered with Dear ImGui</div>
           <div class="ai-demo-body">
-            Both games are built entirely in <strong>Dear ImGui</strong> — the same C++ UI framework
-            behind every project here — and compiled to WebAssembly so they run live in the browser.
-            <strong>Pong</strong> is an end-to-end agentic translation: Claude Code ported the original
-            Lua source to native C++. <strong>Tetris</strong> is
-            <span class="ai-demo-hl">generated entirely by AI</span> from a prompt — gameplay, rendering,
-            collision, and scoring, all written and compiled without hand-editing.
+            Both built in <strong>Dear ImGui</strong> and compiled to WebAssembly to run in-browser.
+            <strong>Pong</strong> — Claude Code ported the original Lua source to native C++.
+            <strong>Tetris</strong> — <span class="ai-demo-hl">generated entirely by AI</span> from a prompt.
           </div>
           <div class="ai-demo-games">
             <span class="ai-demo-game">Pong · Lua → C++ port</span>
@@ -611,7 +622,6 @@ footer {
   <!-- ── § 03 Experience & references ── -->
   <section>
     <div class="sec-head">
-      <span class="sec-num">§ 03</span>
       <h2 class="sec-title">Experience &amp; references</h2>
       <div class="sec-rule"></div>
       <span class="sec-sub">recent roles</span>
@@ -619,6 +629,13 @@ footer {
 
     <div class="exp-layout">
       <div class="exp-list">
+        <div class="exp-row">
+          <div class="exp-date">June 2026</div>
+          <div class="exp-main">
+            <div class="exp-title">AI Trainer <span class="exp-co">· micro1</span></div>
+            <div class="exp-body">Training and evaluating frontier AI models on software-engineering tasks.</div>
+          </div>
+        </div>
         <div class="exp-row">
           <div class="exp-date">May 2026</div>
           <div class="exp-main">
@@ -679,7 +696,6 @@ footer {
   <!-- ── § 04 Merged contributions ── -->
   <section>
     <div class="sec-head">
-      <span class="sec-num">§ 04</span>
       <h2 class="sec-title">Merged contributions</h2>
       <div class="sec-rule"></div>
       <span class="sec-sub">upstream repos</span>
@@ -751,13 +767,13 @@ footer {
       </a>
 
       <a href="uevr-lua-docs.html" class="contrib-card">
-        <span class="contrib-status">8 guides + reference</span>
-        <div class="contrib-title">Lua Library — Docs</div>
+        <span class="contrib-status">30 docs · 2 sets</span>
+        <div class="contrib-title">UEVR Docs</div>
         <div class="contrib-repo">rendered docs ↗</div>
         <div class="contrib-blurb">
-          API reference and usage docs for the luavrlib scripting surface.
-          Covers the api_fast namespace, worker threads, GLM bindings,
-          UObjectHook extensions, and function call editor.
+          Two doc sets in one reader: hand-written Lua scripting guides
+          (language, table/metatable optimization, GLM, out-params) and the
+          full UEVR Lua API reference fork — bindings, reflected types, and math.
         </div>
         <div class="contrib-tags">
           <span class="contrib-tag">Documentation</span>

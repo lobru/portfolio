@@ -45,8 +45,9 @@ window.PROGRESS_DATA = {
     titleSuffix: "",
 
     // ─── Overview fields ───────────────────────────────────────────
+    eyebrow:     "C++ · Lua · Unreal Engine · Dear ImGui",
     tagline:     "Extended UEVR's scripting surface with faster APIs, threaded workers, and a live function editor.",
-    description: "UEVR lets you play any modern Unreal Engine game in VR with full head and controller tracking — no game modifications required. This sprint added new tools for the modding community: faster ways to move and query in-game actors, background scripting threads, and an interactive editor for calling game functions in real time.",
+    description: "Extended UEVR's Lua scripting layer with tools for the modding community: faster ways to move and query in-game actors, background scripting threads, a reflection-driven class browser, and an interactive editor for calling game functions in real time. (UEVR is the platform that brings any modern Unreal Engine game into VR with full head and controller tracking.)",
 
     author:   "Logan Brunet",
     role:     "Engines · Graphics · UI / Tools · Offensive Security",

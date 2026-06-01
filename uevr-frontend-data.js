@@ -14,6 +14,7 @@ window.PROGRESS_DATA = {
     titleAccent: "Frontend",
     titleSuffix: "",
 
+    eyebrow:      "C# · WPF · VR injector",
     tagline:      "The best Unreal Engine modding tool — intuitive GUI, auto-updating, near-100% game support",
     description:  "A powerful and intuitive desktop app for injecting VR and mods into Unreal Engine games — with a near-perfect user experience, GitHub-API integration, and built-in auto-updating. It runs silently in the system tray like Steam, detects game launches automatically, and supports nearly 100% of compatible Unreal games using injection techniques only an expert in offensive security could devise. Built in C# / WPF with custom WinAPI for the injection engine, system tray, and update system.",
     bio:          "Senior C++ engineer specializing in game engine tooling, real-time rendering, and immersive experiences. Comfortable owning full technical stacks from engine client through deployment.",

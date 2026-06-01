@@ -18,8 +18,9 @@ window.PROGRESS_DATA = {
     titleAccent: "IDE",
     titleSuffix: "",
 
+    eyebrow:      "C++ · Dear ImGui · Code editor",
     tagline:      "A fully featured, multiplatform code editor in C++ with Dear ImGui",
-    description:  "A fully featured, multiplatform code editor written in C++ on Dear ImGui — usable as a standalone IDE or an embeddable widget. This fork grew the editor into a real development environment: a docked project tree, project-wide go-to-definition and find-references, word wrap, integrated build & run, an image viewer, multi-window docking, and persistent settings. Forked from ImGuiColorTextEdit, a library with a long development history.",
+    description:  "A fully featured, multiplatform code editor written in C++ on Dear ImGui — usable as a standalone IDE or an embeddable widget. This work grew the editor into a real development environment: a docked project tree, project-wide go-to-definition and find-references, word wrap, integrated build & run, an image viewer, multi-window docking, and persistent settings.",
     featuresAdded: [
       { name: "Project navigation panel",    desc: "A docked file-tree sidebar for the whole project — filter by source files or dotfiles, hover for file info, right-click to open / rename / delete (to Recycle Bin) / copy paths, and drag files to move or copy them." },
       { name: "Go to definition & references",desc: "Right-click any symbol to jump to its definition anywhere in the project, or open a Find References panel grouped by file. Works across multiple files — e.g. a C# class or method used in several places." },
@@ -38,6 +39,10 @@ window.PROGRESS_DATA = {
     linkedIn:     "https://linkedin.com/in/logan-brunet",
     github:       "https://github.com/lobotomy-x",
     repoUrl:      "https://github.com/lobotomy-x/ImGuiColorTextEdit",
+    heroShot: {
+      src: "uploads/textEditor.png",
+      caption: "The editor: syntax highlighting, fold arrows, multi-tab docking — embeddable widget or standalone IDE",
+    },
     credits: [
       { name: "Balázs Jákó",       handle: "BalazsJako",  role: "original author · 2018",                           url: "https://github.com/BalazsJako/ImGuiColorTextEdit" },
       { name: "Santiago Cubedo",   handle: "santaclose",  role: "220+ commits · most active fork 2019–2023",        url: "https://github.com/santaclose/ImGuiColorTextEdit" },

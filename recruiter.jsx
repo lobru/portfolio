@@ -20,23 +20,23 @@ function RecruiterView({ data, onSwitchToDev }) {
   // 2. If fewer than the target count, auto-fill from shipped cards (preferring distinct groups + cards with a highlightBlurb).
   // 3. Cap at meta.highlightCount (default 6).
   const HIGHLIGHT_TARGET = m.highlightCount ?? 6;
-  const explicitHighlights = (m.highlights || [])
-    .map((id) => data.cards.find((c) => c.id === id))
-    .filter(Boolean);
+  const explicitHighlights = (m.highlights || []).
+  map((id) => data.cards.find((c) => c.id === id)).
+  filter(Boolean);
   const usedIds = new Set(explicitHighlights.map((c) => c.id));
   const usedGroups = new Set(explicitHighlights.map((c) => c.group));
-  const shippedPool = data.cards
-    .filter((c) => c.status === "shipped" && !usedIds.has(c.id))
-    .sort((a, b) => {
-      // Prefer cards that have a curated highlightBlurb.
-      const ah = a.highlightBlurb ? 1 : 0;
-      const bh = b.highlightBlurb ? 1 : 0;
-      if (ah !== bh) return bh - ah;
-      // Then prefer cards from groups not yet represented.
-      const ag = usedGroups.has(a.group) ? 1 : 0;
-      const bg = usedGroups.has(b.group) ? 1 : 0;
-      return ag - bg;
-    });
+  const shippedPool = data.cards.
+  filter((c) => c.status === "shipped" && !usedIds.has(c.id)).
+  sort((a, b) => {
+    // Prefer cards that have a curated highlightBlurb.
+    const ah = a.highlightBlurb ? 1 : 0;
+    const bh = b.highlightBlurb ? 1 : 0;
+    if (ah !== bh) return bh - ah;
+    // Then prefer cards from groups not yet represented.
+    const ag = usedGroups.has(a.group) ? 1 : 0;
+    const bg = usedGroups.has(b.group) ? 1 : 0;
+    return ag - bg;
+  });
   const supplementary = shippedPool.slice(0, Math.max(0, HIGHLIGHT_TARGET - explicitHighlights.length));
   const highlightCards = [...explicitHighlights, ...supplementary].slice(0, HIGHLIGHT_TARGET);
 
@@ -59,52 +59,56 @@ function RecruiterView({ data, onSwitchToDev }) {
       {/* ══════════════ HERO ══════════════ */}
       <header className="rec-hero-v2">
 
-        {/* Top bar: back link + byline */}
+        {/* Top bar: just the route back to the portfolio (personal links live there) */}
         <div className="rec-topbar">
-          <a href="index.html" className="rec-back-link">← Logan Brunet · Portfolio</a>
-          <nav className="rec-hero-links">
-            {m.docsUrl &&
-              <a href={m.docsUrl} className="rec-hero-link primary">Read the docs ↗</a>
-            }
-            {m.repoUrl &&
-              <a href={m.repoUrl} target="_blank" rel="noopener noreferrer" className={"rec-hero-link" + (m.docsUrl ? "" : " primary")}>GitHub ↗</a>
-            }
-            {m.linkedIn &&
-              <a href={m.linkedIn} target="_blank" rel="noopener noreferrer" className="rec-hero-link">LinkedIn ↗</a>
-            }
-            <a href="#dev" className="rec-hero-link"
-              onClick={(e) => { e.preventDefault(); onSwitchToDev(); }}>
-              Dev dashboard ↗
-            </a>
-          </nav>
+          <a href="index.html" className="rec-back-link">← Back to Logan Brunet · Portfolio</a>
         </div>
 
         {/* Main: project identity */}
         <div className="rec-identity">
-          <div className={"rec-identity-main" + (showcase ? " has-lead" : "")}>
-            {showcase &&
-              <div className="rec-hero-shot">
-                <img src={showcase.src} alt={showcase.caption || m.project} loading="lazy" />
-                {showcase.caption && <div className="rec-hero-shot-cap">{showcase.caption}</div>}
-              </div>
-            }
+          <div className="rec-identity-main has-lead">
             <div className="rec-identity-text">
+              {m.eyebrow &&
               <div className="rec-open-badge">
                 <span className="rec-open-dot"></span>
-                {m.role} · {m.location}
+                {m.eyebrow}
               </div>
+              }
               <h1 className="rec-name">{m.project}</h1>
               <div className="rec-role-line">Contributed by {m.author}</div>
-              {m.description && <p className="rec-bio">{m.description}</p>}
+              {(m.tagline || m.description) && <p className="rec-bio">{m.tagline || m.description}</p>}
               {m.techStack &&
-                <div className="rec-tech-chips">
+              <div className="rec-tech-chips">
                   <div className="rec-tech-chips-label">built with</div>
                   <div className="rec-skill-chips">
                     {m.techStack.map((s) => <span key={s} className="rec-skill-chip">{s}</span>)}
                   </div>
                 </div>
               }
+              {m.repoUrl &&
+              <div className="rec-hero-actions">
+                  <a href={m.repoUrl} target="_blank" rel="noopener noreferrer" className="rec-repo-btn">{"</>"}&nbsp; View source on GitHub ↗</a>
+                  {m.docsUrl && <a href={m.docsUrl} className="rec-repo-btn ghost">Read the docs ↗</a>}
+                </div>
+              }
             </div>
+
+            {showcase
+              ? <div className="rec-hero-shot">
+                  <img src={showcase.src} alt={showcase.caption || m.project} loading="lazy" />
+                  {showcase.caption && <div className="rec-hero-shot-cap">{showcase.caption}</div>}
+                </div>
+              : (m.repoUrl &&
+                <a className="rec-repo-panel" href={m.repoUrl} target="_blank" rel="noopener noreferrer">
+                  <div className="rrp-top">
+                    <span className="rrp-mark">{"</>"}</span>
+                    <span className="rrp-label">Source repository</span>
+                  </div>
+                  <div className="rrp-path">{m.repoPath || m.project}</div>
+                  <div className="rrp-meta">{m.branch ? m.branch + " · " : ""}v{m.version}</div>
+                  <span className="rrp-cta">View on GitHub ↗</span>
+                </a>)
+            }
           </div>
         </div>
 
@@ -121,16 +125,21 @@ function RecruiterView({ data, onSwitchToDev }) {
           <div>
             <p className="rec-sprint-tagline" style={{ margin: 0 }}>{m.tagline}</p>
             {m.credits && m.credits.length > 0 &&
-              <details className="rec-credits-details">
+            <details className="rec-credits-details">
                 <summary>Project history</summary>
                 <ul className="rec-credits-list">
+                  <li className="rec-credits-item rec-credits-me">
+                    <a href={m.github || m.repoUrl || "#"} target="_blank" rel="noopener noreferrer" className="rec-credits-name">{m.author}</a>
+                    {m.github && <span className="rec-credits-handle">@{m.github.split("/").pop()}</span>}
+                    <span className="rec-credits-role">this contribution · {m.lastUpdated}</span>
+                  </li>
                   {m.credits.map((c, i) =>
-                    <li key={i} className="rec-credits-item">
+                <li key={i} className="rec-credits-item">
                       <a href={c.url} target="_blank" rel="noopener noreferrer" className="rec-credits-name">{c.name}</a>
                       <span className="rec-credits-handle">@{c.handle}</span>
                       <span className="rec-credits-role">{c.role}</span>
                     </li>
-                  )}
+                )}
                 </ul>
               </details>
             }
@@ -141,21 +150,24 @@ function RecruiterView({ data, onSwitchToDev }) {
 
       {/* ══════════════ IMPACT NUMBERS ══════════════ */}
       {m.impactNumbers && m.impactNumbers.length > 0 &&
-        <div className="rec-impact">
+      <div className="rec-impact">
           {m.impactNumbers.map((n, i) =>
-            <div key={i} className="rec-impact-tile">
+        <div key={i} className="rec-impact-tile">
               <div className="rec-impact-num">{n.num}</div>
               <div className="rec-impact-label">{n.label}</div>
               <div className="rec-impact-sub">{n.sub}</div>
             </div>
-          )}
+        )}
         </div>
       }
 
       {/* ══════════════ ABOUT ══════════════ */}
-      <section className="rec-about">
-        <h3>About this project</h3>
-        <div>
+      <section className="rec-about" style={{ marginBottom: 40 }}>
+        <div className="rec-section-head">
+          <h2 className="rec-section-title">About this project</h2>
+          <div className="rec-section-rule"></div>
+        </div>
+        <div className="rec-about-body">
           <p>{m.description}</p>
           {m.audience &&
           <ul>{m.audience.map((a, i) => <li key={i}>{a}</li>)}</ul>
@@ -164,23 +176,19 @@ function RecruiterView({ data, onSwitchToDev }) {
       </section>
 
       {/* ══════════════ HIGHLIGHTS ══════════════ */}
-      <section style={{ marginBottom: 64 }}>
+      <section style={{ marginBottom: 40 }}>
         <div className="rec-section-head">
-          <span className="rec-section-num">§ 01</span>
           <h2 className="rec-section-title">Selected highlights</h2>
           <div className="rec-section-rule"></div>
-          <span className="rec-section-aside">
-            {highlightCards.length} of {data.cards.filter((c) => c.status === "shipped").length} shipped
-          </span>
         </div>
         <div className="rec-highlights">
           {highlightCards.map((c) =>
           <div key={c.id} className={"rec-highlight" + (c.image ? " has-shot" : "")}>
               {c.image &&
-                <div className="rec-highlight-shot">
+            <div className="rec-highlight-shot">
                   <img src={c.image.src} alt={c.image.caption || c.title} loading="lazy" />
                 </div>
-              }
+            }
               <div className="rec-highlight-body">
                 <div className="rec-highlight-tag">{c.group}</div>
                 <h3 className="rec-highlight-title">{c.title}</h3>
@@ -196,26 +204,24 @@ function RecruiterView({ data, onSwitchToDev }) {
 
       {/* ══════════════ SCREENSHOT STRIP ══════════════ */}
       {galleryRest.length > 0 &&
-        <section style={{ marginBottom: 64 }}>
+      <section style={{ marginBottom: 40 }}>
           <div className="rec-shot-strip">
             {galleryRest.slice(0, 4).map((g, i) =>
-              <div key={i} className="rec-shot-card">
+          <div key={i} className="rec-shot-card">
                 <img src={g.src} alt={g.caption || ""} loading="lazy" />
                 {g.caption && <div className="rec-shot-cap">{g.caption}</div>}
               </div>
-            )}
+          )}
           </div>
         </section>
       }
 
       {/* ══════════════ FEATURES ADDED ══════════════ */}
       {m.featuresAdded && m.featuresAdded.length > 0 &&
-      <section style={{ marginBottom: 64 }}>
+      <section style={{ marginBottom: 40 }}>
           <div className="rec-section-head">
-            <span className="rec-section-num">§ 02</span>
             <h2 className="rec-section-title">What was added</h2>
             <div className="rec-section-rule"></div>
-            <span className="rec-section-aside">{m.featuresAdded.length} features</span>
           </div>
           <div className="rec-features-grid">
             {m.featuresAdded.map((f, i) =>
@@ -232,10 +238,8 @@ function RecruiterView({ data, onSwitchToDev }) {
       {m.videos && m.videos.length > 0 &&
       <section>
           <div className="rec-section-head">
-            <span className="rec-section-num">§ 03</span>
             <h2 className="rec-section-title">In action</h2>
             <div className="rec-section-rule"></div>
-            <span className="rec-section-aside">{m.videos.length} clips</span>
           </div>
           <div className="rec-video-grid">
             {m.videos.map((v, i) =>
@@ -252,10 +256,8 @@ function RecruiterView({ data, onSwitchToDev }) {
       {/* ══════════════ TIMELINE ══════════════ */}
       <section>
         <div className="rec-section-head">
-          <span className="rec-section-num">{m.videos?.length ? "§ 04" : "§ 03"}</span>
           <h2 className="rec-section-title">Activity timeline</h2>
           <div className="rec-section-rule"></div>
-          <span className="rec-section-aside">{shippedMilestones.length} milestones</span>
         </div>
         <div className="rec-timeline">
           <ul className="rec-timeline-list">
@@ -273,10 +275,8 @@ function RecruiterView({ data, onSwitchToDev }) {
       {/* ══════════════ TECH STACK ══════════════ */}
       <section>
         <div className="rec-section-head">
-          <span className="rec-section-num">{m.videos?.length ? "§ 05" : "§ 04"}</span>
           <h2 className="rec-section-title">Tech stack</h2>
           <div className="rec-section-rule"></div>
-          <span className="rec-section-aside">{(m.techStack || []).length} technologies</span>
         </div>
         <div className="rec-tech">
           {(m.techStack || []).map((t) =>
