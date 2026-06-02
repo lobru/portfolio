@@ -54,9 +54,9 @@ function ToolsDrawer({ data, companion, onClose }) {
 function ToolBody({ id, data, companion }) {
   switch (id) {
     case "companion":   return <CompanionTool companion={companion} />;
-    case "sync":        return <SyncTool data={data} />;
-    case "report":      return <ReportTool data={data} />;
-    case "release":     return <ReleaseTool data={data} />;
+    case "sync":        return <SyncTool data={data} companion={companion} />;
+    case "report":      return <ReportTool data={data} companion={companion} />;
+    case "release":     return <ReleaseTool data={data} companion={companion} />;
     case "buildscript": return <BuildScriptTool data={data} companion={companion} />;
     case "deploy":      return <DeployTool data={data} companion={companion} />;
     case "snapshot":    return <SnapshotTool data={data} />;
@@ -66,29 +66,35 @@ function ToolBody({ id, data, companion }) {
 
 // ── Helpers ──────────────────────────────────────────────────
 
-function useClaudeRun() {
+function useClaudeRun(companion) {
   const [status, setStatus] = useToolState("idle");
   const [output, setOutput] = useToolState("");
   const [err, setErr]       = useToolState("");
   const run = async (prompt) => {
     setStatus("working"); setOutput(""); setErr("");
     try {
-      if (!window.claude?.complete) {
-        // window.claude.complete only exists inside the live Claude artifact runtime —
-        // not in the design preview and not on a static host like GitHub Pages.
-        // Degrade gracefully: hand the user the prompt to run themselves.
-        await navigator.clipboard?.writeText?.(prompt).catch(() => {});
-        setOutput(
-          "The in-page AI runner only works inside the live Claude artifact. " +
-          "On a static host (GitHub Pages) there's no model to call.\n\n" +
-          "→ The generated prompt has been copied to your clipboard — paste it into " +
-          "Claude (or any LLM) to get the result.\n\n———— PROMPT ————\n\n" + prompt
-        );
-        setStatus("info");
+      // 1) Prefer the local companion's Claude CLI when it's connected.
+      if (companion && companion.status === "connected") {
+        const res = await companion.askClaude(prompt);
+        if (res && res.error) { setErr(res.error); setStatus("err"); return; }
+        setOutput((res && res.output) || ""); setStatus("ok");
         return;
       }
-      const text = await window.claude.complete(prompt);
-      setOutput(text); setStatus("ok");
+      // 2) Fall back to the in-artifact runtime model if present.
+      if (window.claude?.complete) {
+        const text = await window.claude.complete(prompt);
+        setOutput(text); setStatus("ok");
+        return;
+      }
+      // 3) Static host, no companion: hand the user the prompt to run themselves.
+      await navigator.clipboard?.writeText?.(prompt).catch(() => {});
+      setOutput(
+        "No AI runner available. Connect the local companion (it routes to the Claude CLI), " +
+        "or open this inside the live Claude artifact.\n\n" +
+        "→ The generated prompt has been copied to your clipboard — paste it into " +
+        "Claude (or any LLM) to get the result.\n\n———— PROMPT ————\n\n" + prompt
+      );
+      setStatus("info");
     } catch (e) { setErr(String(e?.message || e)); setStatus("err"); }
   };
   return { status, output, err, run };
@@ -111,7 +117,7 @@ function StatusLine({ status, err, okText = "ready" }) {
   const cls = status === "working" ? "working" : status === "err" ? "err" : status === "info" ? "info" : "ok";
   return (
     <div className={"tool-status " + cls}>
-      {status === "working" && "▮ Claude is thinking…"}
+      {status === "working" && "▮ Running…"}
       {status === "ok"      && `✓ ${okText}`}
       {status === "info"    && "→ prompt copied — paste into Claude to run"}
       {status === "err"     && `✗ ${err}`}
@@ -188,9 +194,9 @@ function CompanionTool({ companion }) {
 
 // ── Sync from docs ───────────────────────────────────────────
 
-function SyncTool({ data }) {
+function SyncTool({ data, companion }) {
   const [pasted, setPasted] = useToolState("");
-  const { status, output, err, run } = useClaudeRun();
+  const { status, output, err, run } = useClaudeRun(companion);
 
   const onRun = () => {
     if (!pasted.trim()) return;
@@ -232,8 +238,8 @@ ${pasted}
 
 // ── Status report ────────────────────────────────────────────
 
-function ReportTool({ data }) {
-  const { status, output, err, run } = useClaudeRun();
+function ReportTool({ data, companion }) {
+  const { status, output, err, run } = useClaudeRun(companion);
   const onRun = () => {
     const shipped  = data.cards.filter((c) => c.status === "shipped").length;
     const inprog   = data.cards.filter((c) => c.status === "in-progress").length;
@@ -260,8 +266,8 @@ Tone: confident, plain English, no jargon. End with the single biggest unblocker
 
 // ── Release notes ────────────────────────────────────────────
 
-function ReleaseTool({ data }) {
-  const { status, output, err, run } = useClaudeRun();
+function ReleaseTool({ data, companion }) {
+  const { status, output, err, run } = useClaudeRun(companion);
   const onRun = () => {
     const shipped  = data.cards.filter((c) => c.status === "shipped");
     const byGroup  = {};

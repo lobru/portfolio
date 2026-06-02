@@ -267,7 +267,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except: pass
     def _run_claude(self, body):
         try:
-            r = subprocess.run([ARGS.claude_cli, "-p", body.get("prompt",""), "--no-streaming"],
+            r = subprocess.run([ARGS.claude_cli, "-p", body.get("prompt","")],
                 capture_output=True, text=True, timeout=120)
             return {"output": r.stdout or r.stderr, "returncode": r.returncode}
         except FileNotFoundError:
