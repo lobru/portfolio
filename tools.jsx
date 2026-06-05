@@ -178,7 +178,7 @@ function CompanionTool({ companion }) {
       </div>
       <div className="tool-actions" style={{ marginTop: 6 }}>
         <button className="tool-btn primary" onClick={download}>
-          {downloaded ? "Re-download companion.py" : "Download companion.py"}
+          {downloaded ? "Re-download companion.py (v2)" : "Download companion.py (v2)"}
         </button>
       </div>
       {downloaded && (

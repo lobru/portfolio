@@ -4,8 +4,7 @@ setlocal EnableExtensions
 REM ===========================================================
 REM  Claude Design -> Repo deploy script
 REM  Drag a .zip downloaded from Claude Design onto this file.
-REM  Extracts, copies into the repo, auto-busts script caches,
-REM  commits, and pushes.
+REM  Extracts, copies into the repo, commits, and pushes.
 REM ===========================================================
 
 set "REPO=%~dp0"
@@ -87,15 +86,6 @@ if errorlevel 8 (
   pause
   exit /b 1
 )
-
-REM ===========================================================
-REM  Cache-bust: stamp a fresh version on every local script
-REM  include so browsers never serve a stale .jsx (this is what
-REM  caused the old companion.py to keep downloading).
-REM ===========================================================
-echo.
-echo    Cache-busting script includes...
-powershell -NoProfile -Command "$v = Get-Date -Format 'yyyyMMddHHmmss'; $q = [char]34; Get-ChildItem -LiteralPath '%REPO%' -Filter '*.html' | ForEach-Object { $p = $_.FullName; $t = [IO.File]::ReadAllText($p); $n = [regex]::Replace($t, '\.jsx\?v=[0-9A-Za-z]+' + $q, '.jsx?v=' + $v + $q); $n = [regex]::Replace($n, '\.jsx' + $q, '.jsx?v=' + $v + $q); if ($n -ne $t) { [IO.File]::WriteAllText($p, $n); Write-Host ('      stamped ' + $_.Name) } }"
 
 pushd "%REPO%"
 

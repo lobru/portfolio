@@ -108,3 +108,33 @@ Done — it's now part of the auto-sync.
 - **Visual/layout changes** (CSS, new sections, new card fields) → Claude Design.
 - **Screenshots & videos** → drop files in `media/…` and add them to `meta.gallery`
   / `meta.videos`; see `CONTENT_UPDATE_GUIDE.md` for the schema.
+
+---
+
+## ⚠ When you change a `.jsx` file — bump the cache-bust version
+
+The dashboards load local scripts with a version query, e.g.
+`<script src="companion.jsx?v=3">`. Browsers (and GitHub Pages) cache `.jsx`
+aggressively, so **a redeploy alone will NOT update returning visitors** — they
+keep running the cached old file. This is exactly why an updated `companion.py`
+can still download as the old version after deploy.
+
+**Whenever you edit `companion.jsx`, `tools.jsx`, `recruiter.jsx`, `dashboard.jsx`,
+`setup.jsx`, or any `*-depgraph.jsx` / `tweaks-panel.jsx`:**
+
+1. Increment the `?v=N` number on that script's `<script src=…>` tags across all
+   pages that include it (`imguicolortextedit.html`, `UEVR-*-Dashboard.html`,
+   `setup.html`, `index-export.html`). Bumping them all together is simplest.
+2. If you changed `companion.jsx`'s server template, also bump the `companionVersion`
+   integer in `generateCompanionPy` **and** the "(vN)" label on the download button
+   in `tools.jsx`, so users get the re-download nudge and can verify which build
+   they have.
+3. Commit + push. Returning visitors now fetch the fresh file; do one hard refresh
+   (Ctrl+Shift+R) yourself to confirm.
+
+Quick way to bump every local include at once — run in the repo root:
+```bash
+# bump v=3 → v=4 across all HTML
+sed -i '' -E 's/\.jsx\?v=3"/.jsx?v=4"/g' *.html   # macOS; drop the '' on Linux
+```
+
