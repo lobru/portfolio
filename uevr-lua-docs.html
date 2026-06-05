@@ -124,6 +124,64 @@ a:hover{text-decoration:underline;}
   </main>
 </div>
 
+<script type="application/json" id="docs-manifest">
+{
+  "collections": [
+    {
+      "id": "luavrlib",
+      "label": "Lua Library",
+      "subtitle": "UEVR scripting guides & reference",
+      "repoUrl": "https://github.com/lobotomy-x/Unreal-Lua-Library",
+      "dashboard": "UEVR-Luavrlib-Dashboard.html",
+      "base": "https://raw.githubusercontent.com/lobotomy-x/Unreal-Lua-Library/main/",
+      "docs": [
+        { "id": "overview",   "title": "Overview",                          "group": "About",            "file": "README.md" },
+        { "id": "lua-primer", "title": "Lua for Normal Programmers",        "group": "Guides",           "file": "Docs/UEVR/Lua For Normal Programmers.md" },
+        { "id": "lua-tables", "title": "Optimizing Lua Tables",             "group": "Guides",           "file": "Docs/UEVR/LuaTablesBreakdown.md" },
+        { "id": "usertypes",  "title": "Metatables & Usertype Extensions",  "group": "Guides",           "file": "Docs/UEVR/ExtendingLuaTypes.md" },
+        { "id": "glm",        "title": "Extending GLM Math Types",          "group": "Guides",           "file": "Docs/UEVR/Extending GLM.md" },
+        { "id": "out-params", "title": "Automatic UFUNCTION Out Parameters","group": "API & reference",  "file": "Docs/UEVR/Automatic Out Parameters.md" },
+        { "id": "draw-api",   "title": "Draw API",                          "group": "API & reference",  "file": "Docs/UEVR/DrawAPI.md" },
+        { "id": "styling",    "title": "Styling the UEVR Main GUI",         "group": "API & reference",  "file": "Docs/UEVR/Styling the UEVR Main GUI from Lua.md" },
+        { "id": "bonetree",   "title": "Bone Tree (snippet)",               "group": "Snippets",         "file": "Docs/UEVR/BoneTree.md" }
+      ]
+    },
+    {
+      "id": "uevr-api",
+      "label": "UEVR Lua API",
+      "subtitle": "Reflected API reference (uevr-docs fork)",
+      "repoUrl": "https://github.com/lobotomy-x/uevr-docs",
+      "dashboard": "UEVR-Luavrlib-Dashboard.html",
+      "base": "https://raw.githubusercontent.com/lobotomy-x/uevr-docs/main/src/plugins/lua/",
+      "docs": [
+        { "id": "ov-api",          "title": "Overview",              "group": "About",    "file": "lua.md" },
+        { "id": "api",             "title": "api — global object",   "group": "Core",     "file": "api.md" },
+        { "id": "callbacks",       "title": "Callbacks",             "group": "Core",     "file": "callbacks.md" },
+        { "id": "b-draw",          "title": "draw",                  "group": "Bindings", "file": "additional-bindings/draw.md" },
+        { "id": "b-imgui",         "title": "imgui",                 "group": "Bindings", "file": "additional-bindings/imgui.md" },
+        { "id": "b-fs",            "title": "fs",                    "group": "Bindings", "file": "additional-bindings/fs.md" },
+        { "id": "b-json",          "title": "json",                  "group": "Bindings", "file": "additional-bindings/json.md" },
+        { "id": "t-uobject",       "title": "UObject",               "group": "Types",    "file": "types/UObject.md" },
+        { "id": "t-uclass",        "title": "UClass",                "group": "Types",    "file": "types/UClass.md" },
+        { "id": "t-ufunction",     "title": "UFunction",             "group": "Types",    "file": "types/UFunction.md" },
+        { "id": "t-ustruct",       "title": "UStruct",               "group": "Types",    "file": "types/UStruct.md" },
+        { "id": "t-uenum",         "title": "UEnum",                 "group": "Types",    "file": "types/UEnum.md" },
+        { "id": "t-uobjecthook",   "title": "UObjectHook",           "group": "Types",    "file": "types/UObjectHook.md" },
+        { "id": "t-fproperty",     "title": "FProperty",             "group": "Types",    "file": "types/FProperty.md" },
+        { "id": "t-fname",         "title": "FName",                 "group": "Types",    "file": "types/FName.md" },
+        { "id": "t-ffield",        "title": "FField",                "group": "Types",    "file": "types/FField.md" },
+        { "id": "t-fconsole",      "title": "FConsoleManager",       "group": "Types",    "file": "types/FConsoleManager.md" },
+        { "id": "t-fuobjectarray", "title": "FUObjectArray",         "group": "Types",    "file": "types/FUObjectArray.md" },
+        { "id": "t-vector",        "title": "Vector",                "group": "Math",     "file": "types/Vector.md" },
+        { "id": "t-quat",          "title": "Quaternion",            "group": "Math",     "file": "types/Quaternion.md" },
+        { "id": "t-structobject",  "title": "StructObject",          "group": "Types",    "file": "types/StructObject.md" },
+        { "id": "t-mcs",           "title": "MotionControllerState", "group": "VR",       "file": "types/MotionControllerState.md" },
+        { "id": "t-vrdata",        "title": "UEVR_VRData",           "group": "VR",       "file": "cwrappers/UEVR_VRData.md" }
+      ]
+    }
+  ]
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script>
 (async function () {
@@ -225,11 +283,20 @@ a:hover{text-decoration:underline;}
 
   if (window.marked && marked.setOptions) marked.setOptions({ gfm: true, breaks: false });
 
+  // Manifest is embedded inline (below) so the page never depends on a relative
+  // fetch — only the .md doc CONTENT is pulled live from the source repos.
   try {
-    const res = await fetch("Docs/manifest.json");
-    manifest = await res.json();
+    const inline = document.getElementById("docs-manifest");
+    if (inline && inline.textContent.trim()) {
+      manifest = JSON.parse(inline.textContent);
+    } else {
+      const res = await fetch("Docs/manifest.json", { cache: "no-cache" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      manifest = JSON.parse(await res.text());
+    }
   } catch (e) {
-    $("docBody").innerHTML = '<div class="loading">⚠ Could not load Docs/manifest.json — ' + e.message + '</div>';
+    $("docBody").innerHTML =
+      '<div class="loading">⚠ Could not load the docs manifest — ' + e.message + '.</div>';
     return;
   }
   window.addEventListener("hashchange", applyHash);
