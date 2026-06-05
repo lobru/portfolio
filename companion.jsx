@@ -265,6 +265,16 @@ def parse_args():
 ARGS = parse_args()
 IS_WIN = sys.platform == "win32"
 
+# Force UTF-8 everywhere so Unicode in build output / prompts (e.g. arrows, box
+# chars) doesn't crash on Windows' default cp1252 console.
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+os.environ.setdefault("PYTHONUTF8", "1")
+os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+
 def resolve_cli(name):
     """Find the Claude CLI even when it's a .cmd/.ps1 shim (common on Windows)."""
     if os.path.sep in name and os.path.exists(name):
@@ -321,7 +331,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             cmd = (["powershell", "-ExecutionPolicy", "Bypass", "-File", fname]
                    if IS_WIN else ["bash", fname])
             if not IS_WIN: os.chmod(fname, 0o755)
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=300, cwd=cwd)
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=300, cwd=cwd,
+                               encoding="utf-8", errors="replace")
             return {"stdout": r.stdout, "stderr": r.stderr, "returncode": r.returncode}
         except Exception as e:
             return {"error": str(e)}
@@ -337,11 +348,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if IS_WIN:
                 r = subprocess.run(
                     '"' + CLAUDE + '" -p --output-format text',
-                    input=prompt, capture_output=True, text=True, timeout=180, shell=True)
+                    input=prompt, capture_output=True, text=True, timeout=180, shell=True,
+                    encoding="utf-8", errors="replace")
             else:
                 r = subprocess.run(
                     [CLAUDE, "-p", "--output-format", "text"],
-                    input=prompt, capture_output=True, text=True, timeout=180)
+                    input=prompt, capture_output=True, text=True, timeout=180,
+                    encoding="utf-8", errors="replace")
         except FileNotFoundError:
             return {"error": "Claude CLI not found ('" + str(CLAUDE) + "'). "
                              "Install it or run with --claude-cli /full/path."}
@@ -356,7 +369,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return {"error": "Claude CLI produced no output (exit " + str(r.returncode) + "). "
                          + ((r.stderr or "").strip()[:800] or "Is the CLI authenticated? Try 'claude -p hello' in a terminal.")}
     def log_message(self, fmt, *args):
-        sys.stderr.write("[companion] " + (fmt % args) + "\\n")
+        try:
+            sys.stderr.write("[companion] " + (fmt % args) + "\\n")
+        except Exception:
+            pass
 
 class Server(socketserver.ThreadingMixIn, http.server.HTTPServer):
     daemon_threads = True
