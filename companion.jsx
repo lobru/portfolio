@@ -141,12 +141,22 @@ function CompanionBanner({ companion }) {
 // ────────────────────────────────────────────────────────────
 // AskClaudeBar — mounts inside an expanded Card
 // ────────────────────────────────────────────────────────────
+// Persist Ask-Claude state per card so collapsing/re-opening a card
+// (which unmounts this component) doesn't lose the prompt or the reply.
+const ASK_CACHE = (window.__askClaudeCache = window.__askClaudeCache || {});
+
 function AskClaudeBar({ card, companion }) {
-  const [open,   setOpen]   = useCState(false);
-  const [text,   setText]   = useCState("");
-  const [status, setStatus] = useCState("idle");
-  const [reply,  setReply]  = useCState("");
+  const cache = ASK_CACHE[card.id] || {};
+  const [open,   setOpen]   = useCState(cache.open   || false);
+  const [text,   setText]   = useCState(cache.text   || "");
+  const [status, setStatus] = useCState(cache.status || "idle");
+  const [reply,  setReply]  = useCState(cache.reply  || "");
   const connected = companion?.status === "connected";
+
+  // Mirror every state change into the module-level cache.
+  useCEffect(() => {
+    ASK_CACHE[card.id] = { open, text, status, reply };
+  }, [card.id, open, text, status, reply]);
 
   const buildPrompt = () => [
     `You are reviewing a code change in the ImGuiColorTextEdit project.`,

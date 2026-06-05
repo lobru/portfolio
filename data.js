@@ -184,6 +184,15 @@ window.PROGRESS_DATA = {
       blurb: "Ctrl + mouse wheel zooms the font size live (toggleable in Settings). Uses Dear ImGui v1.92 dynamic font sizing.",
       files: ["example/editor.cpp"],
     },
+    {
+      id: "minimap",
+      title: "Scrollbar minimap",
+      status: "shipped",
+      group: "Editing & View",
+      tags: ["feature"],
+      blurb: "Optional minimap renders cursor, selection, and marker locations down the scrollbar lane for at-a-glance document overview.",
+      files: ["TextEditor.cpp"],
+    },
 
     // ── SHIPPED · Fold Engine ──
     {
@@ -662,7 +671,7 @@ window.PROGRESS_DATA = {
       changes: [
         "Word wrap: buildWrapRows, wrap-aware mouse + cursor, wrap width",
         "Fold engine: Python indent, Lua keyword, INI section, comment runs, previews, AA arrows",
-        "Pan/scroll indicator",
+        "Pan/scroll indicator + minimap",
         "GetWordAt / GetCurrentSelectionText",
         "Hardcoded Language::Ini() tokenizer",
         "Coordinate / scroll / fold-click bug fixes",
