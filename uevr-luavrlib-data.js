@@ -30,13 +30,13 @@ window.PROGRESS_DATA = {
   meta: {
     project:     "UEVR",
     branch:      "luavrlib",
-    version:     "luavrlib-2026-05",
+    version:     "luavrlib-2026-06",
     baseline:    "praydog/UEVR · master",
     repoPath:    "UEVR · luavrlib",
     repoUrl:     "https://github.com/lobotomy-x/UEVR/tree/luavrlib",
-    lastUpdated: "2026-06-05",
-    docCount:    4,
-    sessionId:   "luavrlib · code-complete 2026-06",
+    lastUpdated: "2026-06-11",
+    docCount:    8,
+    sessionId:   "luavrlib · reflection workbench 2026-06",
 
     // ─── Dev-view header split ─────────────────────────────────────
     // Controls the colored split: titlePrefix + titleAccent + titleSuffix
@@ -71,9 +71,9 @@ window.PROGRESS_DATA = {
 
     // Impact numbers — real numbers only
     impactNumbers: [
-      { num: "24",   label: "features + fixes", sub: "shipped on the luavrlib branch" },
+      { num: "30+",  label: "features + fixes", sub: "shipped on the luavrlib branch" },
       { num: "5 yr", label: "ImGui upgrade",    sub: "pre-docking → v1.92 · multi-viewport in an injected DLL" },
-      { num: "6 wk", label: "active sprint",    sub: "April 14 → May 28, 2026" },
+      { num: "8 wk", label: "active sprint",    sub: "April 14 → June 11, 2026" },
     ],
 
     // §01 — What was added (plain English, no class/function names)
@@ -86,16 +86,16 @@ window.PROGRESS_DATA = {
         desc: "Scripts can now spawn worker threads that run in the background and share data with the main script without stalling the game." },
       { name: "Full property-type coverage",
         desc: "Reading arrays of numbers, strings, or objects from the game engine now returns correct values for every type, and the inspector surfaces the harder Unreal property kinds (weak / lazy / soft references, delegates, maps, sets) that previously returned nothing." },
-      { name: "Math library rewrite",
-        desc: "The vector, quaternion, matrix, and transform types were rewritten from scratch — full precision options, all arithmetic operations, and composable transforms." },
-      { name: "Live function caller + Class Browser",
-        desc: "A pinned workbench panel — plus dockable Class Browser and Function Caller windows — lets you drop any in-game object onto a slot and call functions on it directly, or type a class/object name to resolve it, without navigating the class tree each time." },
-      { name: "Drag-and-drop wiring",
-        desc: "Any object or class in the inspector can now be dragged directly into function parameter slots, making it faster to test and invoke game functions." },
-      { name: "Function parameter editor",
-        desc: "Calling a game function now shows a real input form for each parameter — sliders for numbers, text fields for strings, color pickers for colors — and displays the return value." },
-      { name: "Multi-window rendering stabilised",
-        desc: "Fixed three crashes that occurred when the overlay was torn out into a separate window. Two remaining input routing issues are actively being worked on." },
+      { name: "Universal object picker + struct call params",
+        desc: "One reusable widget for every object-typed slot — drag a target in, type a name or address, or search a pick popup with quick-picks (World / PlayerController / Pawn / Camera). Calling a function now flattens any struct parameter (even a nested FTransform) into editable fields, sized from the engine's own layout so there's no UE4-vs-UE5 padding guesswork." },
+      { name: "Reflection workbench — Class Browser, Function Caller, instance inspector",
+        desc: "Dockable Class Browser and Function Caller windows, an instance inspector pane, and a function list you can group by the class that declares each function — a full reflection workbench for poking at a running game's objects." },
+      { name: "Transform gizmo + sidebar dev tools",
+        desc: "A screen-space gizmo translates and rotates the selected component by dragging (tunable axis length, world scale, quaternion rotation, reset, multi-axis), alongside a dev-tools sidebar: selection, freecam and camera modes, pause, and batch editing of collision shapes." },
+      { name: "Lua scripting IDE plugin",
+        desc: "A built-in scripting plugin with a live REPL, object inspector, VR, console, and bridge tabs — so you can write and iterate on Unreal VR scripts without leaving the game." },
+      { name: "Crash hardening across the Lua layer",
+        desc: "A bad script can no longer take down the game: script resets, the C plugin interface, and identity-quaternion math were all hardened after an adversarial review found and fixed the edge cases." },
     ],
 
     // §02 — Highlight card IDs (6 showing breadth)
@@ -136,7 +136,7 @@ window.PROGRESS_DATA = {
 
   // Top-level vitals — the numbers that anchor the header.
   vitals: {
-    shipped: 24,
+    shipped: 32,
     inProgress: 2,
     open: 3,
     blocked: 0,
@@ -150,6 +150,77 @@ window.PROGRESS_DATA = {
 
   // ───────────── Kanban: every change as a card. ─────────────
   cards: [
+    // ── SHIPPED · Reflection Workbench (June) ──
+    {
+      id: "object-picker",
+      title: "Universal object picker (T63)",
+      status: "shipped",
+      group: "UObjectHook UI",
+      tags: ["new-surface", "ux"],
+      blurb: "One reusable widget for every UObject param + caller slot: drop target, short-name / 0xADDR text resolve, searchable pick popup, common-object quick-picks, instances↔classes toggle.",
+      detail: "Quick-picks resolve World / PlayerController / Pawn / Camera; gather_common_objects is memoized per ImGui frame. Replaces the bespoke per-slot pickers everywhere a UObject is needed.",
+      files: ["src/mods/uobjecthook/UObjectHook.cpp"],
+    },
+    {
+      id: "struct-params",
+      title: "Generic struct call params (T64)",
+      status: "shipped",
+      group: "UObjectHook UI",
+      tags: ["new-surface", "reflection"],
+      blurb: "collect_struct_leaves recursively flattens any struct param to scalar leaves — FTransform → Rotation / Translation / Scale3D — each field width driven by its own FProperty.",
+      detail: "Walks the SuperStruct chain so inheriting structs encode completely; every nested write is bounds-checked against the param buffer. Non-numeric structs fall back to an editable inline-Lua snippet. No UE4/UE5 padding guesswork.",
+      files: ["src/mods/uobjecthook/UObjectHook.cpp"],
+    },
+    {
+      id: "class-browser",
+      title: "Dockable Class Browser + Function Caller windows",
+      status: "shipped",
+      group: "UObjectHook UI",
+      tags: ["new-surface", "ux"],
+      blurb: "Standalone dockable windows: Class Browser (Classes / ScriptStructs / Enums / Functions tabs, filter, drag sources) and a Function Caller sharing state with the inline caller.",
+      detail: "Plus a text-input fallback on every drop target — type a short name, full Class /Script/... name, or 0xADDR and hit Enter to resolve. Mirrors the Scripts/ImGui.lua object_lookup pattern.",
+      files: ["src/mods/uobjecthook/UObjectHook.cpp"],
+    },
+    {
+      id: "group-by-class",
+      title: "Group functions by declaring class",
+      status: "shipped",
+      group: "UObjectHook UI",
+      tags: ["ux"],
+      blurb: "Toggle that splits a flat function list into per-declaring-class tree nodes (most-derived first, with counts) instead of one alphabetical wall.",
+      files: ["src/mods/uobjecthook/UObjectHook.cpp"],
+    },
+    {
+      id: "gizmo",
+      title: "Screen-space transform gizmo + dev sidebar",
+      status: "shipped",
+      group: "UObjectHook UI",
+      tags: ["new-surface", "ux"],
+      blurb: "Drag a screen-space gizmo to translate / rotate the selected component (tunable axis length, world scale, quaternion rotation, reset, multi-axis), plus a dev-tools sidebar.",
+      detail: "Sidebar: selection, freecam + camera modes, pause, and batch editing of ShapeComponents. Middle-mouse drag-to-pan works in every scroll region.",
+      files: ["src/mods/uobjecthook/UObjectHook.cpp"],
+    },
+    {
+      id: "lua-ide-plugin",
+      title: "Lua scripting IDE plugin (v2)",
+      status: "shipped",
+      group: "Lua API",
+      tags: ["new-surface", "tooling"],
+      blurb: "Built-in lua_imgui_plugin with REPL, UObject inspector, VR, Console, and Bridge tabs for writing Unreal VR scripts in-game.",
+      detail: "Shipped alongside api_test_plugin; the C plugin interface (PluginLoader) had 13 missing function-pointer fields wired so C plugins no longer crash on those calls.",
+      files: ["lua-api/plugins/lua_imgui_plugin.cpp", "lua-api/PluginLoader.cpp"],
+    },
+    {
+      id: "lua-crash-guard",
+      title: "Lua crash hardening + C-API review",
+      status: "shipped",
+      group: "Lua API",
+      tags: ["bug-fix", "crash-fix"],
+      blurb: "reset_scripts wraps each script in try/catch so a Lua panic can't take down the frame loop; identity-quaternion and broken ImGui color bindings fixed in a consolidated review.",
+      detail: "Quaternion(0,0,0,1) is a 180° rotation under glm's (w,x,y,z) ctor → fixed to (1,0,0,0). ColorPicker4 / ColorEdit4 / drawlist ImU32 bindings repaired. Three missing C-API pointers (get_or_add_component, attach_to, get_angular_velocity) wired.",
+      files: ["src/mods/LuaLoader.cpp", "lua-api/datatypes/Transform.cpp", "lua-api/api/imgui_bindings.cpp"],
+    },
+
     // ── SHIPPED · Lua API ──
     {
       id: "api-fast",
@@ -711,8 +782,11 @@ window.PROGRESS_DATA = {
     { date: "2026-05-18", label: "UObjectHook menu rewrite", kind: "ship", cardId: "fn-editor" },
     { date: "2026-05-22", label: "Live Function Caller pinned", kind: "ship", cardId: "live-caller" },
     { date: "2026-05-25", label: "Multi-viewport re-enabled w/ candidate fixes", kind: "ship", cardId: "mv-pump" },
-    { date: "2026-06-03", label: "Dockable Class Browser + Function Caller + text-input drop", kind: "ship", cardId: "live-caller" },
-    { date: "Jun 2026", label: "Code complete — awaiting in-game verification", kind: "in-progress" },
+    { date: "2026-06-03", label: "Dockable Class Browser + Function Caller + text-input drop", kind: "ship", cardId: "class-browser" },
+    { date: "2026-06-07", label: "Universal object picker + generic struct call params", kind: "ship", cardId: "struct-params" },
+    { date: "2026-06-10", label: "Transform gizmo + dev sidebar + Lua IDE plugin v2", kind: "ship", cardId: "gizmo" },
+    { date: "2026-06-11", label: "Lua crash hardening + C-API review consolidated", kind: "ship", cardId: "lua-crash-guard" },
+    { date: "Jun 2026", label: "Reflection workbench complete — awaiting in-game verification", kind: "in-progress" },
     { date: "→ next", label: "Audit WndProc plumbing (Plan §1)", kind: "next" },
     { date: "→ next", label: "Smoke-test mouse routing (Plan §2)", kind: "next" },
     { date: "→ next", label: "Z-order restoration (Plan §3)", kind: "next" },

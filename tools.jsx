@@ -66,38 +66,65 @@ function ToolBody({ id, data, companion }) {
 
 // ── Helpers ──────────────────────────────────────────────────
 
-function useClaudeRun(companion) {
-  const [status, setStatus] = useToolState("idle");
-  const [output, setOutput] = useToolState("");
-  const [err, setErr]       = useToolState("");
+// Persist tool AI-run state across drawer close / view switch / reload so a
+// long "Generate status report" isn't lost when you navigate away mid-run.
+// Module-level cache keeps an in-flight run alive within the page; localStorage
+// keeps the finished result available after a full reload.
+const RUN_CACHE = (window.__toolRunCache = window.__toolRunCache || {});
+function runLsKey(k) { return "imgui_toolrun_" + k; }
+function loadRun(k) {
+  if (RUN_CACHE[k]) return RUN_CACHE[k];
+  try {
+    const v = JSON.parse(localStorage.getItem(runLsKey(k)) || "null");
+    if (v) RUN_CACHE[k] = v;
+    return v;
+  } catch (e) { return null; }
+}
+function saveRun(k, v) {
+  RUN_CACHE[k] = v;
+  // Don't persist a transient "working" state to disk — a reload kills the
+  // fetch, so a stuck "working" would never resolve. Only persist terminals.
+  try {
+    if (v && v.status !== "working") localStorage.setItem(runLsKey(k), JSON.stringify(v));
+  } catch (e) {}
+}
+
+function useClaudeRun(companion, cacheKey) {
+  const cached = cacheKey ? loadRun(cacheKey) : null;
+  const [status, setStatus] = useToolState((cached && cached.status) || "idle");
+  const [output, setOutput] = useToolState((cached && cached.output) || "");
+  const [err, setErr]       = useToolState((cached && cached.err) || "");
+  const commit = (s, o, e) => {
+    setStatus(s); setOutput(o); setErr(e);
+    if (cacheKey) saveRun(cacheKey, { status: s, output: o, err: e });
+  };
   const run = async (prompt) => {
-    setStatus("working"); setOutput(""); setErr("");
+    commit("working", "", "");
     try {
       // 1) Prefer the local companion's Claude CLI when it's connected.
       if (companion && companion.status === "connected") {
         const res = await companion.askClaude(prompt);
-        if (res && res.error) { setErr(res.error); setStatus("err"); return; }
-        setOutput((res && res.output) || ""); setStatus("ok");
+        if (res && res.error) { commit("err", "", res.error); return; }
+        commit("ok", (res && res.output) || "", "");
         return;
       }
       // 2) Fall back to the in-artifact runtime model if present.
       if (window.claude?.complete) {
         const text = await window.claude.complete(prompt);
-        setOutput(text); setStatus("ok");
+        commit("ok", text, "");
         return;
       }
       // 3) Static host, no companion: hand the user the prompt to run themselves.
       await navigator.clipboard?.writeText?.(prompt).catch(() => {});
-      setOutput(
+      commit("info",
         "No AI runner available. Connect the local companion (it routes to the Claude CLI), " +
         "or open this inside the live Claude artifact.\n\n" +
         "→ The generated prompt has been copied to your clipboard — paste it into " +
-        "Claude (or any LLM) to get the result.\n\n———— PROMPT ————\n\n" + prompt
-      );
-      setStatus("info");
-    } catch (e) { setErr(String(e?.message || e)); setStatus("err"); }
+        "Claude (or any LLM) to get the result.\n\n———— PROMPT ————\n\n" + prompt, "");
+    } catch (e) { commit("err", "", String(e?.message || e)); }
   };
-  return { status, output, err, run };
+  const clear = () => { commit("idle", "", ""); if (cacheKey) { try { localStorage.removeItem(runLsKey(cacheKey)); } catch (e) {} } };
+  return { status, output, err, run, clear };
 }
 
 function copyToClipboard(text) {
@@ -196,7 +223,7 @@ function CompanionTool({ companion }) {
 
 function SyncTool({ data, companion }) {
   const [pasted, setPasted] = useToolState("");
-  const { status, output, err, run } = useClaudeRun(companion);
+  const { status, output, err, run } = useClaudeRun(companion, "sync");
 
   const onRun = () => {
     if (!pasted.trim()) return;
@@ -239,7 +266,7 @@ ${pasted}
 // ── Status report ────────────────────────────────────────────
 
 function ReportTool({ data, companion }) {
-  const { status, output, err, run } = useClaudeRun(companion);
+  const { status, output, err, run } = useClaudeRun(companion, "report");
   const onRun = () => {
     const shipped  = data.cards.filter((c) => c.status === "shipped").length;
     const inprog   = data.cards.filter((c) => c.status === "in-progress").length;
@@ -267,7 +294,7 @@ Tone: confident, plain English, no jargon. End with the single biggest unblocker
 // ── Release notes ────────────────────────────────────────────
 
 function ReleaseTool({ data, companion }) {
-  const { status, output, err, run } = useClaudeRun(companion);
+  const { status, output, err, run } = useClaudeRun(companion, "release");
   const onRun = () => {
     const shipped  = data.cards.filter((c) => c.status === "shipped");
     const byGroup  = {};
