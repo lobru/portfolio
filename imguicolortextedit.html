@@ -693,6 +693,29 @@ pre,code,kbd { font-family:var(--font-mono); }
 .rec-impact-label { font-size:16px; color:var(--text); font-weight:500; }
 .rec-impact-sub   { font-size:12.5px; color:var(--muted); font-family:var(--font-mono); }
 
+/* Download band */
+.rec-download { margin:0 0 40px; padding:24px 26px; background:var(--panel);
+  border:1px solid color-mix(in oklab,var(--accent) 26%,var(--line)); border-radius:var(--radius); }
+.rec-dl-head { display:flex; align-items:baseline; gap:12px; margin-bottom:16px; }
+.rec-dl-title { font-family:var(--font-display); font-size:22px; font-weight:600; margin:0; }
+.rec-dl-ver { font-family:var(--font-mono); font-size:12px; color:var(--muted); }
+.rec-dl-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+.rec-dl-card { display:flex; flex-direction:column; gap:10px; padding:18px 20px; text-decoration:none;
+  background:var(--bg); border:1px solid var(--line-2); border-radius:var(--radius-s);
+  transition:border-color .15s, transform .15s; }
+.rec-dl-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.rec-dl-card.primary { background:color-mix(in oklab,var(--accent) 10%,var(--bg));
+  border-color:color-mix(in oklab,var(--accent) 40%,var(--line)); }
+.rec-dl-card-top { display:flex; align-items:center; gap:14px; }
+.rec-dl-icon { font-size:22px; color:var(--accent); width:34px; height:34px; flex-shrink:0;
+  display:grid; place-items:center; border:1px solid var(--line-2); border-radius:8px; }
+.rec-dl-card-title { font-size:15px; font-weight:600; color:var(--text); }
+.rec-dl-card-file { font-family:var(--font-mono); font-size:11px; color:var(--muted); margin-top:2px; }
+.rec-dl-card-note { font-size:12.5px; color:var(--text-2); line-height:1.5; }
+.rec-dl-cta { font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--accent); margin-top:auto; }
+@media (max-width:760px){ .rec-dl-grid { grid-template-columns:1fr; } }
+
 .rec-about { padding-bottom:8px; }
 .rec-about-body { max-width:760px; }
 .rec-about p  { font-size:18px; line-height:1.6; color:var(--text); margin:0 0 20px; text-wrap:pretty; }
@@ -924,11 +947,11 @@ pre,code,kbd { font-family:var(--font-mono); }
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
 <script src="data.js"></script>
-<script type="text/babel" src="tweaks-panel.jsx?v=20260612135321"></script>
-<script type="text/babel" src="depgraph.jsx?v=20260612135321"></script>
-<script type="text/babel" src="companion.jsx?v=20260612135321"></script>
-<script type="text/babel" src="recruiter.jsx?v=20260612135321"></script>
-<script type="text/babel" src="tools.jsx?v=20260612135321"></script>
-<script type="text/babel" src="dashboard.jsx?v=20260612135321"></script>
+<script type="text/babel" src="tweaks-panel.jsx?v=20260617000237"></script>
+<script type="text/babel" src="depgraph.jsx?v=20260617000237"></script>
+<script type="text/babel" src="companion.jsx?v=20260617000237"></script>
+<script type="text/babel" src="recruiter.jsx?v=20260617000237"></script>
+<script type="text/babel" src="tools.jsx?v=20260617000237"></script>
+<script type="text/babel" src="dashboard.jsx?v=20260617000237"></script>
 </body>
 </html>

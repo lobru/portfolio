@@ -161,6 +161,42 @@ function RecruiterView({ data, onSwitchToDev }) {
         </div>
       }
 
+      {/* ══════════════ DOWNLOAD ══════════════ */}
+      {m.download &&
+      <section className="rec-download">
+          <div className="rec-dl-head">
+            <h2 className="rec-dl-title">Get {m.project}</h2>
+            <span className="rec-dl-ver">v{m.download.version}</span>
+          </div>
+          <div className="rec-dl-grid">
+            <a className="rec-dl-card primary" href={m.download.installerUrl} target="_blank" rel="noopener noreferrer">
+              <div className="rec-dl-card-top">
+                <span className="rec-dl-icon">⬇</span>
+                <div>
+                  <div className="rec-dl-card-title">Download for {m.download.platform || "Windows"}</div>
+                  <div className="rec-dl-card-file">{m.download.installerName}</div>
+                </div>
+              </div>
+              {m.download.installerNote && <div className="rec-dl-card-note">{m.download.installerNote}</div>}
+              <span className="rec-dl-cta">Get the installer ↗</span>
+            </a>
+            {m.download.htmlUrl &&
+            <a className="rec-dl-card" href={m.download.htmlUrl} target="_blank" rel="noopener noreferrer">
+                <div className="rec-dl-card-top">
+                  <span className="rec-dl-icon">▶</span>
+                  <div>
+                    <div className="rec-dl-card-title">Try the in-browser build</div>
+                    <div className="rec-dl-card-file">No install · WebAssembly</div>
+                  </div>
+                </div>
+                {m.download.htmlNote && <div className="rec-dl-card-note">{m.download.htmlNote}</div>}
+                <span className="rec-dl-cta">Open web version ↗</span>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
       {/* ══════════════ ABOUT ══════════════ */}
       <section className="rec-about" style={{ marginBottom: 40 }}>
         <div className="rec-section-head">

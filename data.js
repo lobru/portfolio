@@ -65,6 +65,14 @@ window.PROGRESS_DATA = {
       "Targeting Emscripten + embeddable-DLL builds for ReShade / UEVR overlay hosts",
     ],
     videos: [],
+
+    download: {
+      version: "1.0",
+      platform: "Windows · x64",
+      installerUrl: "https://github.com/lobru/ImGui-IDE/releases/tag/1.0",
+      installerName: "ImGui-IDE Setup · v1.0",
+      installerNote: "Inno Setup installer · Start-menu + desktop shortcuts · \"Open with ImGui-IDE\" Explorer integration",
+    },
   },
 
   vitals: {
