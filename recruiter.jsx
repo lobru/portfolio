@@ -75,7 +75,7 @@ function RecruiterView({ data, onSwitchToDev }) {
               </div>
               }
               <h1 className="rec-name">{m.project}</h1>
-              <div className="rec-role-line">Contributed by {m.author}</div>
+              <div className="rec-role-line">Created by {m.author}</div>
               {(m.tagline || m.description) && <p className="rec-bio">{m.tagline || m.description}</p>}
               {m.techStack &&
               <div className="rec-tech-chips">
@@ -89,6 +89,7 @@ function RecruiterView({ data, onSwitchToDev }) {
               <div className="rec-hero-actions">
                   <a href={m.repoUrl} target="_blank" rel="noopener noreferrer" className="rec-repo-btn">{"</>"}&nbsp; View source on GitHub ↗</a>
                   {m.docsUrl && <a href={m.docsUrl} className="rec-repo-btn ghost">Read the docs ↗</a>}
+                  {m.liveDemo && <a href={m.liveDemo.url} className="rec-repo-btn live">▶ {m.liveDemo.label}</a>}
                 </div>
               }
             </div>
