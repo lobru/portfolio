@@ -178,7 +178,6 @@ function RecruiterView({ data, onSwitchToDev }) {
                   <div className="rec-dl-card-file">{m.download.installerName}</div>
                 </div>
               </div>
-              {m.download.installerNote && <div className="rec-dl-card-note">{m.download.installerNote}</div>}
               <span className="rec-dl-cta">Get the installer ↗</span>
             </a>
             {m.download.htmlUrl &&
@@ -190,7 +189,6 @@ function RecruiterView({ data, onSwitchToDev }) {
                     <div className="rec-dl-card-file">No install · WebAssembly</div>
                   </div>
                 </div>
-                {m.download.htmlNote && <div className="rec-dl-card-note">{m.download.htmlNote}</div>}
                 <span className="rec-dl-cta">Open web version ↗</span>
               </a>
             }
