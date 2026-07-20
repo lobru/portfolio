@@ -30,9 +30,10 @@ window.PROGRESS_DATA = {
   meta: {
     project:     "UEVR",
     branch:      "luavrlib",
-    version:     "luavrlib-2026-06",
+    version:     "2026.06",
     baseline:    "praydog/UEVR · master",
     repoPath:    "UEVR · luavrlib",
+    branch:      "",
     repoUrl:     "https://github.com/lobotomy-x/UEVR/tree/luavrlib",
     lastUpdated: "2026-06-11",
     docCount:    8,
@@ -53,11 +54,13 @@ window.PROGRESS_DATA = {
     role:     "Engines · Graphics · UI / Tools · Offensive Security",
     location: "Orlando, FL",
     heroShot: {
-      src: "media/uevr-luavrlib/class-browser-function-caller.png",
-      caption: "Reflection-driven Class Browser, live Function Caller, and luavrlib panels — all docked via multi-viewport inside the injected DLL",
+      src: "media/uevr-luavrlib/uobjecthook-gizmo-class-browser.png",
+      caption: "UObjectHook: click-to-select gizmo on a live actor, spawn-actor panel, and the object browser — all running inside the game",
     },
     gallery: [
-      { src: "media/uevr-luavrlib/class-browser-function-caller.png", caption: "Class Browser + Function Caller + docked UEVR panels, running in-game" },
+      { src: "media/uevr-luavrlib/uobjecthook-gizmo-class-browser.png", caption: "Transform gizmo + UObjectHook browser on a selected, click-picked actor" },
+      { src: "media/uevr-luavrlib/uobjecthook-function-hooks.png", caption: "Function Hooks — flag, block, or monitor any reflected engine function live" },
+      { src: "media/uevr-luavrlib/capsule-tracer-demo.png", caption: "Capsule Tracer utility — one of the dockable dev-tool demos in the Utilities sidebar" },
     ],
     linkedIn: "https://linkedin.com/in/logan-brunet",
     github:   "https://github.com/lobotomy-x",
@@ -71,37 +74,53 @@ window.PROGRESS_DATA = {
 
     // Impact numbers — real numbers only
     impactNumbers: [
-      { num: "30+",  label: "features + fixes", sub: "shipped on the luavrlib branch" },
+      { num: "30+",  label: "features + fixes", sub: "shipped this sprint" },
       { num: "5 yr", label: "ImGui upgrade",    sub: "pre-docking → v1.92 · multi-viewport in an injected DLL" },
       { num: "8 wk", label: "active sprint",    sub: "April 14 → June 11, 2026" },
     ],
 
-    // §01 — What was added (plain English, no class/function names)
-    featuresAdded: [
-      { name: "Dear ImGui multi-year upgrade",
-        desc: "Brought the in-engine ImGui rendering stack forward roughly 5 years of upstream releases — from the pre-docking branch to v1.92 with full docking and multi-viewport (pop-out windows). Multi-viewport in an injected DLL context is unprecedented; the only comparable work is in native Unreal Engine ImGui plugins that have privileged access to platform process APIs." },
-      { name: "Fast actor transforms",
-        desc: "A new shortcut lets scripts move, rotate, and query in-game actors without going through the full reflection system — 3–5× faster per call." },
-      { name: "Background scripting threads",
-        desc: "Scripts can now spawn worker threads that run in the background and share data with the main script without stalling the game." },
-      { name: "Full property-type coverage",
-        desc: "Reading arrays of numbers, strings, or objects from the game engine now returns correct values for every type, and the inspector surfaces the harder Unreal property kinds (weak / lazy / soft references, delegates, maps, sets) that previously returned nothing." },
-      { name: "Universal object picker + struct call params",
-        desc: "One reusable widget for every object-typed slot — drag a target in, type a name or address, or search a pick popup with quick-picks (World / PlayerController / Pawn / Camera). Calling a function now flattens any struct parameter (even a nested FTransform) into editable fields, sized from the engine's own layout so there's no UE4-vs-UE5 padding guesswork." },
-      { name: "Reflection workbench — Class Browser, Function Caller, instance inspector",
-        desc: "Dockable Class Browser and Function Caller windows, an instance inspector pane, and a function list you can group by the class that declares each function — a full reflection workbench for poking at a running game's objects." },
-      { name: "Transform gizmo + sidebar dev tools",
-        desc: "A screen-space gizmo translates and rotates the selected component by dragging (tunable axis length, world scale, quaternion rotation, reset, multi-axis), alongside a dev-tools sidebar: selection, freecam and camera modes, pause, and batch editing of collision shapes." },
-      { name: "Lua scripting IDE plugin",
-        desc: "A built-in scripting plugin with a live REPL, object inspector, VR, console, and bridge tabs — so you can write and iterate on Unreal VR scripts without leaving the game." },
-      { name: "Crash hardening across the Lua layer",
-        desc: "A bad script can no longer take down the game: script resets, the C plugin interface, and identity-quaternion math were all hardened after an adversarial review found and fixed the edge cases." },
-    ],
+    // §01 — What was added: superseded by the `capabilities` list above, which covers
+    // this same ground for the public overview. Kept empty here to avoid duplicating it;
+    // the Dev dashboard's Kanban (data.cards) still has the full technical breakdown.
+    featuresAdded: [],
 
-    // §02 — Highlight card IDs (6 showing breadth)
+    // §02 — Highlight card IDs (6 showing breadth) — superseded by `capabilities` below,
+    // kept as a fallback if capabilities is ever cleared.
     highlights: [
       "imgui-upgrade", "workers", "live-caller",
       "tarray", "glm", "treepop",
+    ],
+
+    // Core capabilities — feature-forward list shown instead of highlight cards.
+    capabilitiesAside: "one branch, ten features",
+    capabilities: [
+      { title: "Live editor + Blueprint-style scripting for any packaged game",
+        desc: "A visual, in-game editing and scripting surface that works on shipped Unreal Engine titles — no source project or Blueprint access required. Select, inspect, and call game logic live, the way you would in-editor." },
+      { title: "Full non-VR ('Universal') support",
+        desc: "Every tool — gizmos, selection, the function caller, freecam — now works with a flat monitor and mouse/keyboard, not just inside a headset." },
+      { title: "Transform gizmos with click-to-select",
+        desc: "Click any actor in the running game to select it, then drag a screen-space gizmo to translate or rotate it — tunable axis length, world scale, quaternion rotation, and multi-axis drag." },
+      { title: "Function calling — and blocking",
+        desc: "Call any reflected engine function live from the Function Caller, with struct parameters flattened into editable fields; the same reflection layer can also block/no-op a function so you can disable game logic on the fly." },
+      { title: "Multithreaded Lua scripting for performance",
+        desc: "Scripts can spawn background worker threads that share data with the main script without stalling the game — heavier scripting logic no longer costs frame time." },
+      { title: "5-year Dear ImGui upgrade",
+        desc: "Brought the injected ImGui rendering stack forward roughly 5 years of upstream releases — pre-docking to v1.92 with full docking and multi-viewport (pop-out windows) inside an injected DLL, a first for this kind of mod." },
+      { title: "Automatic universal first-person",
+        desc: "Detects and re-homes the camera to a first-person view automatically across different games' camera rigs, without a per-game config." },
+      { title: "Free camera",
+        desc: "Detach the camera entirely from the player for unobstructed inspection and screenshots/video, independent of gameplay state." },
+      { title: "Object spawning",
+        desc: "Spawn actors and objects into the running game world directly from the editor tools, for testing and scripting without touching the original project." },
+      { title: "Reflection workbench — Class Browser + instance inspector",
+        desc: "Dockable Class Browser and instance inspector panes surface a running game's classes and live object state, grouped by declaring class — the foundation the rest of the toolset is built on." },
+    ],
+
+    // Related project — demoted subproject link, not equal billing.
+    relatedProjects: [
+      { title: "UEVR Frontend",
+        desc: "Companion desktop app — installs, configures, and launches UEVR across games.",
+        url: "UEVR-Frontend-Dashboard.html" },
     ],
 
     // Tech stack chips (hero right column)
@@ -130,8 +149,7 @@ window.PROGRESS_DATA = {
     // Videos — add { src, poster?, caption? } when screen captures are ready
     videos: [],
 
-    // Gallery — add { src, caption } to enable the Gallery section in Dev view
-    gallery: [],
+    // Gallery is set above (meta.gallery) — also drives the Dev-view Gallery section.
   },
 
   // Top-level vitals — the numbers that anchor the header.

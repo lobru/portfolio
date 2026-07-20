@@ -74,7 +74,7 @@ function RecruiterView({ data, onSwitchToDev }) {
                 {m.eyebrow}
               </div>
               }
-              <h1 className="rec-name">{m.project}</h1>
+              <h1 className="rec-name" data-comment-anchor="925f210583-h1-28-11">{m.project}</h1>
               <div className="rec-role-line">Created by {m.author}</div>
               {(m.tagline || m.description) && <p className="rec-bio">{m.tagline || m.description}</p>}
               {m.techStack &&
@@ -94,13 +94,13 @@ function RecruiterView({ data, onSwitchToDev }) {
               }
             </div>
 
-            {showcase
-              ? <div className="rec-hero-shot">
+            {showcase ?
+            <div className="rec-hero-shot">
                   <img src={showcase.src} alt={showcase.caption || m.project} loading="lazy" />
                   {showcase.caption && <div className="rec-hero-shot-cap">{showcase.caption}</div>}
-                </div>
-              : (m.repoUrl &&
-                <a className="rec-repo-panel" href={m.repoUrl} target="_blank" rel="noopener noreferrer">
+                </div> :
+            m.repoUrl &&
+            <a className="rec-repo-panel" href={m.repoUrl} target="_blank" rel="noopener noreferrer">
                   <div className="rrp-top">
                     <span className="rrp-mark">{"</>"}</span>
                     <span className="rrp-label">Source repository</span>
@@ -108,7 +108,7 @@ function RecruiterView({ data, onSwitchToDev }) {
                   <div className="rrp-path">{m.repoPath || m.project}</div>
                   <div className="rrp-meta">{m.branch ? m.branch + " · " : ""}v{m.version}</div>
                   <span className="rrp-cta">View on GitHub ↗</span>
-                </a>)
+                </a>
             }
           </div>
         </div>
@@ -126,7 +126,7 @@ function RecruiterView({ data, onSwitchToDev }) {
           <div>
             <p className="rec-sprint-tagline" style={{ margin: 0 }}>{m.tagline}</p>
             {m.credits && m.credits.length > 0 &&
-            <details className="rec-credits-details">
+            <details className="rec-credits-details" data-comment-anchor="5ea29d81db-details-124-15">
                 <summary>Project history</summary>
                 <ul className="rec-credits-list">
                   <li className="rec-credits-item rec-credits-me">
@@ -178,10 +178,11 @@ function RecruiterView({ data, onSwitchToDev }) {
                   <div className="rec-dl-card-file">{m.download.installerName}</div>
                 </div>
               </div>
+              {m.download.installerNote && <div className="rec-dl-card-note" data-comment-anchor="b32dbe090a-div-181-44" style={{ height: "0px", width: "0px" }}>{m.download.installerNote}</div>}
               <span className="rec-dl-cta">Get the installer ↗</span>
             </a>
             {m.download.htmlUrl &&
-            <a className="rec-dl-card" href={m.download.htmlUrl} target="_blank" rel="noopener noreferrer">
+          <a className="rec-dl-card" href={m.download.htmlUrl} target="_blank" rel="noopener noreferrer">
                 <div className="rec-dl-card-top">
                   <span className="rec-dl-icon">▶</span>
                   <div>
@@ -189,93 +190,58 @@ function RecruiterView({ data, onSwitchToDev }) {
                     <div className="rec-dl-card-file">No install · WebAssembly</div>
                   </div>
                 </div>
+                {m.download.htmlNote && <div className="rec-dl-card-note">{m.download.htmlNote}</div>}
                 <span className="rec-dl-cta">Open web version ↗</span>
               </a>
-            }
-          </div>
-        </section>
-      }
-
-      {/* ══════════════ ABOUT — light-touch, no boxed section chrome ══════════════ */}
-      {m.description &&
-      <section className="rec-about rec-about-lite" style={{ marginBottom: 32 }}>
-          <p className="rec-about-lead">{m.description}</p>
-          {m.audience &&
-          <ul className="rec-about-audience">{m.audience.map((a, i) => <li key={i}>{a}</li>)}</ul>
           }
-        </section>
-      }
-
-      {/* ══════════════ CAPABILITIES (feature-forward, no cards) ══════════════ */}
-      {m.capabilities && m.capabilities.length > 0 &&
-      <section style={{ marginBottom: 32 }}>
-          <div className="rec-section-head">
-            <h2 className="rec-section-title">{m.capabilitiesTitle || "Core capabilities"}</h2>
-            <div className="rec-section-rule"></div>
-            {m.capabilitiesAside && <span className="rec-section-aside">{m.capabilitiesAside}</span>}
-          </div>
-          <div className="rec-capabilities">
-            {m.capabilities.map((c, i) =>
-            <div key={i} className="rec-capability">
-                <span className="rec-capability-num">{String(i + 1).padStart(2, "0")}</span>
-                <div className="rec-capability-body">
-                  <div className="rec-capability-title">{c.title}</div>
-                  <div className="rec-capability-desc">{c.desc}</div>
-                </div>
-              </div>
-            )}
           </div>
         </section>
       }
 
-      {/* ══════════════ RELATED PROJECTS (demoted subproject links) ══════════════ */}
-      {m.relatedProjects && m.relatedProjects.length > 0 &&
-      <section style={{ marginBottom: 32 }}>
-          <div className="rec-related">
-            <span className="rec-related-label">Also part of this project</span>
-            {m.relatedProjects.map((p, i) =>
-            <a key={i} href={p.url} className="rec-related-link">
-                {p.title}
-                <span className="rec-related-desc">{p.desc}</span>
-                <span className="rec-related-arrow">→</span>
-              </a>
-            )}
-          </div>
-        </section>
-      }
+      {/* ══════════════ ABOUT ══════════════ */}
+      <section className="rec-about" style={{ marginBottom: 40 }}>
+        <div className="rec-section-head">
+          <h2 className="rec-section-title">About this project</h2>
+          <div className="rec-section-rule"></div>
+        </div>
+        <div className="rec-about-body">
+          <p>{m.description}</p>
+          {m.audience &&
+          <ul>{m.audience.map((a, i) => <li key={i}>{a}</li>)}</ul>
+          }
+        </div>
+      </section>
 
       {/* ══════════════ HIGHLIGHTS ══════════════ */}
-      {!m.capabilities && highlightCards.length > 0 &&
-      <section style={{ marginBottom: 32 }}>
-          <div className="rec-section-head">
-            <h2 className="rec-section-title">Selected highlights</h2>
-            <div className="rec-section-rule"></div>
-          </div>
-          <div className="rec-highlights">
-            {highlightCards.map((c) =>
+      <section style={{ marginBottom: 40 }}>
+        <div className="rec-section-head">
+          <h2 className="rec-section-title">Selected highlights</h2>
+          <div className="rec-section-rule"></div>
+        </div>
+        <div className="rec-highlights">
+          {highlightCards.map((c) =>
           <div key={c.id} className={"rec-highlight" + (c.image ? " has-shot" : "")}>
-                {c.image &&
+              {c.image &&
             <div className="rec-highlight-shot">
-                    <img src={c.image.src} alt={c.image.caption || c.title} loading="lazy" />
-                  </div>
+                  <img src={c.image.src} alt={c.image.caption || c.title} loading="lazy" />
+                </div>
             }
-                <div className="rec-highlight-body">
-                  <div className="rec-highlight-tag">{c.group}</div>
-                  <h3 className="rec-highlight-title">{c.title}</h3>
-                  <p className="rec-highlight-blurb">{c.highlightBlurb || c.blurb}</p>
-                  <div className="rec-highlight-foot">
-                    {(c.tags || []).slice(0, 3).map((t) => <Pill key={t} kind="tag">{t}</Pill>)}
-                  </div>
+              <div className="rec-highlight-body">
+                <div className="rec-highlight-tag">{c.group}</div>
+                <h3 className="rec-highlight-title">{c.title}</h3>
+                <p className="rec-highlight-blurb">{c.highlightBlurb || c.blurb}</p>
+                <div className="rec-highlight-foot">
+                  {(c.tags || []).slice(0, 3).map((t) => <Pill key={t} kind="tag">{t}</Pill>)}
                 </div>
               </div>
+            </div>
           )}
-          </div>
-        </section>
-      }
+        </div>
+      </section>
 
       {/* ══════════════ SCREENSHOT STRIP ══════════════ */}
       {galleryRest.length > 0 &&
-      <section style={{ marginBottom: 32 }}>
+      <section style={{ marginBottom: 40 }}>
           <div className="rec-shot-strip">
             {galleryRest.slice(0, 4).map((g, i) =>
           <div key={i} className="rec-shot-card">
@@ -289,7 +255,7 @@ function RecruiterView({ data, onSwitchToDev }) {
 
       {/* ══════════════ FEATURES ADDED ══════════════ */}
       {m.featuresAdded && m.featuresAdded.length > 0 &&
-      <section style={{ marginBottom: 32 }}>
+      <section style={{ marginBottom: 40 }}>
           <div className="rec-section-head">
             <h2 className="rec-section-title">What was added</h2>
             <div className="rec-section-rule"></div>
@@ -307,7 +273,7 @@ function RecruiterView({ data, onSwitchToDev }) {
 
       {/* ══════════════ MEDIA / VIDEO ══════════════ */}
       {m.videos && m.videos.length > 0 &&
-      <section style={{ marginBottom: 32 }}>
+      <section>
           <div className="rec-section-head">
             <h2 className="rec-section-title">In action</h2>
             <div className="rec-section-rule"></div>
@@ -324,30 +290,40 @@ function RecruiterView({ data, onSwitchToDev }) {
         </section>
       }
 
-      {/* ══════════════ TIMELINE — condensed, low visual weight ══════════════ */}
-      {shippedMilestones.length > 0 &&
-      <section style={{ marginBottom: 8 }}>
-          <div className="rec-section-head rec-section-head-sub">
-            <h2 className="rec-section-title-sub">Activity timeline</h2>
-            <div className="rec-section-rule"></div>
-          </div>
-          <div className="rec-timeline rec-timeline-lite">
-            <ul className="rec-timeline-list">
-              {shippedMilestones.map((mi, i) =>
-              <li key={i} className={"rec-timeline-item " + (mi.kind === "in-progress" ? "inprog" : "")}>
-                  <span className="rec-timeline-date">{mi.date}</span>
-                  <span className="rec-timeline-dot"></span>
-                  <span className="rec-timeline-label">{mi.label}</span>
-                </li>
-              )}
-            </ul>
-          </div>
-        </section>
-      }
-      {/* Tech stack: already shown as chips in the hero — no redundant second listing. */}
+      {/* ══════════════ TIMELINE ══════════════ */}
+      <section>
+        <div className="rec-section-head">
+          <h2 className="rec-section-title">Activity timeline</h2>
+          <div className="rec-section-rule"></div>
+        </div>
+        <div className="rec-timeline">
+          <ul className="rec-timeline-list">
+            {shippedMilestones.map((mi, i) =>
+            <li key={i} className={"rec-timeline-item " + (mi.kind === "in-progress" ? "inprog" : "")}>
+                <span className="rec-timeline-date">{mi.date}</span>
+                <span className="rec-timeline-dot"></span>
+                <span className="rec-timeline-label">{mi.label}</span>
+              </li>
+            )}
+          </ul>
+        </div>
+      </section>
+
+      {/* ══════════════ TECH STACK ══════════════ */}
+      <section>
+        <div className="rec-section-head">
+          <h2 className="rec-section-title">Tech stack</h2>
+          <div className="rec-section-rule"></div>
+        </div>
+        <div className="rec-tech">
+          {(m.techStack || []).map((t) =>
+          <span key={t} className="rec-tech-tag">{t}</span>
+          )}
+        </div>
+      </section>
 
       {/* ══════════════ CTA ══════════════ */}
-      <div className="rec-cta" style={{ marginTop: 24 }}>
+      <div className="rec-cta">
         <div>
           <div className="rec-cta-lead">
             Want the full technical picture — every card, dependency graph, files heatmap, and fix plan?
@@ -363,7 +339,7 @@ function RecruiterView({ data, onSwitchToDev }) {
         </button>
       </div>
 
-      <footer className="footer" style={{ marginTop: 36 }}>
+      <footer className="footer" style={{ marginTop: 56 }}>
         <span>{m.author} · {m.project} contribution · {m.lastUpdated}</span>
         <span>Built with Claude Code</span>
       </footer>

@@ -117,11 +117,23 @@ button { font:inherit; cursor:pointer; }
   font-size:14px; line-height:1.55; color:var(--text-2);
   max-width:54ch; margin:0 0 16px; text-wrap:pretty;
 }
-.hero-skills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.hero-skills { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px; }
 .hero-skill {
-  font-family:var(--mono); font-size:11px;
-  padding:4px 12px; border:1px solid var(--line-2); border-radius:100px;
+  font-family:var(--mono); font-size:14px;
+  padding:8px 16px; border:1px solid var(--line-2); border-radius:100px;
   color:var(--text-2); background:var(--panel);
+  cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  transition:background .15s, border-color .15s, color .15s, transform .1s;
+}
+.hero-skill:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+.hero-skill:active { transform:translateY(0); }
+.hero-skill.is-active {
+  background:var(--accent); border-color:var(--accent); color:var(--bg);
+  font-weight:600;
+}
+.hero-skill-hint {
+  font-family:var(--mono); font-size:11px; color:var(--muted);
+  margin:-14px 0 20px; opacity:.7;
 }
 .hero-links { display:flex; flex-wrap:wrap; gap:18px; align-items:center; }
 .hero-link {
@@ -140,7 +152,22 @@ button { font:inherit; cursor:pointer; }
 .sec-sub   { font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
 
 /* ── Project grid (main, clickable cards) ── */
-.projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:44px; }
+.projects { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-bottom:44px; }
+.project-card.featured { border-color:var(--line-2); }
+
+.project-subproject {
+  display:flex; align-items:baseline; gap:10px; margin-top:14px; padding:12px 14px;
+  background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-s);
+  transition:border-color .15s;
+}
+.project-subproject:hover { border-color:var(--accent); }
+.project-subproject-label {
+  font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); flex-shrink:0;
+}
+.project-subproject-name { font-size:13px; font-weight:600; color:var(--text); flex-shrink:0; }
+.project-subproject-desc { font-size:12px; color:var(--muted); flex:1; }
+.project-subproject-arrow { color:var(--accent); }
 
 .project-card {
   background:var(--panel); border:1px solid var(--line);
@@ -352,8 +379,8 @@ footer {
   .hero-name { font-size:clamp(32px,9vw,52px); margin-bottom:4px; }
   .hero-role { font-size:14px; margin-bottom:8px; }
   .hero-bio { font-size:13.5px; margin-bottom:14px; max-width:none; }
-  .hero-skills { gap:5px; margin-bottom:16px; }
-  .hero-skill { font-size:10px; padding:4px 10px; }
+  .hero-skills { gap:7px; margin-bottom:16px; }
+  .hero-skill { font-size:12px; padding:6px 12px; }
   .hero-links { gap:12px; flex-wrap:wrap; }
   .hero-link { font-size:11px; }
   .sec-head { gap:10px; margin-bottom:18px; }
@@ -369,6 +396,24 @@ footer {
   .exp-row { grid-template-columns:90px 1fr; gap:12px; }
   footer { flex-direction:column; gap:8px; align-items:flex-start; }
 }
+
+/* ── Skill filter ── */
+.skill-filter-bar {
+  display:flex; align-items:center; gap:14px; margin:-8px 0 20px;
+  font-family:var(--mono); font-size:13px; color:var(--text-2);
+}
+.skill-filter-bar[hidden] { display:none; }
+.skill-filter-text strong { color:var(--accent); }
+.skill-filter-clear {
+  font-family:var(--mono); font-size:12px; color:var(--muted);
+  border:1px solid var(--line-2); border-radius:100px; padding:5px 12px;
+  cursor:pointer; background:var(--panel); transition:color .15s, border-color .15s;
+}
+.skill-filter-clear:hover { color:var(--accent); border-color:var(--accent); }
+.project-card.skill-dimmed { opacity:.28; filter:grayscale(.4); }
+.project-card.skill-match {
+  outline:2px solid var(--accent); outline-offset:2px;
+}
 </style>
 </head>
 <body>
@@ -380,42 +425,52 @@ footer {
       <span class="hero-badge-dot"></span>
       open to work · Orlando, FL
     </div>
-    <h1 class="hero-name">Logan Brunet</h1>
-    <p class="hero-role">Senior C++ Engineer · Engines · Graphics · UI / Tools · Security</p>
+    <h1 class="hero-name" style="font-size: 32px">Logan Brunet</h1>
+    <p class="hero-role">C++ Engineer · Unreal Engine · Graphics Programming · Developer Tools · Agentic Workflows<br></p>
     <p class="hero-bio">
       I write engine internals, real-time graphics, and the interfaces on top of them —
       and I reverse-engineer games in my niche. Full-stack C++, from rendering and VR
       injection to polished Dear ImGui tooling.
     </p>
-    <div class="hero-skills">
-      <span class="hero-skill">C++17/20</span>
-      <span class="hero-skill">Unreal Engine 4/5</span>
-      <span class="hero-skill">Dear ImGui</span>
-      <span class="hero-skill">Lua / Sol2</span>
-      <span class="hero-skill">C# / WPF</span>
-      <span class="hero-skill">GLSL / HLSL</span>
-      <span class="hero-skill">SDL3 / CMake</span>
-      <span class="hero-skill">Claude Code</span>
-    </div>
     <nav class="hero-links">
-      <a href="Logan_Brunet_Resume.pdf" class="hero-link primary" target="_blank" rel="noopener">Résumé (PDF) ↓</a>
-      <a href="https://github.com/lobotomy-x" class="hero-link" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://linkedin.com/in/logan-brunet" class="hero-link" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a href="mailto:loganwbrunet@gmail.com" class="hero-link">loganwbrunet@gmail.com</a>
+      <a href="Logan_Brunet_Resume.pdf" class="hero-link primary" target="_blank" rel="noopener" style="font-size:14px">Résumé (PDF) ↓</a>
+      <a href="https://github.com/lobotomy-x" class="hero-link" target="_blank" rel="noopener" style="font-size:14px">GitHub ↗</a>
+      <a href="mailto:loganwbrunet@gmail.com" class="hero-link" style="font-size:14px">loganwbrunet@gmail.com</a>
+      <a href="https://linkedin.com/in/logan-brunet" class="hero-link" target="_blank" rel="noopener" style="font-size:14px">LinkedIn ↗</a>
     </nav>
   </header>
 
+  <div class="sec-head" style="margin:20px 0 8px">
+    <h2 class="sec-title" style="font-size:18px">Skills</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="hero-skills" id="skillFilterBar">
+    <button type="button" class="hero-skill" data-skill="cpp">C++17/20</button>
+    <button type="button" class="hero-skill" data-skill="unreal">Unreal Engine 4/5</button>
+    <button type="button" class="hero-skill" data-skill="imgui">Dear ImGui</button>
+    <button type="button" class="hero-skill" data-skill="lua">Lua / Sol2</button>
+    <button type="button" class="hero-skill" data-skill="csharp-wpf">C# / WPF</button>
+    <button type="button" class="hero-skill" data-skill="glsl-hlsl">GLSL / HLSL</button>
+    <button type="button" class="hero-skill" data-skill="sdl-cmake">SDL3 / CMake</button>
+    <button type="button" class="hero-skill" data-skill="claude">Claude Code</button>
+  </div>
+  <div class="hero-skill-hint">↑ click a skill to jump to the projects that use it</div>
+
   <!-- ── § 01 Selected work ── -->
+  <div class="sec-head">
+    <h2 class="sec-title">Selected work</h2>
+    <div class="sec-rule"></div>
+    <span class="sec-sub">click any card</span>
+  </div>
   <section>
-    <div class="sec-head">
-      <h2 class="sec-title">Selected work</h2>
-      <div class="sec-rule"></div>
-      <span class="sec-sub">click any card</span>
+    <div class="skill-filter-bar" id="skillFilterIndicator" hidden>
+      <span class="skill-filter-text">Showing projects using <strong id="skillFilterName"></strong></span>
+      <button type="button" class="skill-filter-clear" id="skillFilterClear">Clear filter ✕</button>
     </div>
-    <div class="projects">
+    <div class="projects" id="projectsGrid">
 
       <!-- ImGuiColorTextEdit -->
-      <div class="project-card">
+      <div class="project-card" data-skills="cpp imgui sdl-cmake unreal claude">
         <a href="imguicolortextedit.html" class="card-stretch"><span>Open ImGui-IDE dashboard</span></a>
         <div class="project-thumb">
           <img src="uploads/textEditor.png" alt="ImGuiColorTextEdit editor screenshot"
@@ -431,17 +486,18 @@ footer {
           <span class="project-status-bar live">Shipped</span>
         </div>
         <div class="project-body">
-          <div class="project-eyebrow">C++ · Dear ImGui · Code Editor</div>
+          <div class="project-eyebrow">C++ · Dear ImGui · Blueprint Editor · Unreal Engine</div>
           <div class="project-title">ImGui IDE</div>
           <div class="project-blurb">
-            A fully featured, multiplatform code editor written in C++ with Dear ImGui —
-            standalone app or embeddable library. Code folding, script runner, VS Code
-            shortcuts, and runtime language loading. Windows, macOS, Linux.
+            A self-hosting IDE — built in C++ on Dear ImGui and tree-sitter/clangd, developed
+            inside itself, with a DLL plugin ABI that carries the Blueprint Editor and
+            Unreal Engine tooling without linking their code into the core. Code folding,
+            script runner, VS Code shortcuts, and runtime language loading. Windows, macOS, Linux.
           </div>
           <div class="project-tags">
             <span class="project-tag">ImGuiColorTextEdit</span>
-            <span class="project-tag">C++17</span>
-            <span class="project-tag">Dear ImGui</span>
+            <span class="project-tag">Blueprint Editor</span>
+            <span class="project-tag">Unreal Engine</span>
             <span class="project-tag">40+ features</span>
           </div>
         </div>
@@ -454,45 +510,11 @@ footer {
         </div>
       </div>
 
-      <!-- UEVR Frontend -->
-      <div class="project-card">
-        <a href="UEVR-Frontend-Dashboard.html" class="card-stretch"><span>Open UEVR Frontend dashboard</span></a>
-        <div class="project-thumb">
-          <div class="thumb-gallery">
-            <img src="media/uevr-frontend/main-inject.png" alt="UEVR Frontend main window" loading="lazy" />
-            <img src="media/uevr-frontend/version-selector.png" alt="Version selector" loading="lazy" />
-            <img src="media/uevr-frontend/app-settings.png" alt="Application settings" loading="lazy" />
-            <img src="media/uevr-frontend/launcher-settings.png" alt="Launcher settings" loading="lazy" />
-          </div>
-          <span class="project-status-bar live">Shipped</span>
-        </div>
-        <div class="project-body">
-          <div class="project-eyebrow">C# · WPF · WinAPI · VR / Modding</div>
-          <div class="project-title">UEVR Frontend</div>
-          <div class="project-blurb">
-            The best Unreal Engine modding tool — a polished, intuitive GUI with
-            GitHub-API auto-updating and near-100% compatibility across compatible
-            Unreal games. Runs silently in the system tray and injects using
-            offensive-security techniques only an expert could devise.
-          </div>
-          <div class="project-tags">
-            <span class="project-tag">C# / .NET 6</span>
-            <span class="project-tag">WPF</span>
-            <span class="project-tag">WinAPI</span>
-            <span class="project-tag">20 features</span>
-          </div>
-        </div>
-        <div class="project-arrow">
-          <span class="project-arrow-meta">2025–2026 &nbsp;·&nbsp; <span class="arrow">→</span> dashboard</span>
-          <a href="https://github.com/lobotomy-x/uevr-frontend" class="project-repo-link" target="_blank" rel="noopener">GitHub repo ↗</a>
-        </div>
-      </div>
-
-      <!-- UEVR luavrlib -->
-      <div class="project-card">
+      <!-- UEVR luavrlib (+ Frontend as subproject) -->
+      <div class="project-card featured" data-skills="cpp unreal imgui lua glsl-hlsl csharp-wpf claude">
         <a href="UEVR-Luavrlib-Dashboard.html" class="card-stretch"><span>Open UEVR luavrlib dashboard</span></a>
         <div class="project-thumb">
-          <img src="media/uevr-luavrlib/class-browser-function-caller.png" alt="UEVR luavrlib — Class Browser, Function Caller, and docked panels in-game"
+          <img src="media/uevr-luavrlib/uobjecthook-gizmo-class-browser.png" alt="UEVR luavrlib — click-to-select gizmo, spawn-actor panel, and object browser in-game"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
           <div class="project-thumb-placeholder" style="display:none;flex-direction:column;align-items:center;gap:10px;">
             <svg class="thumb-icon" viewBox="0 0 48 48" fill="none">
@@ -500,13 +522,13 @@ footer {
               <path d="M16 18 L22 24 L16 30" stroke="#9d8bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <line x1="24" y1="30" x2="32" y2="30" stroke="#9d8bff" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <span class="project-thumb-label">UEVR · luavrlib</span>
+            <span class="project-thumb-label">UEVR</span>
           </div>
           <span class="project-status-bar active">Active sprint</span>
         </div>
         <div class="project-body">
           <div class="project-eyebrow">C++20 · Lua / Sol2 · Unreal Engine · Dear ImGui</div>
-          <div class="project-title">UEVR · luavrlib</div>
+          <div class="project-title">UEVR</div>
           <div class="project-blurb">
             Pushed UEVR's injected Dear ImGui renderer forward ~5 years of upstream — to v1.92
             with full docking and multi-viewport (pop-out windows), plus the DX11/DX12 fixes to
@@ -518,6 +540,12 @@ footer {
             <span class="project-tag">Dear ImGui</span>
             <span class="project-tag">24 features</span>
           </div>
+          <a href="UEVR-Frontend-Dashboard.html" class="project-subproject" style="position:relative;z-index:2;">
+            <span class="project-subproject-label">Subproject</span>
+            <span class="project-subproject-name">UEVR Frontend</span>
+            <span class="project-subproject-desc">Windows launcher &amp; installer GUI</span>
+            <span class="project-subproject-arrow">→</span>
+          </a>
         </div>
         <div class="project-arrow">
           <span class="project-arrow-meta">Apr – May 2026 &nbsp;·&nbsp; <span class="arrow">→</span> dashboard</span>
@@ -528,99 +556,70 @@ footer {
     </div>
   </section>
 
-  <!-- ── § 02 AI-augmented workflow ── -->
-  <section>
-    <div class="sec-head">
-      <h2 class="sec-title">AI-augmented engineering</h2>
-      <div class="sec-rule"></div>
+  <!-- ── § 02b AI-augmented workflow ── -->
+  <div class="sec-head">
+    <h2 class="sec-title">AI-augmented engineering</h2>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="ai-section">
+    <div class="ai-section-head">
+      <div>
+        <div class="ai-section-title">
+          Using Claude Code as a <span class="ai-highlight">force multiplier</span>
+        </div>
+        <div class="ai-section-sub">
+          I avoided code generation until early this year, when I was given a Claude
+          subscription while working as a C++ programmer on a large Unreal Engine project.
+          Since then it's become a significant output multiplier — the projects above were
+          all built or documented with Claude Code in the loop.
+        </div>
+      </div>
+      <span class="ai-badge">Claude Code</span>
     </div>
 
-    <div class="ai-section">
-      <div class="ai-section-head">
-        <div>
-          <div class="ai-section-title">
-            Using Claude Code as a <span class="ai-highlight">force multiplier</span>
-          </div>
-          <div class="ai-section-sub">
-            Integrating AI into the development workflow isn't just a productivity trick — it's
-            become a core technical skill. The ability to scope, prompt, verify, and iterate with
-            AI agents is measurably changing what one engineer can ship per week. Every project
-            above was built or documented with Claude Code in the loop.
-          </div>
+    <a href="https://lobotomy-x.github.io/imgui/" target="_blank" rel="noopener" class="ai-demo featured">
+      <div class="ai-demo-text">
+        <div class="ai-demo-eyebrow">▶ Live in your browser · WebAssembly · no install</div>
+        <div class="ai-demo-title">Two playable games, rendered with Dear ImGui</div>
+        <div class="ai-demo-body">
+          Both built in <strong>Dear ImGui</strong> and compiled to WebAssembly to run in-browser.
+          <strong>Pong</strong> — Claude Code ported the original Lua source to native C++.
+          <strong>Tetris</strong> — <span class="ai-demo-hl">written by an AI agent</span> from a prompt.
         </div>
-        <span class="ai-badge">Claude Code</span>
+        <div class="ai-demo-games">
+          <span class="ai-demo-game">Pong · Lua → C++ port</span>
+          <span class="ai-demo-game gen">Tetris · AI-written</span>
+          <span class="ai-demo-src">github.com/lobotomy-x/imgui</span>
+        </div>
       </div>
+      <span class="ai-demo-cta">Play now →</span>
+    </a>
 
-      <a href="https://lobotomy-x.github.io/imgui/" target="_blank" rel="noopener" class="ai-demo featured">
-        <div class="ai-demo-text">
-          <div class="ai-demo-eyebrow">▶ Live in your browser · WebAssembly · no install</div>
-          <div class="ai-demo-title">Two playable games, rendered with Dear ImGui</div>
-          <div class="ai-demo-body">
-            Both built in <strong>Dear ImGui</strong> and compiled to WebAssembly to run in-browser.
-            <strong>Pong</strong> — Claude Code ported the original Lua source to native C++.
-            <strong>Tetris</strong> — <span class="ai-demo-hl">written by an AI agent</span> from a prompt.
-          </div>
-          <div class="ai-demo-games">
-            <span class="ai-demo-game">Pong · Lua → C++ port</span>
-            <span class="ai-demo-game gen">Tetris · AI-written</span>
-            <span class="ai-demo-src">github.com/lobotomy-x/imgui</span>
-          </div>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="ai-card-title">Rapid codebase onboarding</div>
+        <div class="ai-card-body">
+          Explored ~100k-line codebases (UEVR, ImGuiColorTextEdit, ObjectTalk) in minutes rather than days —
+          mapping call graphs and undocumented APIs before writing a single line.
         </div>
-        <span class="ai-demo-cta">Play now →</span>
-      </a>
-
-      <div class="ai-grid">
-        <div class="ai-card">
-          <div class="ai-card-title">Rapid codebase onboarding</div>
-          <div class="ai-card-body">
-            Explored ~100k-line codebases (UEVR, ImGuiColorTextEdit, ObjectTalk) in minutes rather than days.
-            Used Claude to map call graphs, identify integration points, and understand
-            undocumented APIs before writing a single line.
-          </div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-title">Verification loop</div>
+        <div class="ai-card-body">
+          Every generated function is read, tested, and integrated with the same scrutiny
+          as any PR — the speed gain is in the first draft, not in blind trust.
         </div>
-        <div class="ai-card">
-          <div class="ai-card-title">Boilerplate compression</div>
-          <div class="ai-card-body">
-            WPF/XAML bindings, CMake configuration, NOTIFYICONDATA structs, GitHub API
-            deserialization — the mechanical parts of C# and build systems that slow down
-            feature work are generated, reviewed, and wired in rather than hand-typed.
-          </div>
-        </div>
-        <div class="ai-card">
-          <div class="ai-card-title">Progress dashboards as deliverables</div>
-          <div class="ai-card-body">
-            Turned raw sprint notes and code diffs into interactive portfolio dashboards —
-            kanban boards, dependency graphs, file heatmaps, and public-facing overviews —
-            entirely with AI tooling. These pages are themselves proof of the workflow.
-          </div>
-        </div>
-        <div class="ai-card">
-          <div class="ai-card-title">Verification loop</div>
-          <div class="ai-card-body">
-            Senior developers know AI output needs review. Every generated function is
-            read, tested, and integrated with the same scrutiny as any PR — the speed
-            gain is in the first draft and iteration cycle, not in blind trust.
-          </div>
-        </div>
-        <div class="ai-card">
-          <div class="ai-card-title">Multi-agent tooling</div>
-          <div class="ai-card-body">
-            Built Claude-powered tools directly into the dashboards — AI-assisted status
-            reports, release note drafters, data sync utilities, and a local companion
-            server that bridges browser UIs to the Claude CLI for in-context code review.
-          </div>
-        </div>
-        <div class="ai-card">
-          <div class="ai-card-title">Output: 40 + 20 + 24 features shipped</div>
-          <div class="ai-card-body">
-            Across three projects in a single quarter, AI tooling was in the loop for
-            scoping, documentation, and boilerplate on every feature. The architecture,
-            design decisions, and integration work remained fully human.
-          </div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-title">Output: 40 + 20 + 24 features shipped</div>
+        <div class="ai-card-body">
+          Across three projects in a single quarter, with the architecture, design
+          decisions, and integration work remaining fully human.
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- ── § 03 Experience & references ── -->
   <section>
@@ -643,7 +642,7 @@ footer {
           <div class="exp-date">May 2026</div>
           <div class="exp-main">
             <div class="exp-title">Game Tools &amp; Modding Engineer <span class="exp-co">· micro1 (Contract)</span></div>
-            <div class="exp-body">Engine tooling and modding on a proprietary C++ codebase. Details under NDA.</div>
+            <div class="exp-body">Engine tooling and modding on a proprietary C++ codebase.</div>
           </div>
         </div>
         <div class="exp-row">
@@ -794,5 +793,53 @@ footer {
   </footer>
 
 </div>
+
+<script>
+(function () {
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.hero-skill'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+  var bar = document.getElementById('skillFilterIndicator');
+  var nameEl = document.getElementById('skillFilterName');
+  var clearBtn = document.getElementById('skillFilterClear');
+  var grid = document.getElementById('projectsGrid');
+  var active = null;
+
+  function clear() {
+    active = null;
+    buttons.forEach(function (b) { b.classList.remove('is-active'); });
+    cards.forEach(function (c) { c.classList.remove('skill-dimmed', 'skill-match'); });
+    bar.hidden = true;
+  }
+
+  function apply(skill, label) {
+    active = skill;
+    buttons.forEach(function (b) { b.classList.toggle('is-active', b.dataset.skill === skill); });
+    var anyMatch = false;
+    cards.forEach(function (c) {
+      var match = (c.dataset.skills || '').split(' ').indexOf(skill) !== -1;
+      c.classList.toggle('skill-match', match);
+      c.classList.toggle('skill-dimmed', !match);
+      if (match) anyMatch = true;
+    });
+    nameEl.textContent = label;
+    bar.hidden = false;
+    if (anyMatch && grid) {
+      var rect = grid.getBoundingClientRect();
+      var targetY = window.pageYOffset + rect.top - (window.innerHeight - rect.height) / 2;
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    }
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var skill = btn.dataset.skill;
+      if (active === skill) { clear(); return; }
+      apply(skill, btn.textContent.trim());
+    });
+  });
+
+  clearBtn.addEventListener('click', clear);
+})();
+</script>
 </body>
 </html>
